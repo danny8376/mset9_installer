@@ -143,5 +143,5 @@
   "@remove_loading": {
     "description": ""
   },
-  "@@locale": "en"
+  "@@locale": "en_US"
 }

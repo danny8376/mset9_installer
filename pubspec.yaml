@@ -101,4 +101,4 @@ flutter:
 
 flutter_intl:
   enabled: true
-  main_locale: en
+  main_locale: en_US
