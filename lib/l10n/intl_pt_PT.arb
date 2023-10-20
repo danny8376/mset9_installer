@@ -1,0 +1,147 @@
+{
+  "alert_neutral": "OK",
+  "@alert_neutral": {
+    "description": ""
+  },
+  "title_installer": "MSET9 Installer",
+  "@title_installer": {
+    "description": ""
+  },
+  "title_variant_selector": "Select Model & Version",
+  "@title_variant_selector": {
+    "description": ""
+  },
+  "installer_button_pick_sd": "Select Your SD Card",
+  "@installer_button_pick_sd": {
+    "description": ""
+  },
+  "installer_button_pick_3ds": "Select \"Nintendo 3DS\"",
+  "@installer_button_pick_3ds": {
+    "description": ""
+  },
+  "installer_button_setup": "Setup MSET9",
+  "@installer_button_setup": {
+    "description": ""
+  },
+  "installer_button_inject_trigger": "Inject trigger file",
+  "@installer_button_inject_trigger": {
+    "description": ""
+  },
+  "installer_button_remove_trigger": "Remove trigger file",
+  "@installer_button_remove_trigger": {
+    "description": ""
+  },
+  "installer_button_remove": "Remove MSET9",
+  "@installer_button_remove": {
+    "description": ""
+  },
+  "pick_picked_id1": "ID1 picked, please pick ID0 or Nintendo 3DS folder instead",
+  "@pick_picked_id1": {
+    "description": ""
+  },
+  "pick_picked_unknown": "Unknown folder picked, please pick correct folder",
+  "@pick_picked_unknown": {
+    "description": ""
+  },
+  "pick_id0_not_1": "There's no ID0 or more than one ID0 folder, please check",
+  "@pick_id0_not_1": {
+    "description": ""
+  },
+  "pick_multi_hax_id1": "There's more than one hax ID1 ???",
+  "@pick_multi_hax_id1": {
+    "description": ""
+  },
+  "variant_selector_model_old": "Old 3DS/2DS",
+  "@variant_selector_model_old": {
+    "description": ""
+  },
+  "variant_selector_model_new": "New 3DS/2DS",
+  "@variant_selector_model_new": {
+    "description": ""
+  },
+  "variant_selector_version": "Select System Version:",
+  "@variant_selector_version": {
+    "description": ""
+  },
+  "setup_loading": "Setting up MSET9 ...",
+  "@setup_loading": {
+    "description": ""
+  },
+  "setup_alert_setup_title": "Setup Error",
+  "@setup_alert_setup_title": {
+    "description": ""
+  },
+  "setup_alert_no_or_more_id1": "There's no ID1 folder or multiple ID1 folders!",
+  "@setup_alert_no_or_more_id1": {
+    "description": ""
+  },
+  "setup_alert_extdata_title": "Setup Error - Extra Data",
+  "@setup_alert_extdata_title": {
+    "description": ""
+  },
+  "setup_alert_extdata_missing": "There's no Extra Data",
+  "@setup_alert_extdata_missing": {
+    "description": ""
+  },
+  "setup_alert_extdata_home_menu": "There's no Home Menu Data",
+  "@setup_alert_extdata_home_menu": {
+    "description": ""
+  },
+  "setup_alert_extdata_mii_maker": "There's no Mii Maker Data",
+  "@setup_alert_extdata_mii_maker": {
+    "description": ""
+  },
+  "setup_alert_dummy_db_title": "Setup Error - Dummy Title Database",
+  "@setup_alert_dummy_db_title": {
+    "description": ""
+  },
+  "setup_alert_dummy_db_prompt": "Title database not found. Do you want this app to create it for you? (A title database is necessary for this exploit to run.)",
+  "@setup_alert_dummy_db_prompt": {
+    "description": ""
+  },
+  "setup_alert_dummy_db_prompt_yes": "Yes",
+  "@setup_alert_dummy_db_prompt_yes": {
+    "description": ""
+  },
+  "setup_alert_dummy_db_prompt_no": "Cancel",
+  "@setup_alert_dummy_db_prompt_no": {
+    "description": ""
+  },
+  "setup_alert_dummy_db_failed": "Failed to create dummy title database",
+  "@setup_alert_dummy_db_failed": {
+    "description": ""
+  },
+  "setup_alert_dummy_db_visual_aid": "Visual Aid",
+  "@setup_alert_dummy_db_visual_aid": {
+    "description": ""
+  },
+  "setup_alert_dummy_db_visual_aid_url": "https://3ds.hacks.guide/images/screenshots/database-reset.jpg",
+  "@setup_alert_dummy_db_visual_aid_url": {
+    "description": ""
+  },
+  "setup_alert_dummy_db_created": "A dummy title database has been created.",
+  "@setup_alert_dummy_db_created": {
+    "description": ""
+  },
+  "setup_alert_dummy_db_found": "Dummy title database found.",
+  "@setup_alert_dummy_db_found": {
+    "description": ""
+  },
+  "setup_alert_dummy_db_corrupted": "Title database is likely corrupted.",
+  "@setup_alert_dummy_db_corrupted": {
+    "description": ""
+  },
+  "setup_alert_dummy_db_reset": "Put sd card back to your 3ds, power it on, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.",
+  "@setup_alert_dummy_db_reset": {
+    "description": ""
+  },
+  "inject_missing_hax_extdata": "Broken mset9 setup, extdata is missing",
+  "@inject_missing_hax_extdata": {
+    "description": ""
+  },
+  "remove_loading": "Removing MSET9 ...",
+  "@remove_loading": {
+    "description": ""
+  },
+  "@@locale": "pt-PT"
+}
