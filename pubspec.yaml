@@ -43,7 +43,11 @@ dependencies:
   collection: any
   path: any
   # kotlin_flavor: ^0.2.0
-  file_picker: ^6.0.0
+  # file_picker: ^7.0.0
+  file_picker:
+    git:
+      url: https://github.com/danny8376/flutter_file_picker
+      ref: 7.1.0-desktop-only
   url_launcher: ^6.1.14
   io: ^1.0.4
 
