@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path/path.dart' as p;
 import 'package:io/io.dart' as io_utils;
-import 'package:file_picker/file_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'generated/l10n.dart';
 import 'console.dart';
 import 'consts.dart';
 import 'hax.dart';
+import 'io_wrapper.dart';
 import 'utils.dart';
 
 void main() {
@@ -207,11 +207,9 @@ class _InstallerState extends State<Installer> {
   }
 
   void _pickFolder() async {
-    final picked = await FilePicker.platform.getDirectoryPath();
-    if (picked != null) {
-      final name = p.basename(picked);
-      final dir = Directory(picked);
-      if (kN3dsFolder.equalsIgnoreAsciiCase(name)) {
+    final dir = await pickFolder();
+    if (dir != null) {
+      if (kN3dsFolder.equalsIgnoreAsciiCase(dir.name)) {
         logger.d("FolderPicking: Nintendo 3DS Folder Picked");
         n3dsFolder = dir;
         await _pickID0FromN3DS();
@@ -259,18 +257,18 @@ class _InstallerState extends State<Installer> {
   }
 
   Future<bool> _checkIfId0(Directory folder) async {
-    if (!kId0Regex.hasMatch(p.basename(folder.path))) {
+    if (!kId0Regex.hasMatch(folder.name)) {
       return false;
     }
     return await folder.list().asyncAny((sub) => FileSystemEntity.isDirectory(sub.path));
   }
 
   Future<bool> _checkIfId1(Directory folder) async {
-    return _getHax(folder) != null || kId1Regex.hasMatch(p.basename(folder.path));
+    return _getHax(folder) != null || kId1Regex.hasMatch(folder.name);
   }
 
   Hax? _getHax(Directory folder) {
-    return Hax.findById1(p.basename(folder.path));
+    return Hax.findById1(folder.name);
   }
 
   Future<DirectoryHaxPair?> _findMatchingHaxId1([Directory? folder]) async {
