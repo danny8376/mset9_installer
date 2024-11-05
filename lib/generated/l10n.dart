@@ -100,6 +100,16 @@ class S {
     );
   }
 
+  /// `Check MSET9 status`
+  String get installer_button_check {
+    return Intl.message(
+      'Check MSET9 status',
+      name: 'installer_button_check',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Setup MSET9`
   String get installer_button_setup {
     return Intl.message(
@@ -290,16 +300,6 @@ class S {
     );
   }
 
-  /// `Title database not found. Do you want this app to create it for you? (A title database is necessary for this exploit to run.)`
-  String get setup_alert_dummy_db_prompt {
-    return Intl.message(
-      'Title database not found. Do you want this app to create it for you? (A title database is necessary for this exploit to run.)',
-      name: 'setup_alert_dummy_db_prompt',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Yes`
   String get setup_alert_dummy_db_prompt_yes {
     return Intl.message(
@@ -315,6 +315,26 @@ class S {
     return Intl.message(
       'Cancel',
       name: 'setup_alert_dummy_db_prompt_no',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Setup - Hax ID1 Created`
+  String get setup_alert_hax_id1_created_title {
+    return Intl.message(
+      'Setup - Hax ID1 Created',
+      name: 'setup_alert_hax_id1_created_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hax ID1 has been created.`
+  String get setup_alert_hax_id1_created {
+    return Intl.message(
+      'Hax ID1 has been created.',
+      name: 'setup_alert_hax_id1_created',
       desc: '',
       args: [],
     );
@@ -350,16 +370,6 @@ class S {
     );
   }
 
-  /// `A dummy title database has been created.`
-  String get setup_alert_dummy_db_created {
-    return Intl.message(
-      'A dummy title database has been created.',
-      name: 'setup_alert_dummy_db_created',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Dummy title database found.`
   String get setup_alert_dummy_db_found {
     return Intl.message(
@@ -385,6 +395,16 @@ class S {
     return Intl.message(
       'Put sd card back to your 3ds, power it on, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.',
       name: 'setup_alert_dummy_db_reset',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Put sd card back to your 3ds, power it on, then open Mii Maker.\nAfter Mii Maker loaded, press HOME, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.`
+  String get setup_alert_dummy_mii_maker_and_db_reset {
+    return Intl.message(
+      'Put sd card back to your 3ds, power it on, then open Mii Maker.\nAfter Mii Maker loaded, press HOME, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.',
+      name: 'setup_alert_dummy_mii_maker_and_db_reset',
       desc: '',
       args: [],
     );

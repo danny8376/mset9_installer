@@ -19,6 +19,10 @@
   "@installer_button_pick_3ds": {
     "description": ""
   },
+  "installer_button_check": "Check MSET9 status",
+  "@installer_button_check": {
+    "description": ""
+  },
   "installer_button_setup": "Setup MSET9",
   "@installer_button_setup": {
     "description": ""
@@ -95,16 +99,20 @@
   "@setup_alert_dummy_db_title": {
     "description": ""
   },
-  "setup_alert_dummy_db_prompt": "Title database not found. Do you want this app to create it for you? (A title database is necessary for this exploit to run.)",
-  "@setup_alert_dummy_db_prompt": {
-    "description": ""
-  },
   "setup_alert_dummy_db_prompt_yes": "Yes",
   "@setup_alert_dummy_db_prompt_yes": {
     "description": ""
   },
   "setup_alert_dummy_db_prompt_no": "Cancel",
   "@setup_alert_dummy_db_prompt_no": {
+    "description": ""
+  },
+  "setup_alert_hax_id1_created_title": "Setup - Hax ID1 Created",
+  "@setup_alert_hax_id1_created_title": {
+    "description": ""
+  },
+  "setup_alert_hax_id1_created": "Hax ID1 has been created.",
+  "@setup_alert_hax_id1_created": {
     "description": ""
   },
   "setup_alert_dummy_db_failed": "Failed to create dummy title database",
@@ -119,10 +127,6 @@
   "@setup_alert_dummy_db_visual_aid_url": {
     "description": ""
   },
-  "setup_alert_dummy_db_created": "A dummy title database has been created.",
-  "@setup_alert_dummy_db_created": {
-    "description": ""
-  },
   "setup_alert_dummy_db_found": "Dummy title database found.",
   "@setup_alert_dummy_db_found": {
     "description": ""
@@ -133,6 +137,10 @@
   },
   "setup_alert_dummy_db_reset": "Put sd card back to your 3ds, power it on, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.",
   "@setup_alert_dummy_db_reset": {
+    "description": ""
+  },
+  "setup_alert_dummy_mii_maker_and_db_reset": "Put sd card back to your 3ds, power it on, then open Mii Maker.\nAfter Mii Maker loaded, press HOME, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.",
+  "@setup_alert_dummy_mii_maker_and_db_reset": {
     "description": ""
   },
   "inject_missing_hax_extdata": "Broken mset9 setup, extdata is missing",

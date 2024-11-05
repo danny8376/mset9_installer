@@ -25,6 +25,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "alert_neutral": MessageLookupByLibrary.simpleMessage("OK"),
         "inject_missing_hax_extdata": MessageLookupByLibrary.simpleMessage(
             "Broken mset9 setup, extdata is missing"),
+        "installer_button_check":
+            MessageLookupByLibrary.simpleMessage("Check MSET9 status"),
         "installer_button_inject_trigger":
             MessageLookupByLibrary.simpleMessage("Inject trigger file"),
         "installer_button_pick_3ds":
@@ -49,14 +51,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Removing MSET9 ..."),
         "setup_alert_dummy_db_corrupted": MessageLookupByLibrary.simpleMessage(
             "Title database is likely corrupted."),
-        "setup_alert_dummy_db_created": MessageLookupByLibrary.simpleMessage(
-            "A dummy title database has been created."),
         "setup_alert_dummy_db_failed": MessageLookupByLibrary.simpleMessage(
             "Failed to create dummy title database"),
         "setup_alert_dummy_db_found":
             MessageLookupByLibrary.simpleMessage("Dummy title database found."),
-        "setup_alert_dummy_db_prompt": MessageLookupByLibrary.simpleMessage(
-            "Title database not found. Do you want this app to create it for you? (A title database is necessary for this exploit to run.)"),
         "setup_alert_dummy_db_prompt_no":
             MessageLookupByLibrary.simpleMessage("Cancel"),
         "setup_alert_dummy_db_prompt_yes":
@@ -70,6 +68,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "setup_alert_dummy_db_visual_aid_url":
             MessageLookupByLibrary.simpleMessage(
                 "https://3ds.hacks.guide/images/screenshots/database-reset.jpg"),
+        "setup_alert_dummy_mii_maker_and_db_reset":
+            MessageLookupByLibrary.simpleMessage(
+                "Put sd card back to your 3ds, power it on, then open Mii Maker.\nAfter Mii Maker loaded, press HOME, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset."),
         "setup_alert_extdata_home_menu":
             MessageLookupByLibrary.simpleMessage("There\'s no Home Menu Data"),
         "setup_alert_extdata_mii_maker":
@@ -78,6 +79,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("There\'s no Extra Data"),
         "setup_alert_extdata_title":
             MessageLookupByLibrary.simpleMessage("Setup Error - Extra Data"),
+        "setup_alert_hax_id1_created":
+            MessageLookupByLibrary.simpleMessage("Hax ID1 has been created."),
+        "setup_alert_hax_id1_created_title":
+            MessageLookupByLibrary.simpleMessage("Setup - Hax ID1 Created"),
         "setup_alert_no_or_more_id1": MessageLookupByLibrary.simpleMessage(
             "There\'s no ID1 folder or multiple ID1 folders!"),
         "setup_alert_setup_title":

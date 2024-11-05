@@ -3,8 +3,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:path/path.dart' as p;
-import 'package:io/io.dart' as io_utils;
 import 'package:url_launcher/url_launcher.dart';
 
 import 'generated/l10n.dart';
@@ -186,12 +184,46 @@ class _InstallerState extends State<Installer> {
     if (id1HaxFolder == null) {
       return;
     }
-    id1HaxExtdataFolder = (await findFileIgnoreCase(id1HaxFolder, "extdata")) as Directory?;
-    if (id1HaxExtdataFolder == null) {
-      logger.e("Inject: hax id1 extdata folder is missing");
+    if (await _checkIfDummyDbs()) {
+      logger.i("Check: hax id1 dbs is missing/dummy");
       //showSnackbar(_s().inject_missing_hax_extdata);
       setState(() {
-        _stage = Stage.broken;
+        _stage = Stage.postSetup;
+      });
+      return;
+    }
+    id1HaxExtdataFolder = (await findFileIgnoreCase(id1HaxFolder, "extdata")) as Directory?;
+    if (id1HaxExtdataFolder == null) {
+      logger.i("Check: hax id1 extdata folder is missing");
+      await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_missing);
+      setState(() {
+        _stage = Stage.postSetup;
+      });
+      return;
+    }
+    final extdata0 = await id1HaxExtdataFolder?.directory("00000000");
+    if (extdata0 == null) {
+      logger.e("Check: hax id1 extdata/00000000 folder is missing!");
+      await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_missing);
+      setState(() {
+        _stage = Stage.postSetup;
+      });
+      return;
+    }
+    final extdataPair = await ExtDataIdPair.findDirectory(extdata0);
+    if (extdataPair == null) {
+      final partialExtdataPair = await ExtDataIdPair.findDirectory(extdata0, partialMatch: true);
+      if (partialExtdataPair == null) {
+        logger.i("Check: No home menu extdata folder!");
+        await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_home_menu);
+      } else if (partialExtdataPair.miiMaker == null) {
+        logger.i("Check: No mii maker extdata folder!");
+        await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_mii_maker);
+      } else {
+        // only mii maker - WTF?
+      }
+      setState(() {
+        _stage = Stage.postSetup;
       });
       return;
     }
@@ -347,8 +379,9 @@ class _InstallerState extends State<Installer> {
     if (context.mounted) {
       Navigator.of(context).pop();
     }
-    //_checkInjectState();
-    _checkState();
+    setState(() {
+      _stage = Stage.postSetup;
+    });
   }
 
   Future<void> _doActualSetup() async {
@@ -370,10 +403,6 @@ class _InstallerState extends State<Installer> {
 
     await _doSetupSDRoot();
 
-    if (await _getId1DataFolders() == null) {
-      return;
-    }
-
     try {
       id1Folder = await id1Folder?.renameAddSuffix(kOldId1Suffix);
     } on FileSystemException {
@@ -385,133 +414,46 @@ class _InstallerState extends State<Installer> {
       logger.e("Setup: failed to create hax id1");
       return;
     }
-    final folders = await _getId1DataFolders();
-    if (folders == null) {
-      logger.e("Setup: id1 folder suddenly become missing?");
-      return;
-    }
-    try {
-      for (final source in folders) {
-        final rPath = p.relative(source.path, from: id1Folder!.path);
-        final newPath = p.join(id1HaxFolder!.path, rPath);
-        switch (source) {
-          case final File f:
-            final newDir = p.dirname(newPath);
-            if (!await FileSystemEntity.isDirectory(newDir)) {
-              await Directory(newDir).create();
-            }
-            f.copy(newPath);
-          case final Directory _:
-            io_utils.copyPath(source.path, newPath);
-        }
-      }
-    } on FileSystemException {
-      logger.e("Setup: fail to copy id1");
-      return;
-    }
+
+    await _createDummyDbs();
+    await _showAlert(null, _s().setup_alert_hax_id1_created_title, "${_s().setup_alert_hax_id1_created}\n\n${_s().setup_alert_dummy_mii_maker_and_db_reset}", _buildAlertVisualAidButtonsFunc);
   }
 
-  Future<List<FileSystemEntity>?> _getId1DataFolders() async {
-    if (id1Folder == null) {
-      logger.e("Setup: no id1 folder");
-      return null;
-    }
-    final dbs = await _checkAndCreateDummyDbs();
-    if (dbs == null) {
-      return null;
-    }
-    final list = <FileSystemEntity>[];
-    dbs.file("title.db", caseInsensitive: true).then((f) {
-      if (f != null) {
-        list.add(f);
-      }
-    });
-    dbs.file("import.db", caseInsensitive: true).then((f) {
-      if (f != null) {
-        list.add(f);
-      }
-    });
-    final extdata0 = await id1Folder?.directory("extdata", caseInsensitive: true).then((f) async => await f?.directory("00000000"));
-    if (extdata0 == null) {
-      logger.e("Setup: No extdata folder!");
-      await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_missing);
-      return null;
-    }
-    final extdataPair = await ExtDataIdPair.findDirectory(extdata0);
-    if (extdataPair == null) {
-      final partialExtdataPair = await ExtDataIdPair.findDirectory(extdata0, partialMatch: true);
-      if (partialExtdataPair == null) {
-        logger.e("Setup: No home menu extdata folder!");
-        await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_home_menu);
-      } else if (partialExtdataPair.miiMaker == null) {
-        logger.e("Setup: No mii maker extdata folder!");
-        await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_mii_maker);
-      } else {
-        // only mii maker - WTF?
-      }
-      return null;
-    }
-    list.add(extdataPair.homeMenu!);
-    list.add(extdataPair.miiMaker!);
-    return list;
-  }
-
-  Future<Directory?> _checkAndCreateDummyDbs() async {
-    final dbs = await id1Folder?.directory("dbs", caseInsensitive: true);
+  Future<bool> _checkIfDummyDbs() async {
+    final dbs = await id1HaxFolder?.directory("dbs", caseInsensitive: true);
     if (dbs == null) {
       logger.i("Setup: dbs doesn't exist");
-      await _askIfCreateDummyDbs();
-      return null;
+      await _createDummyDbs();
+      return true;
     }
     final title = await dbs.file("title.db", caseInsensitive: true);
     final import = await dbs.file("import.db", caseInsensitive: true);
     if (title == null || import == null) {
       logger.i("Setup: db file doesn't exist");
-      await _askIfCreateDummyDbs();
-      return null;
+      await _createDummyDbs();
+      return true;
     }
     if (await title.length() == 0 || await import.length() == 0) {
       logger.e("Setup: db files are dummy!");
       await _showAlert(null, _s().setup_alert_dummy_db_title, "${_s().setup_alert_dummy_db_found}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
-      return null;
+      return true;
     }
     if (await title.length() != 0x31e400 || await import.length() != 0x31e400) {
       logger.e("Setup: db files are likely corrupted!");
       await _showAlert(null, _s().setup_alert_dummy_db_title, "${_s().setup_alert_dummy_db_corrupted}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
-      return null;
+      return true;
     }
-    return dbs;
-  }
-
-  Future<void> _askIfCreateDummyDbs() async {
-    final title = _s().setup_alert_dummy_db_title;
-    await _showAlert(null, title, _s().setup_alert_dummy_db_prompt, (context) {
-      return <Widget>[
-        _buildAlertButton(context, _s().setup_alert_dummy_db_prompt_no, () {
-          Navigator.of(context).pop();
-        }),
-        _buildAlertButton(context, _s().setup_alert_dummy_db_prompt_yes, () async {
-          Navigator.of(context).pop();
-          if (await _createDummyDbs()) {
-            logger.i("Setup: Dummy DB Created");
-            await _showAlert(null, title, "${_s().setup_alert_dummy_db_created}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
-          } else {
-            logger.e("Setup: Fail to create Dummy DB");
-            await _showAlert(null, title, _s().setup_alert_dummy_db_failed);
-          }
-        }),
-      ];
-    });
+    return false;
   }
 
   Future<bool> _createDummyDbs() async {
-    if (id1Folder == null) {
+    if (id1HaxFolder == null) {
       return false;
     }
     Directory? dbs;
     try {
-      dbs = await id1Folder?.directory("dbs", caseInsensitive: true) ??
-          await id1Folder?.directory("dbs", skipCheck: true).then((d) => d?.create());
+      dbs = await id1HaxFolder?.directory("dbs", caseInsensitive: true) ??
+          await id1HaxFolder?.directory("dbs", skipCheck: true).then((d) => d?.create());
     } on FileSystemException catch (e) {
       logger.e("Setup: can't create dbs folder!\n$e");
       return false;
@@ -571,7 +513,7 @@ class _InstallerState extends State<Installer> {
     return Container(
       margin: const EdgeInsets.fromLTRB(margin, 0, margin, margin),
       child: FilledButton(
-        onPressed: stages.contains(_stage) ? action : null,
+        onPressed: (stages.isEmpty || stages.contains(_stage)) ? action : null,
         style: FilledButton.styleFrom(
           minimumSize: const Size.fromHeight(64),
         ),
@@ -598,16 +540,25 @@ class _InstallerState extends State<Installer> {
         children: <Widget>[
           _genButton(
               context,
-              [Stage.pick, Stage.setup, Stage.inject, Stage.trigger],
+              [],
               _pickFolder,
               S.of(context).installer_button_pick_3ds
           ),
-          _genButton(
+          [Stage.postSetup, Stage.inject, Stage.trigger].contains(_stage) ?
+            _genButton(
+              context,
+              [Stage.postSetup, Stage.inject, Stage.trigger],
+              _checkState,
+              S.of(context).installer_button_check
+            )
+            :
+            _genButton(
               context,
               [Stage.setup],
               _doSetup,
               S.of(context).installer_button_setup
-          ),
+            )
+          ,
           _genButton(
               context,
               [Stage.inject],
@@ -622,7 +573,7 @@ class _InstallerState extends State<Installer> {
           ),
           _genButton(
               context,
-              [Stage.inject, Stage.trigger, Stage.broken],
+              [Stage.postSetup, Stage.inject, Stage.trigger, Stage.broken],
               _doRemove,
               S.of(context).installer_button_remove
           ),
@@ -675,7 +626,7 @@ class _VariantSelectorState extends State<VariantSelector> {
     return Text(
       text,
       style: const TextStyle(
-        fontSize: 20,
+        fontSize: 16,
         fontWeight: FontWeight.bold,
       ),
     );
@@ -746,7 +697,7 @@ class _VariantSelectorState extends State<VariantSelector> {
                     _genModelText(context, S.of(context).variant_selector_model_old),
                     _genButton(
                       context,
-                      "assets/images/old3dsxl.png",
+                      "assets/images/old3ds.png",
                       Model.oldModel,
                     ),
                     _genButton(

@@ -102,7 +102,8 @@ extension DirectoryUtils on Directory {
   }
   Future<Directory> renameAddSuffix(String suffix) {
     return rename("$path$suffix");
-  }}
+  }
+}
 
 extension StreamUtils<T> on Stream {
   Future<bool> asyncAny(Future<bool> Function(T) rule) async {
