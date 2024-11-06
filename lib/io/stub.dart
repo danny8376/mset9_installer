@@ -1,5 +1,6 @@
 Future<Directory?> pickFolder() => throw UnimplementedError('Unsupported');
 bool get isMobile => throw UnimplementedError('Unsupported');
+bool get showPickN3DS => throw UnimplementedError('Unsupported');
 
 class FileSystemUtils {
   static Future<bool> isDirectory(FileSystemEntity e) => throw UnimplementedError('Unsupported');

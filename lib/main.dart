@@ -543,7 +543,7 @@ class _InstallerState extends State<Installer> {
               context,
               [],
               _pickFolder,
-              S.of(context).installer_button_pick_3ds
+              showPickN3DS ? S.of(context).installer_button_pick_3ds : S.of(context).installer_button_pick_sd
           ),
           [Stage.postSetup, Stage.inject, Stage.trigger].contains(_stage) ?
             _genButton(

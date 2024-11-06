@@ -8,6 +8,7 @@ import '../string_utils.dart';
 export 'dart:io';
 
 bool get isMobile => Platform.isAndroid || Platform.isIOS;
+bool get showPickN3DS => Platform.isAndroid;
 
 Future<Directory?> pickFolder() async {
   if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
