@@ -33,6 +33,7 @@ jobs:
 
       - name: Install
         run: |
+          mv web/index_3.22.3.html web/index.html
           flutter config --enable-web
           flutter pub get
 
