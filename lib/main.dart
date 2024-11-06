@@ -117,6 +117,7 @@ class _InstallerState extends State<Installer> {
     }
     return showDialog<void>(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return Center(
           child: Container(
@@ -541,7 +542,7 @@ class _InstallerState extends State<Installer> {
         children: <Widget>[
           _genButton(
               context,
-              [],
+              [Stage.pick, Stage.setup, Stage.postSetup, Stage.inject, Stage.trigger, Stage.broken],
               _pickFolder,
               showPickN3DS ? S.of(context).installer_button_pick_3ds : S.of(context).installer_button_pick_sd
           ),
