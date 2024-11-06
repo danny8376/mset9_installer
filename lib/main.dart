@@ -79,7 +79,7 @@ class _InstallerState extends State<Installer> {
       _buildAlertButton(context, _s().setup_alert_dummy_db_visual_aid, () {
         launchUrl(Uri.parse(_s().setup_alert_dummy_db_visual_aid_url));
       }),
-      const Spacer(),
+      //const Spacer(),
       _buildAlertButton(context, _s().alert_neutral, () {
         Navigator.of(context).pop();
       }),
