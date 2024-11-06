@@ -7,6 +7,7 @@ import 'package:path/path.dart' as p;
 import '../string_utils.dart';
 
 bool get isMobile => false;
+bool get isSupported => FileSystemAccess.supported;
 bool get showPickN3DS => false;
 
     Future<Directory?> pickFolder() async {

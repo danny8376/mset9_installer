@@ -23,6 +23,10 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "alert_neutral": MessageLookupByLibrary.simpleMessage("OK"),
+        "alert_not_supported": MessageLookupByLibrary.simpleMessage(
+            "Your browser is not supported, please use different browser or different version of installer."),
+        "alert_not_supported_title":
+            MessageLookupByLibrary.simpleMessage("Not Supported"),
         "inject_missing_hax_extdata": MessageLookupByLibrary.simpleMessage(
             "Broken mset9 setup, extdata is missing"),
         "installer_button_check":

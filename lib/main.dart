@@ -86,20 +86,23 @@ class _InstallerState extends State<Installer> {
     ];
   }
 
-  Future<void> _showAlert(BuildContext? context, String title, String message, [List<Widget> Function(BuildContext)? buttonBuilder]) {
+  Future<void> _showAlert(BuildContext? context, String title, String message, [List<Widget> Function(BuildContext)? buttonBuilder, dismissible = true]) {
     context ??= this.context;
     if (!context.mounted) {
       throw Exception("S called outside of context!");
     }
-    final actions = buttonBuilder?.call(context) ?? <Widget>[
-      _buildAlertButton(context, S.of(context).alert_neutral, () {
-        if (context?.mounted == true) {
-          Navigator.of(context!).pop();
-        }
-      }),
-    ];
+    final actions = !dismissible ? <Widget>[] : (
+      buttonBuilder?.call(context) ?? <Widget>[
+        _buildAlertButton(context, S.of(context).alert_neutral, () {
+          if (context?.mounted == true) {
+            Navigator.of(context!).pop();
+          }
+        }),
+      ]
+    );
     return showDialog<void>(
       context: context,
+      barrierDismissible: dismissible,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(title),
@@ -528,6 +531,18 @@ class _InstallerState extends State<Installer> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (!isSupported) {
+      WidgetsBinding.instance.addPostFrameCallback((timestamp) {
+        _showAlert(
+            null, _s().alert_not_supported_title, _s().alert_not_supported,
+            null, false);
+      });
+    }
   }
 
   @override

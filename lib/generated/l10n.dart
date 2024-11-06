@@ -70,6 +70,26 @@ class S {
     );
   }
 
+  /// `Not Supported`
+  String get alert_not_supported_title {
+    return Intl.message(
+      'Not Supported',
+      name: 'alert_not_supported_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your browser is not supported, please use different browser or different version of installer.`
+  String get alert_not_supported {
+    return Intl.message(
+      'Your browser is not supported, please use different browser or different version of installer.',
+      name: 'alert_not_supported',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Select Model & Version`
   String get title_variant_selector {
     return Intl.message(

@@ -7,6 +7,14 @@
   "@title_installer": {
     "description": ""
   },
+  "alert_not_supported_title": "Not Supported",
+  "@alert_not_supported_title": {
+    "description": ""
+  },
+  "alert_not_supported": "Your browser is not supported, please use different browser or different version of installer.",
+  "@alert_not_supported": {
+    "description": ""
+  },
   "title_variant_selector": "Select Model & Version",
   "@title_variant_selector": {
     "description": ""
