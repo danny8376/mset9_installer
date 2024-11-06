@@ -53,6 +53,13 @@ dependencies:
   web: ^0.3.0
   file_system_access_api: ^2.0.0
 
+#dependency_overrides:
+#  # hack... for making web compatible with flutter 3.22.3
+#  # do this break anything? we'll know eventually...
+#  # well, break 3.16.9 dev, so apply in github action only...
+#  # have feel that we'll have much more fun someday...
+#  web: ^0.4.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

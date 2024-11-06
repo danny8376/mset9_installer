@@ -23,6 +23,14 @@ jobs:
           channel: stable
           flutter-version: 3.22.3
 
+      - name: Dependency Override
+        uses: fjogeleit/yaml-update-action@main
+        with:
+          valueFile: 'pubspec.yaml'
+          propertyPath: 'dependency_overrides.web'
+          value: ^0.4.0
+          commitChange: false
+
       - name: Install
         run: |
           flutter config --enable-web
