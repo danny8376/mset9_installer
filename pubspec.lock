@@ -146,6 +146,14 @@ packages:
       url: "https://github.com/danny8376/flutter_file_picker"
     source: git
     version: "7.1.0"
+  file_system_access_api:
+    dependency: "direct main"
+    description:
+      name: file_system_access_api
+      sha256: c961c5020ab4e5f05200dbdd9809c5256c3dc4a1fe5746ca7d8cf8e8cc11c47d
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -222,6 +230,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  js:
+    dependency: transitive
+    description:
+      name: js
+      sha256: c1b2e9b5ea78c45e1a0788d29606ba27dc5f71f019f32ca5140f61ef071838cf
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.1"
   lints:
     dependency: transitive
     description:
@@ -444,7 +460,7 @@ packages:
     source: hosted
     version: "1.1.0"
   web:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: web
       sha256: afe077240a270dcfd2aafe77602b4113645af95d0ad31128cc02bce5ac5d5152

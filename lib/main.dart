@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -9,7 +8,8 @@ import 'generated/l10n.dart';
 import 'console.dart';
 import 'consts.dart';
 import 'hax.dart';
-import 'io_wrapper.dart';
+import 'string_utils.dart';
+import 'io.dart';
 import 'utils.dart';
 
 void main() {
@@ -263,7 +263,7 @@ class _InstallerState extends State<Installer> {
 
   Future<bool> _pickN3DSFromSDRoot(Directory folder) async {
     final sub = await findFileIgnoreCase(folder, kN3dsFolder);
-    if (sub != null && await FileSystemEntity.isDirectory(sub.path)) {
+    if (sub != null && await FileSystemUtils.isDirectory(sub)) {
       sdRoot = folder;
       n3dsFolder = sub as Directory;
       await _pickID0FromN3DS();
@@ -278,7 +278,7 @@ class _InstallerState extends State<Installer> {
       folder,
       rule: (sub) => _checkIfId0(sub),
       success: (sub) {
-        logger.d("FolderPicking: ID0 Folder Auto Picked - ${id0Folder?.path}");
+        //logger.d("FolderPicking: ID0 Folder Auto Picked - ${id0Folder?.path}");
         id0Folder = sub;
       },
       fail: (_) {
@@ -292,7 +292,7 @@ class _InstallerState extends State<Installer> {
     if (!kId0Regex.hasMatch(folder.name)) {
       return false;
     }
-    return await folder.list().asyncAny((sub) => FileSystemEntity.isDirectory(sub.path));
+    return await folder.list().asyncAny((sub) => FileSystemUtils.isDirectory(sub));
   }
 
   Future<bool> _checkIfId1(Directory folder) async {
@@ -334,7 +334,7 @@ class _InstallerState extends State<Installer> {
     Directory? ret;
     await findJustOneFolderAsync(
       folder,
-      rule: (sub) async => await _checkIfId1(sub) && sub.path.endsWith(kOldId1Suffix) == backupIdOrNot,
+      rule: (sub) async => await _checkIfId1(sub) && sub.name.endsWith(kOldId1Suffix) == backupIdOrNot,
       success: (sub) => ret = sub,
     );
     return ret;
@@ -405,11 +405,12 @@ class _InstallerState extends State<Installer> {
 
     try {
       id1Folder = await id1Folder?.renameAddSuffix(kOldId1Suffix);
-    } on FileSystemException {
+    } on FileSystemException catch (e) {
       logger.e("Setup: failed to rename id1");
+      logger.d("Setup: Error: ${e.message} @ ${e.path}");
       return;
     }
-    id1HaxFolder = await (await id0Folder?.directory(hax.id1, skipCheck: true))?.create();
+    id1HaxFolder = await id0Folder?.directory(hax.id1, create: true);
     if (id1HaxFolder == null) {
       logger.e("Setup: failed to create hax id1");
       return;
@@ -453,21 +454,21 @@ class _InstallerState extends State<Installer> {
     Directory? dbs;
     try {
       dbs = await id1HaxFolder?.directory("dbs", caseInsensitive: true) ??
-          await id1HaxFolder?.directory("dbs", skipCheck: true).then((d) => d?.create());
+          await id1HaxFolder?.directory("dbs", create: true);
     } on FileSystemException catch (e) {
       logger.e("Setup: can't create dbs folder!\n$e");
       return false;
     }
     try {
       await dbs?.file("title.db", caseInsensitive: true) ??
-        await dbs?.file("title.db", skipCheck: true).then((f) => f?.writeAsBytes([], flush: true));
+        await dbs?.file("title.db", create: true).then((f) => f?.writeAsBytes([], flush: true));
     } on FileSystemException catch (e) {
       logger.e("Setup: can't create title.db!\n$e");
       return false;
     }
     try {
       await dbs?.file("import.db", caseInsensitive: true) ??
-        await dbs?.file("import.db", skipCheck: true).then((f) => f?.writeAsBytes([], flush: true));
+        await dbs?.file("import.db", create: true).then((f) => f?.writeAsBytes([], flush: true));
     } on FileSystemException catch (e) {
       logger.e("Setup: can't create title.db!\n$e");
       return false;
@@ -481,7 +482,7 @@ class _InstallerState extends State<Installer> {
   }
 
   void _doInjectTrigger() async {
-    await (await id1HaxExtdataFolder?.file(kTriggerFile, skipCheck: true))?.writeAsBytes([], flush: true);
+    await (await id1HaxExtdataFolder?.file(kTriggerFile, create: true))?.writeAsBytes([], flush: true);
     _checkInjectState();
   }
 
@@ -498,7 +499,7 @@ class _InstallerState extends State<Installer> {
     _showLoading(null, _s().remove_loading);
     await (await _findHaxFolder())?.delete(recursive: true);
     final backupId1 = await _findBackupId1();
-    await backupId1?.rename(backupId1.path.replaceAll(kOldId1Suffix, ''));
+    await backupId1?.renameInplace(backupId1.name.replaceAll(kOldId1Suffix, ''));
     if (context.mounted) {
       Navigator.of(context).pop();
     }
@@ -621,7 +622,7 @@ class _VariantSelectorState extends State<VariantSelector> {
       (MediaQuery.of(context).size.height - 172) / 3,
     ].reduce(min).floorToDouble();
   }
-  
+
   Widget _genModelText(BuildContext context, String text) {
     return Text(
       text,
@@ -631,7 +632,7 @@ class _VariantSelectorState extends State<VariantSelector> {
       ),
     );
   }
-  
+
   Widget _genButton(BuildContext context, String assetName, Model model) {
     final size = _maxImageButtonSize(context);
     return SizedBox(
@@ -662,7 +663,7 @@ class _VariantSelectorState extends State<VariantSelector> {
         _checkReturn(context);
       }),
       itemHeight: kMinInteractiveDimension,
-      menuMaxHeight: Platform.isAndroid ? 480 : null,
+      menuMaxHeight: isMobile ? 480 : null,
       items: list.map<DropdownMenuItem<int>>((int value) {
         return DropdownMenuItem<int>(
           value: value,

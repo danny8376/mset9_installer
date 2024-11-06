@@ -1,8 +1,5 @@
-import 'dart:io';
-
-import 'package:mset9_installer/utils.dart';
-
 import 'console.dart';
+import 'io.dart';
 
 class ExtDataPair {
   ExtDataPair(this.homeMenu, this.miiMaker, this.region);
@@ -65,6 +62,32 @@ class Hax {
         model: Model.oldModel,
         minVersion: Version(11, 8),
         maxVersion: Version(11, 17),
+        id1: "\uC001\uE28F\uFF1C\uE12F\u9911\u480B\u4685\u6569\uA107\u2201\u4B04\u4798\u4668\u4659\uAAC0\u1C17\u4643\u4C02\u47A0\u47B8\uA071\u0805\uCE99\u0804\u0073\u0064\u006D\u0063\u9000\u080A\u0062\u0039"
+    ),
+    Hax(
+        model: Model.newModel,
+        minVersion: Version(11, 8),
+        maxVersion: Version(11, 17),
+        id1: "\uC001\uE28F\uFF1C\uE12F\u9911\u480B\u4685\u6569\uA107\u2201\u4B04\u4798\u4668\u4659\uAAC0\u1C17\u4643\u4C02\u47A0\u47B8\uA071\u0805\uCE5D\u0804\u0073\u0064\u006D\u0063\u9000\u080A\u0062\u0039"
+    ),
+    Hax(
+        model: Model.oldModel,
+        minVersion: Version(11, 4),
+        maxVersion: Version(11, 7),
+        id1: "\uC001\uE28F\uFF1C\uE12F\u9911\u480B\u4685\u6569\uA107\u2201\u4B04\u4798\u4668\u4659\uAAC0\u1C17\u4643\u4C02\u47A0\u47B8\u9E49\u0805\uCC99\u0804\u0073\u0064\u006D\u0063\u9000\u080A\u0062\u0039"
+    ),
+    Hax(
+        model: Model.newModel,
+        minVersion: Version(11, 4),
+        maxVersion: Version(11, 7),
+        id1: "\uC001\uE28F\uFF1C\uE12F\u9911\u480B\u4685\u6569\uA107\u2201\u4B04\u4798\u4668\u4659\uAAC0\u1C17\u4643\u4C02\u47A0\u47B8\u9E45\u0805\uCC81\u0804\u0073\u0064\u006D\u0063\u9000\u080A\u0062\u0039"
+    ),
+  ];
+  static final legacyList = [
+    Hax(
+        model: Model.oldModel,
+        minVersion: Version(11, 8),
+        maxVersion: Version(11, 17),
         id1: "\uFFFF\uFAFF\u9911\u4807\u4685\u6569\uA108\u2201\u4B05\u4798\u4668\u4659\uAAC0\u1C17\u4643\u4C03\u47A0\u47B8\u9000\u080A\uA071\u0805\uCE99\u0804\u0073\u0064\u006D\u0063\u9000\u080A\u0062\u0039"
     ),
     Hax(
@@ -96,7 +119,7 @@ class Hax {
   }
   static Hax? findById1(String id1) {
     try {
-      return list.firstWhere((hax) => hax.matchById1(id1));
+      return [...list, ...legacyList].firstWhere((hax) => hax.matchById1(id1));
     } on StateError {
       return null;
     }

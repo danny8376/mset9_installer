@@ -50,6 +50,8 @@ dependencies:
       ref: 7.1.0-desktop-only
   url_launcher: ^6.1.14
   io: ^1.0.4
+  web: ^0.3.0
+  file_system_access_api: ^2.0.0
 
 dev_dependencies:
   flutter_test:
