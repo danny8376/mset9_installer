@@ -141,8 +141,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "7.1.0-desktop-only"
-      resolved-ref: eb838b036d78aa6ccf8ba5662d9971e5911df0bb
+      ref: no_android
+      resolved-ref: "32fe0ad615f6cc2788b8791008a7ff304cff5ff4"
       url: "https://github.com/danny8376/flutter_file_picker"
     source: git
     version: "7.1.0"

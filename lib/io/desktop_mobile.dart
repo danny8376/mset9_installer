@@ -17,7 +17,7 @@ Future<Directory?> pickFolder() {
   return switch (Platform.operatingSystem) {
     "windows" || "macos" || "linux" => pickFolderDesktop(),
     "android" => pickFolderAndroid(),
-    "ios" => (() async => null)(),
+    "ios" => pickFolderDesktop(),
     _ => throw UnimplementedError('Unsupported'),
   };
 }
