@@ -15,13 +15,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-        #2 Setup Java
-      - name: Set Up Java
-        uses: actions/setup-java@v3.12.0
-        with:
-          distribution: 'oracle'
-          java-version: '17'
-
         #3 Setup Flutter
       - name: Set Up Flutter
         uses: subosito/flutter-action@v2
