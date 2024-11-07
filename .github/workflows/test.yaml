@@ -37,10 +37,12 @@ jobs:
       - name: Build IPA
         run: flutter build ipa --no-codesign
 
-      - name: Compress Archives and IPAs
+      - name: Generate Unsigned IPA
         run: |
           cd build
-          tar -czf ios_build.tar.gz ios
+          mkdir Payload
+          mv ios/archive/Runner.xcarchive/Products/Applications/Runner.app Payload
+          zip mset9_installer.ipa Payload
 
         #9 Upload Artifacts
       - name: Upload Artifacts
@@ -48,4 +50,4 @@ jobs:
         with:
           name: Releases
           path: |
-            build/ios_build.tar.gz
+            build/mset9_installer.ipa
