@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 import 'generated/l10n.dart';
 import 'console.dart';
@@ -11,6 +12,10 @@ import 'hax.dart';
 import 'string_utils.dart';
 import 'io.dart';
 import 'utils.dart';
+
+final talker = TalkerFlutter.init();
+
+enum Menu { log }
 
 void main() {
   runApp(const MyApp());
@@ -158,7 +163,7 @@ class _InstallerState extends State<Installer> {
   }
 
   void _checkState() async {
-    logger.d("Common: checking state");
+    talker.debug("Common: checking state");
     if (id0Folder != null) {
       final matching = await _findMatchingHaxId1();
       if (matching != null) {
@@ -184,12 +189,12 @@ class _InstallerState extends State<Installer> {
   }
 
   void _checkInjectState() async {
-    logger.d("Common: checking inject state");
+    talker.debug("Common: checking inject state");
     if (id1HaxFolder == null) {
       return;
     }
     if (await _checkIfDummyDbs()) {
-      logger.i("Check: hax id1 dbs is missing/dummy");
+      talker.info("Check: hax id1 dbs is missing/dummy");
       //showSnackbar(_s().inject_missing_hax_extdata);
       setState(() {
         _stage = Stage.postSetup;
@@ -198,7 +203,7 @@ class _InstallerState extends State<Installer> {
     }
     id1HaxExtdataFolder = (await findFileIgnoreCase(id1HaxFolder, "extdata")) as Directory?;
     if (id1HaxExtdataFolder == null) {
-      logger.i("Check: hax id1 extdata folder is missing");
+      talker.info("Check: hax id1 extdata folder is missing");
       await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_missing);
       setState(() {
         _stage = Stage.postSetup;
@@ -207,7 +212,7 @@ class _InstallerState extends State<Installer> {
     }
     final extdata0 = await id1HaxExtdataFolder?.directory("00000000");
     if (extdata0 == null) {
-      logger.e("Check: hax id1 extdata/00000000 folder is missing!");
+      talker.error("Check: hax id1 extdata/00000000 folder is missing!");
       await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_missing);
       setState(() {
         _stage = Stage.postSetup;
@@ -218,10 +223,10 @@ class _InstallerState extends State<Installer> {
     if (extdataPair == null) {
       final partialExtdataPair = await ExtDataIdPair.findDirectory(extdata0, partialMatch: true);
       if (partialExtdataPair == null) {
-        logger.i("Check: No home menu extdata folder!");
+        talker.info("Check: No home menu extdata folder!");
         await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_home_menu);
       } else if (partialExtdataPair.miiMaker == null) {
-        logger.i("Check: No mii maker extdata folder!");
+        talker.info("Check: No mii maker extdata folder!");
         await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_mii_maker);
       } else {
         // only mii maker - WTF?
@@ -246,19 +251,19 @@ class _InstallerState extends State<Installer> {
     final dir = await pickFolder();
     if (dir != null) {
       if (kN3dsFolder.equalsIgnoreAsciiCase(dir.name)) {
-        logger.d("FolderPicking: Nintendo 3DS Folder Picked");
+        talker.debug("FolderPicking: Nintendo 3DS Folder Picked");
         n3dsFolder = dir;
         await _pickID0FromN3DS();
       } else if (await _checkIfId0(dir)) {
-        logger.d("FolderPicking: ID0 Folder Picked");
+        talker.debug("FolderPicking: ID0 Folder Picked");
         id0Folder = dir;
       } else if (await _checkIfId1(dir)) {
-        logger.e("FolderPicking: ID1 Folder Picked");
+        talker.error("FolderPicking: ID1 Folder Picked");
         //showSnackbar(_s().pick_picked_id1, Snackbar.LENGTH_LONG)
       } else if (await _pickN3DSFromSDRoot(dir)) {
-        logger.d("FolderPicking: SD Root Picked");
+        talker.debug("FolderPicking: SD Root Picked");
       } else {
-        logger.e("FolderPicking: Unknown Folder Picked");
+        talker.error("FolderPicking: Unknown Folder Picked");
         //showSnackbar(_s().pick_picked_unknown, Snackbar.LENGTH_LONG)
       }
       _checkState();
@@ -282,11 +287,11 @@ class _InstallerState extends State<Installer> {
       folder,
       rule: (sub) => _checkIfId0(sub),
       success: (sub) {
-        //logger.d("FolderPicking: ID0 Folder Auto Picked - ${id0Folder?.path}");
+        //talker.debug("FolderPicking: ID0 Folder Auto Picked - ${id0Folder?.path}");
         id0Folder = sub;
       },
       fail: (_) {
-        logger.e("FolderPicking: 0 or more than 1 ID0 found");
+        talker.error("FolderPicking: 0 or more than 1 ID0 found");
         //showSnackbar(_s().pick_id0_not_1)
       },
     );
@@ -324,7 +329,7 @@ class _InstallerState extends State<Installer> {
       success: (sub) => ret = DirectoryHaxPair(sub, hax!),
       fail: (count) {
         if (count > 1) {
-          logger.e("Prepare: Multiple Hax ID1 ???");
+          talker.error("Prepare: Multiple Hax ID1 ???");
           //showSnackbar(_s().pick_multi_hax_id1)
           // WTF???
         }
@@ -389,18 +394,18 @@ class _InstallerState extends State<Installer> {
   }
 
   Future<void> _doActualSetup() async {
-    logger.d("Setup: Setup - ${variant?.model.name} ${variant?.version.major}.${variant?.version.minor}");
+    talker.debug("Setup: Setup - ${variant?.model.name} ${variant?.version.major}.${variant?.version.minor}");
     if (variant == null) {
-      logger.e("Setup: No variant selected");
+      talker.error("Setup: No variant selected");
       return;
     }
     final hax = Hax.find(variant!);
     if (hax == null) {
-      logger.e("Setup: No available hax");
+      talker.error("Setup: No available hax");
       return;
     }
     if (!await _findId1()) {
-      logger.e("Setup: ID1 Issue");
+      talker.error("Setup: ID1 Issue");
       await _showAlert(null, _s().setup_alert_setup_title, _s().setup_alert_no_or_more_id1);
       return;
     }
@@ -410,13 +415,13 @@ class _InstallerState extends State<Installer> {
     try {
       id1Folder = await id1Folder?.renameAddSuffix(kOldId1Suffix);
     } on FileSystemException catch (e) {
-      logger.e("Setup: failed to rename id1");
-      logger.d("Setup: Error: ${e.message} @ ${e.path}");
+      talker.error("Setup: failed to rename id1");
+      talker.debug("Setup: Error: ${e.message} @ ${e.path}");
       return;
     }
     id1HaxFolder = await id0Folder?.directory(hax.id1, create: true);
     if (id1HaxFolder == null) {
-      logger.e("Setup: failed to create hax id1");
+      talker.error("Setup: failed to create hax id1");
       return;
     }
 
@@ -427,24 +432,24 @@ class _InstallerState extends State<Installer> {
   Future<bool> _checkIfDummyDbs() async {
     final dbs = await id1HaxFolder?.directory("dbs", caseInsensitive: true);
     if (dbs == null) {
-      logger.i("Setup: dbs doesn't exist");
+      talker.info("Setup: dbs doesn't exist");
       await _createDummyDbs();
       return true;
     }
     final title = await dbs.file("title.db", caseInsensitive: true);
     final import = await dbs.file("import.db", caseInsensitive: true);
     if (title == null || import == null) {
-      logger.i("Setup: db file doesn't exist");
+      talker.info("Setup: db file doesn't exist");
       await _createDummyDbs();
       return true;
     }
     if (await title.length() == 0 || await import.length() == 0) {
-      logger.e("Setup: db files are dummy!");
+      talker.error("Setup: db files are dummy!");
       await _showAlert(null, _s().setup_alert_dummy_db_title, "${_s().setup_alert_dummy_db_found}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
       return true;
     }
     if (await title.length() != 0x31e400 || await import.length() != 0x31e400) {
-      logger.e("Setup: db files are likely corrupted!");
+      talker.error("Setup: db files are likely corrupted!");
       await _showAlert(null, _s().setup_alert_dummy_db_title, "${_s().setup_alert_dummy_db_corrupted}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
       return true;
     }
@@ -460,21 +465,21 @@ class _InstallerState extends State<Installer> {
       dbs = await id1HaxFolder?.directory("dbs", caseInsensitive: true) ??
           await id1HaxFolder?.directory("dbs", create: true);
     } on FileSystemException catch (e) {
-      logger.e("Setup: can't create dbs folder!\n$e");
+      talker.error("Setup: can't create dbs folder!\n$e");
       return false;
     }
     try {
       await dbs?.file("title.db", caseInsensitive: true) ??
         await dbs?.file("title.db", create: true).then((f) => f?.writeAsBytes([], flush: true));
     } on FileSystemException catch (e) {
-      logger.e("Setup: can't create title.db!\n$e");
+      talker.error("Setup: can't create title.db!\n$e");
       return false;
     }
     try {
       await dbs?.file("import.db", caseInsensitive: true) ??
         await dbs?.file("import.db", create: true).then((f) => f?.writeAsBytes([], flush: true));
     } on FileSystemException catch (e) {
-      logger.e("Setup: can't create title.db!\n$e");
+      talker.error("Setup: can't create title.db!\n$e");
       return false;
     }
     return true;
@@ -496,7 +501,7 @@ class _InstallerState extends State<Installer> {
   }
 
   void _doRemove() async {
-    logger.d("Setup: Remove - ${variant?.model} ${variant?.version.major}.${variant?.version.minor}");
+    talker.debug("Setup: Remove - ${variant?.model} ${variant?.version.major}.${variant?.version.minor}");
     setState(() {
       _stage = Stage.doingWork;
     });
@@ -551,6 +556,31 @@ class _InstallerState extends State<Installer> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(S.of(context).title_installer),
+        actions: <Widget>[
+          PopupMenuButton<Menu>(
+            icon: const Icon(Icons.more_vert),
+            onSelected: (Menu item) {
+              switch (item) {
+                case Menu.log:
+                  Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => TalkerScreen(talker: talker),
+                      )
+                  );
+              }
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
+              //const PopupMenuDivider(),
+              const PopupMenuItem<Menu>(
+                value: Menu.log,
+                child: ListTile(
+                  leading: Icon(Icons.history),
+                  title: Text('Show Log'),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
