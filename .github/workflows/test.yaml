@@ -35,7 +35,7 @@ jobs:
           cd build
           mkdir Payload
           mv ios/archive/Runner.xcarchive/Products/Applications/Runner.app Payload
-          zip mset9_installer.ipa Payload
+          zip -r mset9_installer.ipa Payload
 
         #9 Upload Artifacts
       - name: Upload Artifacts
