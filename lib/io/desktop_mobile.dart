@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart' as p;
+import 'package:talker_flutter/talker_flutter.dart';
 
 import '../string_utils.dart';
 import 'extended_io.dart';
@@ -12,6 +13,8 @@ export 'dart:io';
 bool get isMobile => Platform.isAndroid || Platform.isIOS;
 bool get isSupported => true;
 bool get showPickN3DS => Platform.isAndroid;
+
+final _talker = TalkerFlutter.init();
 
 Future<Directory?> pickFolder() {
   return switch (Platform.operatingSystem) {
@@ -24,6 +27,7 @@ Future<Directory?> pickFolder() {
 
 Future<Directory?> pickFolderDesktop() async {
   final picked = await FilePicker.platform.getDirectoryPath();
+  _talker.info("Raw picked: $picked");
 
   if (picked == null) {
     return null;
