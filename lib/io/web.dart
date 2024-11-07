@@ -10,7 +10,7 @@ bool get isMobile => false;
 bool get isSupported => FileSystemAccess.supported;
 bool get showPickN3DS => false;
 
-    Future<Directory?> pickFolder() async {
+Future<Directory?> pickFolder() async {
   if (!FileSystemAccess.supported) return null;
 
   try {

@@ -8,14 +8,16 @@ class FileSystemUtils {
   static Future<bool> isFile(FileSystemEntity e) => throw UnimplementedError('Unsupported');
 }
 
-class FileSystemEntity {
-  Directory get parent => throw UnimplementedError('Unsupported');
-  String get name => throw UnimplementedError('Unsupported');
+abstract class FileSystemEntity {
   String get path => throw UnimplementedError('Unsupported');
+
+  String get name => throw UnimplementedError('Unsupported');
 
   delete({bool recursive = false}) => throw UnimplementedError('Unsupported');
 }
-class Directory extends FileSystemEntity {
+abstract interface class Directory implements FileSystemEntity {
+  Directory(String path);
+
   Stream<FileSystemEntity> list() => throw UnimplementedError('Unsupported');
 
   Future<File?> file(String? name, {bool create = false, bool caseInsensitive = false}) => throw UnimplementedError('Unsupported');
@@ -25,7 +27,9 @@ class Directory extends FileSystemEntity {
   Future<Directory> renameInplace(String newName) => throw UnimplementedError('Unsupported');
   Future<Directory> renameAddSuffix(String suffix) => throw UnimplementedError('Unsupported');
 }
-class File extends FileSystemEntity {
+abstract interface class File implements FileSystemEntity {
+  File(String path);
+
   Future<int> length() => throw UnimplementedError('Unsupported');
   Future<File> writeAsBytes(List<int> data, {bool flush = false}) => throw UnimplementedError('Unsupported');
 }

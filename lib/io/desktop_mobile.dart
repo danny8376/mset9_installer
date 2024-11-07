@@ -4,6 +4,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart' as p;
 
 import '../string_utils.dart';
+import 'extended_io.dart';
+import 'android.dart';
 
 export 'dart:io';
 
@@ -11,14 +13,13 @@ bool get isMobile => Platform.isAndroid || Platform.isIOS;
 bool get isSupported => true;
 bool get showPickN3DS => Platform.isAndroid;
 
-Future<Directory?> pickFolder() async {
-  if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
-    return await pickFolderDesktop();
-  } else if (Platform.isAndroid || Platform.isIOS) {
-    return null;
-  } else {
-    throw UnimplementedError('Unsupported');
-  }
+Future<Directory?> pickFolder() {
+  return switch (Platform.operatingSystem) {
+    "windows" || "macos" || "linux" => pickFolderDesktop(),
+    "android" => pickFolderAndroid(),
+    "ios" => (() async => null)(),
+    _ => throw UnimplementedError('Unsupported'),
+  };
 }
 
 Future<Directory?> pickFolderDesktop() async {
@@ -33,12 +34,14 @@ Future<Directory?> pickFolderDesktop() async {
 }
 
 class FileSystemUtils {
-  static Future<bool> isDirectory(FileSystemEntity e) => FileSystemEntity.isDirectory(e.path);
-  static Future<bool> isFile(FileSystemEntity e) => FileSystemEntity.isFile(e.path);
+  static Future<bool> isDirectory(FileSystemEntity e) =>
+      e is ExtendedFileSystemEntity ? (e as ExtendedFileSystemEntity).isDirectoryImpl : FileSystemEntity.isDirectory(e.path);
+  static Future<bool> isFile(FileSystemEntity e) =>
+      e is ExtendedFileSystemEntity ? (e as ExtendedFileSystemEntity).isFileImpl : FileSystemEntity.isFile(e.path);
 }
 
 extension FileSystemDesktopMobileExtention on FileSystemEntity {
-  String get name => p.basename(path);
+  String get name => this is ExtendedFileSystemEntity ? (this as ExtendedFileSystemEntity).name : p.basename(path);
 }
 
 extension DirectoryDesktopMobileExtention on Directory {
@@ -57,7 +60,7 @@ extension DirectoryDesktopMobileExtention on Directory {
       return await action(p.join(path, name), null);
     }
   }
-  Future<File?> file(String? name, {bool create = false, bool caseInsensitive = false}) async {
+  Future<File?> _file(String? name, {bool create = false, bool caseInsensitive = false}) async {
     return _childImpl(name, (child, sub) async {
       if (sub != null) {
         return sub is File ? sub : null;
@@ -74,7 +77,7 @@ extension DirectoryDesktopMobileExtention on Directory {
       }
     }, caseInsensitive: caseInsensitive);
   }
-  Future<Directory?> directory(String? name, {bool create = false, bool caseInsensitive = false}) async {
+  Future<Directory?> _directory(String? name, {bool create = false, bool caseInsensitive = false}) async {
     return _childImpl(name, (child, sub) async {
       if (sub != null) {
         return sub is Directory ? sub : null;
@@ -91,7 +94,7 @@ extension DirectoryDesktopMobileExtention on Directory {
       }
     }, caseInsensitive: caseInsensitive);
   }
-  Future<FileSystemEntity?> child(String? name, {bool caseInsensitive = false}) async {
+  Future<FileSystemEntity?> _child(String? name, {bool caseInsensitive = false}) async {
     return _childImpl(name, (child, sub) async {
       if (sub != null) {
         return sub;
@@ -104,6 +107,12 @@ extension DirectoryDesktopMobileExtention on Directory {
       }
     }, caseInsensitive: caseInsensitive);
   }
+  Future<File?> file(String? name, {bool create = false, bool caseInsensitive = false}) =>
+      (this is ExtendedDirectory ? (this as ExtendedDirectory).file : _file)(name, create: create, caseInsensitive: caseInsensitive);
+  Future<Directory?> directory(String? name, {bool create = false, bool caseInsensitive = false}) =>
+      (this is ExtendedDirectory ? (this as ExtendedDirectory).directory : _directory)(name, create: create, caseInsensitive: caseInsensitive);
+  Future<FileSystemEntity?> child(String? name, {bool caseInsensitive = false}) =>
+      (this is ExtendedDirectory ? (this as ExtendedDirectory).child : _child)(name, caseInsensitive: caseInsensitive);
 
   Future<Directory> renameInplace(String newName) {
     final dir = p.dirname(path);
