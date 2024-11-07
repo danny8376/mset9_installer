@@ -29,8 +29,7 @@ Future<Directory?> pickFolderDesktop() async {
     return null;
   }
 
-  final dir = Directory(picked);
-  return dir;
+  return Directory(picked);
 }
 
 class FileSystemUtils {
@@ -115,11 +114,14 @@ extension DirectoryDesktopMobileExtention on Directory {
       (this is ExtendedDirectory ? (this as ExtendedDirectory).child : _child)(name, caseInsensitive: caseInsensitive);
 
   Future<Directory> renameInplace(String newName) {
-    final dir = p.dirname(path);
-    final newPath = p.join(dir, newName);
-    return rename(newPath);
+    if (this is ExtendedDirectory) {
+      return (this as ExtendedDirectory).renameInplace(newName);
+    } else {
+      final dir = p.dirname(path);
+      final newPath = p.join(dir, newName);
+      return rename(newPath);
+    }
   }
-  Future<Directory> renameAddSuffix(String suffix) {
-    return rename("$path$suffix");
-  }
+  Future<Directory> renameAddSuffix(String suffix) =>
+      this is ExtendedDirectory ? (this as ExtendedDirectory).renameAddSuffix(suffix) : rename("$path$suffix");
 }

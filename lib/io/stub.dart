@@ -13,7 +13,7 @@ abstract class FileSystemEntity {
 
   String get name => throw UnimplementedError('Unsupported');
 
-  delete({bool recursive = false}) => throw UnimplementedError('Unsupported');
+  Future<FileSystemEntity> delete({bool recursive = false}) => throw UnimplementedError('Unsupported');
 }
 abstract interface class Directory implements FileSystemEntity {
   Directory(String path);

@@ -318,6 +318,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  saf_stream:
+    dependency: "direct main"
+    description:
+      name: saf_stream
+      sha256: d90bcbf0fe9e99065e3bab5d5711551b1911ed2001ad8cf94258081ed6f6b7b2
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.0"
+  saf_util:
+    dependency: "direct main"
+    description:
+      name: saf_util
+      sha256: "23f2bd8f223835b7dd3a6abf957ca286fa896f759a63397be75b766e9601ba4b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.0"
   sky_engine:
     dependency: transitive
     description: flutter
