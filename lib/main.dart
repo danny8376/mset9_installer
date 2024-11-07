@@ -587,18 +587,6 @@ class _InstallerState extends State<Installer> {
         children: <Widget>[
           _genButton(
               context,
-              [],
-              () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => TalkerScreen(talker: talker),
-                    )
-                );
-              },
-              "Log"
-          ),
-          _genButton(
-              context,
               [Stage.pick, Stage.setup, Stage.postSetup, Stage.inject, Stage.trigger, Stage.broken],
               _pickFolder,
               showPickN3DS ? S.of(context).installer_button_pick_3ds : S.of(context).installer_button_pick_sd
