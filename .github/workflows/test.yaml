@@ -45,12 +45,7 @@ jobs:
           path: |
             build/mset9_installer.ipa
 
-      - name: Run the Action
-        uses: devops-infra/action-commit-push@master
+      - name: Commit & Push
+        uses: GuillaumeFalourd/git-commit-push@v1.3
         with:
-          github_token: "${{ secrets.GITHUB_TOKEN }}"
-          add_timestamp: true
-          commit_prefix: "[AUTO]"
-          commit_message: "Automatic commit"
-          force: false
           target_branch: test2
