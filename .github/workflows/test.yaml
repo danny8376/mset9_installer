@@ -53,4 +53,3 @@ jobs:
         uses: GuillaumeFalourd/git-commit-push@v1.3
         with:
           target_branch: test2
-          access_token: ${{ secrets.TEST_PUSH_TOKEN }}
