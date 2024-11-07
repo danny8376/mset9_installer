@@ -54,6 +54,7 @@ dependencies:
   file_system_access_api: ^2.0.0
   saf_util: ^0.4.0
   saf_stream: ^0.10.0
+  talker_flutter: ^3.6.0
 
 #dependency_overrides:
 #  # hack... for making web compatible with flutter 3.22.3
