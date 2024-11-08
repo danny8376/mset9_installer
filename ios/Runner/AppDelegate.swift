@@ -108,7 +108,7 @@ import Flutter
     }
   }
 
-  func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+  func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
     if resultCache != nil {
       resultCache!("*** User cancelled ***");
       resultCache = nil
