@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:talker_flutter/talker_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'generated/l10n.dart';
 import 'console.dart';
@@ -12,8 +12,7 @@ import 'hax.dart';
 import 'string_utils.dart';
 import 'io.dart';
 import 'utils.dart';
-
-final talker = TalkerFlutter.init();
+import 'talker.dart';
 
 enum Menu { log }
 
