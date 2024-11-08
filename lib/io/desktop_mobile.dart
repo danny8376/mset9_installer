@@ -38,9 +38,9 @@ Future<Directory?> pickFolderDesktop() async {
 }
 
 Future<Directory?> pickFolderIos() async {
-  talker.info("Start Test Picking");
-  final testRes = await _platform.invokeMethod<String>('test');
-  talker.info("Test: $testRes");
+  //talker.info("Start Test Picking");
+  //final testRes = await _platform.invokeMethod<String>('test');
+  //talker.info("Test: $testRes");
 
   talker.info("Start Picking");
   final picked = await FilePicker.platform.getDirectoryPath();
