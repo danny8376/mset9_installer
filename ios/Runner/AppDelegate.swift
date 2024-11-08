@@ -3,7 +3,7 @@ import Flutter
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
-  var resultCache = nil
+  var resultCache: FlutterResult? = nil
 
   override func application(
     _ application: UIApplication,
@@ -27,7 +27,7 @@ import Flutter
           resultCache = result
           let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.folder])
           documentPicker.delegate = self
-          present(documentPicker, animated: true, completion: nil)
+          rootViewController.present(documentPicker, animated: true, completion: nil)
         default:
           result(FlutterMethodNotImplemented)
       }
