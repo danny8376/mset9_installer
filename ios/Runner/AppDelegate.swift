@@ -2,7 +2,7 @@ import UIKit
 import Flutter
 
 @UIApplicationMain
-@objc class AppDelegate: FlutterAppDelegate {
+@objc class AppDelegate: FlutterAppDelegate, UIDocumentPickerDelegate {
   var resultCache: FlutterResult? = nil
 
   override func application(
@@ -83,6 +83,13 @@ import Flutter
     }
     if resultCache != nil {
       resultCache!(res)
+      resultCache = nil
+    }
+  }
+
+  func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+    if resultCache != nil {
+      resultCache!("*** User cancelled ***");
       resultCache = nil
     }
   }
