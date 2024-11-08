@@ -12,7 +12,6 @@ import Flutter
     let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
     let ioChannel = FlutterMethodChannel(name: "moe.saru.homebrew.console3ds.mset9_installer/io",
                                          binaryMessenger: controller.binaryMessenger)
-    let delegate: Self.Type = Self
     ioChannel.setMethodCallHandler({
       [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
       // This method is invoked on the UI thread.
