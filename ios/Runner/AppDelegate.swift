@@ -16,7 +16,7 @@ import Flutter
     ioChannel.setMethodCallHandler({
       [weak self] (call: FlutterMethodCall, result: FlutterResult) -> Void in
       // This method is invoked on the UI thread.
-      if resultCache {
+      if resultCache != nil {
         resultCache(FlutterError(code: "multiple_request",
                                  message: "Cancelled by another request",
                                  details: nil))
@@ -27,7 +27,7 @@ import Flutter
           resultCache = result
           let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.folder])
           documentPicker.delegate = self
-          rootViewController.present(documentPicker, animated: true, completion: nil)
+          window.rootViewController.present(documentPicker, animated: true, completion: nil)
         default:
           result(FlutterMethodNotImplemented)
       }
@@ -41,8 +41,10 @@ import Flutter
     // Start accessing a security-scoped resource.
     guard url.startAccessingSecurityScopedResource() else {
         // Handle the failure here.
-        resultCache("*** permission revoked ***")
-        resultCache = nil
+        if resultCache != nil {
+          resultCache("*** permission revoked ***")
+          resultCache = nil
+        }
         return
     }
 
@@ -58,8 +60,10 @@ import Flutter
         // Get an enumerator for the directory's content.
         guard let fileList =
             FileManager.default.enumerator(at: url, includingPropertiesForKeys: keys) else {
-            resultCache("*** Unable to access the contents of \(url.path) ***")
-            resultCache = nil
+            if resultCache != nil {
+              resultCache("*** Unable to access the contents of \(url.path) ***")
+              resultCache = nil
+            }
             return
         }
 
@@ -77,7 +81,9 @@ import Flutter
             file.stopAccessingSecurityScopedResource()
         }
     }
-    resultCache(res)
-    resultCache = nil
+    if resultCache != nil {
+      resultCache(res)
+      resultCache = nil
+    }
   }
 }
