@@ -15,21 +15,25 @@ import Flutter
     ioChannel.setMethodCallHandler({
       [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
       // This method is invoked on the UI thread.
-      if resultCache != nil {
-        resultCache!(FlutterError(code: "multiple_request",
+      if self.resultCache != nil {
+        self.resultCache!(FlutterError(code: "multiple_request",
                                  message: "Cancelled by another request",
                                  details: nil))
-        resultCache = nil;
+        self.resultCache = nil;
       }
       switch call.method {
         case "test":
-          if window.rootViewController == nil {
+          guard #available(iOS 14.0, *) else {
+            result("! ios version not supported")
+            return
+          }
+          guard window.rootViewController != nil {
             result("! no rootViewController")
             return
           }
-          resultCache = result
+          self.resultCache = result
           let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.folder])
-          documentPicker.delegate = self
+          documentPicker.delegate = self.
           window.rootViewController!.present(documentPicker, animated: true, completion: nil)
         default:
           result(FlutterMethodNotImplemented)
