@@ -9,7 +9,6 @@ import Flutter
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-
     let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
     let ioChannel = FlutterMethodChannel(name: "moe.saru.homebrew.console3ds.mset9_installer/io",
                                               binaryMessenger: controller.binaryMessenger)
@@ -24,10 +23,14 @@ import Flutter
       }
       switch call.method {
         case "test":
+          if window.rootViewController == nil {
+            result("! no rootViewController")
+            return
+          }
           resultCache = result
           let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.folder])
           documentPicker.delegate = self
-          window.rootViewController.present(documentPicker, animated: true, completion: nil)
+          window.rootViewController!.present(documentPicker, animated: true, completion: nil)
         default:
           result(FlutterMethodNotImplemented)
       }
