@@ -14,7 +14,7 @@ import Flutter
     let ioChannel = FlutterMethodChannel(name: "moe.saru.homebrew.console3ds.mset9_installer/io",
                                               binaryMessenger: controller.binaryMessenger)
     ioChannel.setMethodCallHandler({
-      [weak self] (call: FlutterMethodCall, result: FlutterResult) -> Void in
+      [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
       // This method is invoked on the UI thread.
       if resultCache != nil {
         resultCache!(FlutterError(code: "multiple_request",
