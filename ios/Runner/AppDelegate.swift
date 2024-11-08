@@ -11,15 +11,16 @@ import Flutter
   ) -> Bool {
     let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
     let ioChannel = FlutterMethodChannel(name: "moe.saru.homebrew.console3ds.mset9_installer/io",
-                                              binaryMessenger: controller.binaryMessenger)
+                                         binaryMessenger: controller.binaryMessenger)
+    let delegate: Self.Type = Self
     ioChannel.setMethodCallHandler({
       [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
       // This method is invoked on the UI thread.
-      if self.resultCache != nil {
-        self.resultCache!(FlutterError(code: "multiple_request",
-                                 message: "Cancelled by another request",
-                                 details: nil))
-        self.resultCache = nil;
+      if self?.resultCache != nil {
+        self?.resultCache!(FlutterError(code: "multiple_request",
+                                       message: "Cancelled by another request",
+                                       details: nil))
+        self?.resultCache = nil;
       }
       switch call.method {
         case "test":
@@ -27,13 +28,17 @@ import Flutter
             result("! ios version not supported")
             return
           }
-          guard window.rootViewController != nil {
+          guard let self = self else {
+            result("! self gone")
+            return
+          }
+          guard window.rootViewController != nil else {
             result("! no rootViewController")
             return
           }
           self.resultCache = result
           let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.folder])
-          documentPicker.delegate = self.
+          documentPicker.delegate = self
           window.rootViewController!.present(documentPicker, animated: true, completion: nil)
         default:
           result(FlutterMethodNotImplemented)
