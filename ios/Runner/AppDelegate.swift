@@ -17,7 +17,7 @@ import Flutter
       [weak self] (call: FlutterMethodCall, result: FlutterResult) -> Void in
       // This method is invoked on the UI thread.
       if resultCache != nil {
-        resultCache(FlutterError(code: "multiple_request",
+        resultCache!(FlutterError(code: "multiple_request",
                                  message: "Cancelled by another request",
                                  details: nil))
         resultCache = nil;
@@ -42,7 +42,7 @@ import Flutter
     guard url.startAccessingSecurityScopedResource() else {
         // Handle the failure here.
         if resultCache != nil {
-          resultCache("*** permission revoked ***")
+          resultCache!("*** permission revoked ***")
           resultCache = nil
         }
         return
@@ -61,7 +61,7 @@ import Flutter
         guard let fileList =
             FileManager.default.enumerator(at: url, includingPropertiesForKeys: keys) else {
             if resultCache != nil {
-              resultCache("*** Unable to access the contents of \(url.path) ***")
+              resultCache!("*** Unable to access the contents of \(url.path) ***")
               resultCache = nil
             }
             return
@@ -82,7 +82,7 @@ import Flutter
         }
     }
     if resultCache != nil {
-      resultCache(res)
+      resultCache!(res)
       resultCache = nil
     }
   }
