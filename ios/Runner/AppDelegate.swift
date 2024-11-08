@@ -49,7 +49,7 @@ import Flutter
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
-  func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt urls: URL) {
+  func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt urls: [URL]) {
     guard urls.count != 0 else {
       if resultCache != nil {
         resultCache!("*** urls is empty ***")
