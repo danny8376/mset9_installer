@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 
 import '../string_utils.dart';
@@ -14,16 +15,32 @@ bool get isMobile => Platform.isAndroid || Platform.isIOS;
 bool get isSupported => true;
 bool get showPickN3DS => Platform.isAndroid;
 
+const _platform =
+    MethodChannel('moe.saru.homebrew.console3ds.mset9_installer/io');
+
 Future<Directory?> pickFolder() {
   return switch (Platform.operatingSystem) {
     "windows" || "macos" || "linux" => pickFolderDesktop(),
     "android" => pickFolderAndroid(),
-    "ios" => pickFolderDesktop(),
+    "ios" => pickFolderIos(),
     _ => throw UnimplementedError('Unsupported'),
   };
 }
 
 Future<Directory?> pickFolderDesktop() async {
+  final picked = await FilePicker.platform.getDirectoryPath();
+
+  if (picked == null) {
+    return null;
+  }
+
+  return Directory(picked);
+}
+
+Future<Directory?> pickFolderIos() async {
+  final testRes = await _platform.invokeMethod<String>('test');
+  talker.info("Test: $testRes");
+
   talker.info("Start Picking");
   final picked = await FilePicker.platform.getDirectoryPath();
   talker.info("Raw picked: $picked");
@@ -37,17 +54,25 @@ Future<Directory?> pickFolderDesktop() async {
 
 class FileSystemUtils {
   static Future<bool> isDirectory(FileSystemEntity e) =>
-      e is ExtendedFileSystemEntity ? (e as ExtendedFileSystemEntity).isDirectoryImpl : FileSystemEntity.isDirectory(e.path);
+      e is ExtendedFileSystemEntity
+          ? (e as ExtendedFileSystemEntity).isDirectoryImpl
+          : FileSystemEntity.isDirectory(e.path);
   static Future<bool> isFile(FileSystemEntity e) =>
-      e is ExtendedFileSystemEntity ? (e as ExtendedFileSystemEntity).isFileImpl : FileSystemEntity.isFile(e.path);
+      e is ExtendedFileSystemEntity
+          ? (e as ExtendedFileSystemEntity).isFileImpl
+          : FileSystemEntity.isFile(e.path);
 }
 
 extension FileSystemDesktopMobileExtention on FileSystemEntity {
-  String get name => this is ExtendedFileSystemEntity ? (this as ExtendedFileSystemEntity).name : p.basename(path);
+  String get name => this is ExtendedFileSystemEntity
+      ? (this as ExtendedFileSystemEntity).name
+      : p.basename(path);
 }
 
 extension DirectoryDesktopMobileExtention on Directory {
-  Future<ReturnType?> _childImpl<ReturnType>(String? name, Future<ReturnType?> Function(String?, FileSystemEntity?) action, {bool caseInsensitive = false}) async {
+  Future<ReturnType?> _childImpl<ReturnType>(String? name,
+      Future<ReturnType?> Function(String?, FileSystemEntity?) action,
+      {bool caseInsensitive = false}) async {
     if (name == null) {
       return null;
     }
@@ -62,7 +87,9 @@ extension DirectoryDesktopMobileExtention on Directory {
       return await action(p.join(path, name), null);
     }
   }
-  Future<File?> _file(String? name, {bool create = false, bool caseInsensitive = false}) async {
+
+  Future<File?> _file(String? name,
+      {bool create = false, bool caseInsensitive = false}) async {
     return _childImpl(name, (child, sub) async {
       if (sub != null) {
         return sub is File ? sub : null;
@@ -79,7 +106,9 @@ extension DirectoryDesktopMobileExtention on Directory {
       }
     }, caseInsensitive: caseInsensitive);
   }
-  Future<Directory?> _directory(String? name, {bool create = false, bool caseInsensitive = false}) async {
+
+  Future<Directory?> _directory(String? name,
+      {bool create = false, bool caseInsensitive = false}) async {
     return _childImpl(name, (child, sub) async {
       if (sub != null) {
         return sub is Directory ? sub : null;
@@ -96,7 +125,9 @@ extension DirectoryDesktopMobileExtention on Directory {
       }
     }, caseInsensitive: caseInsensitive);
   }
-  Future<FileSystemEntity?> _child(String? name, {bool caseInsensitive = false}) async {
+
+  Future<FileSystemEntity?> _child(String? name,
+      {bool caseInsensitive = false}) async {
     return _childImpl(name, (child, sub) async {
       if (sub != null) {
         return sub;
@@ -109,12 +140,22 @@ extension DirectoryDesktopMobileExtention on Directory {
       }
     }, caseInsensitive: caseInsensitive);
   }
-  Future<File?> file(String? name, {bool create = false, bool caseInsensitive = false}) =>
-      (this is ExtendedDirectory ? (this as ExtendedDirectory).file : _file)(name, create: create, caseInsensitive: caseInsensitive);
-  Future<Directory?> directory(String? name, {bool create = false, bool caseInsensitive = false}) =>
-      (this is ExtendedDirectory ? (this as ExtendedDirectory).directory : _directory)(name, create: create, caseInsensitive: caseInsensitive);
-  Future<FileSystemEntity?> child(String? name, {bool caseInsensitive = false}) =>
-      (this is ExtendedDirectory ? (this as ExtendedDirectory).child : _child)(name, caseInsensitive: caseInsensitive);
+
+  Future<File?> file(String? name,
+          {bool create = false, bool caseInsensitive = false}) =>
+      (this is ExtendedDirectory
+          ? (this as ExtendedDirectory).file
+          : _file)(name, create: create, caseInsensitive: caseInsensitive);
+  Future<Directory?> directory(String? name,
+          {bool create = false, bool caseInsensitive = false}) =>
+      (this is ExtendedDirectory
+          ? (this as ExtendedDirectory).directory
+          : _directory)(name, create: create, caseInsensitive: caseInsensitive);
+  Future<FileSystemEntity?> child(String? name,
+          {bool caseInsensitive = false}) =>
+      (this is ExtendedDirectory
+          ? (this as ExtendedDirectory).child
+          : _child)(name, caseInsensitive: caseInsensitive);
 
   Future<Directory> renameInplace(String newName) {
     if (this is ExtendedDirectory) {
@@ -125,6 +166,8 @@ extension DirectoryDesktopMobileExtention on Directory {
       return rename(newPath);
     }
   }
-  Future<Directory> renameAddSuffix(String suffix) =>
-      this is ExtendedDirectory ? (this as ExtendedDirectory).renameAddSuffix(suffix) : rename("$path$suffix");
+
+  Future<Directory> renameAddSuffix(String suffix) => this is ExtendedDirectory
+      ? (this as ExtendedDirectory).renameAddSuffix(suffix)
+      : rename("$path$suffix");
 }
