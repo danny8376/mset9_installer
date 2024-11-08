@@ -49,7 +49,16 @@ import Flutter
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
-  func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+  func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt urls: URL) {
+    guard urls.count != 0 else {
+      if resultCache != nil {
+        resultCache!("*** urls is empty ***")
+        resultCache = nil
+      }
+      return
+    }
+    var url = urls.first!
+
     // Start accessing a security-scoped resource.
     guard url.startAccessingSecurityScopedResource() else {
         // Handle the failure here.
