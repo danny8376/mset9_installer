@@ -26,6 +26,7 @@ Future<Directory?> pickFolder() {
 }
 
 Future<Directory?> pickFolderDesktop() async {
+  _talker.info("Start Picking");
   final picked = await FilePicker.platform.getDirectoryPath();
   _talker.info("Raw picked: $picked");
 
