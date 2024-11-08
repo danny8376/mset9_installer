@@ -40,7 +40,8 @@ import Flutter
           documentPicker.delegate = self
           window.rootViewController!.present(documentPicker, animated: true, completion: nil)
         default:
-          result(FlutterMethodNotImplemented)
+          result("! unknown method")
+          //result(FlutterMethodNotImplemented)
       }
     })
 
