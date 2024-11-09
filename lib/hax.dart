@@ -49,8 +49,6 @@ class ExtDataIdPair {
   }
 }
 
-enum Stage { pick, setup, variant, postSetup, inject, trigger, broken, doingWork }
-
 class Hax {
   Hax({required this.model, required this.minVersion, required this.maxVersion, required this.id1});
   String id1;

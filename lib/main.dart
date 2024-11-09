@@ -15,6 +15,7 @@ import 'utils.dart';
 import 'talker.dart';
 
 enum Menu { log }
+enum Stage { pick, setup, variant, postSetup, inject, trigger, broken, doingWork }
 
 void main() {
   runApp(const MyApp());
