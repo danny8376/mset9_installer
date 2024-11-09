@@ -21,6 +21,14 @@ class Variant {
   Variant(this.model, this.version);
   final Model model;
   final Version version;
+
+  @override
+  bool operator == (covariant Variant other) {
+    return model == other.model && version == other.version;
+  }
+
+  @override
+  int get hashCode => model.hashCode ^ version.hashCode;
 }
 
 class InvalidVersionException implements Exception {

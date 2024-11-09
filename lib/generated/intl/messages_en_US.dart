@@ -22,6 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "alert_general_no": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "alert_general_yes": MessageLookupByLibrary.simpleMessage("Yes"),
         "alert_neutral": MessageLookupByLibrary.simpleMessage("OK"),
         "alert_not_supported": MessageLookupByLibrary.simpleMessage(
             "Your browser is not supported, please use different browser or different version of installer."),
@@ -55,16 +57,14 @@ class MessageLookup extends MessageLookupByLibrary {
             "Unknown folder picked, please pick correct folder"),
         "remove_loading":
             MessageLookupByLibrary.simpleMessage("Removing MSET9 ..."),
+        "setup_alert_confirm_title":
+            MessageLookupByLibrary.simpleMessage("Setup - Confirm"),
         "setup_alert_dummy_db_corrupted": MessageLookupByLibrary.simpleMessage(
             "Title database is likely corrupted."),
         "setup_alert_dummy_db_failed": MessageLookupByLibrary.simpleMessage(
             "Failed to create dummy title database"),
         "setup_alert_dummy_db_found":
             MessageLookupByLibrary.simpleMessage("Dummy title database found."),
-        "setup_alert_dummy_db_prompt_no":
-            MessageLookupByLibrary.simpleMessage("Cancel"),
-        "setup_alert_dummy_db_prompt_yes":
-            MessageLookupByLibrary.simpleMessage("Yes"),
         "setup_alert_dummy_db_reset": MessageLookupByLibrary.simpleMessage(
             "Put sd card back to your 3ds, power it on, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset."),
         "setup_alert_dummy_db_title": MessageLookupByLibrary.simpleMessage(
@@ -91,6 +91,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Setup - Hax ID1 Created"),
         "setup_alert_no_or_more_id1": MessageLookupByLibrary.simpleMessage(
             "There\'s no ID1 folder or multiple ID1 folders!"),
+        "setup_alert_repick_variant_prompt":
+            MessageLookupByLibrary.simpleMessage(
+                "Are you sure you want to pick different model/version?"),
         "setup_alert_setup_title":
             MessageLookupByLibrary.simpleMessage("Setup Error"),
         "setup_loading":

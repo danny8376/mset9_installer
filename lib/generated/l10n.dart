@@ -60,6 +60,26 @@ class S {
     );
   }
 
+  /// `Yes`
+  String get alert_general_yes {
+    return Intl.message(
+      'Yes',
+      name: 'alert_general_yes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get alert_general_no {
+    return Intl.message(
+      'Cancel',
+      name: 'alert_general_no',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `MSET9 Installer`
   String get title_installer {
     return Intl.message(
@@ -270,6 +290,16 @@ class S {
     );
   }
 
+  /// `Setup - Confirm`
+  String get setup_alert_confirm_title {
+    return Intl.message(
+      'Setup - Confirm',
+      name: 'setup_alert_confirm_title',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Setup Error`
   String get setup_alert_setup_title {
     return Intl.message(
@@ -340,21 +370,11 @@ class S {
     );
   }
 
-  /// `Yes`
-  String get setup_alert_dummy_db_prompt_yes {
+  /// `Are you sure you want to pick different model/version?`
+  String get setup_alert_repick_variant_prompt {
     return Intl.message(
-      'Yes',
-      name: 'setup_alert_dummy_db_prompt_yes',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Cancel`
-  String get setup_alert_dummy_db_prompt_no {
-    return Intl.message(
-      'Cancel',
-      name: 'setup_alert_dummy_db_prompt_no',
+      'Are you sure you want to pick different model/version?',
+      name: 'setup_alert_repick_variant_prompt',
       desc: '',
       args: [],
     );

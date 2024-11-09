@@ -3,6 +3,14 @@
   "@alert_neutral": {
     "description": ""
   },
+  "alert_general_yes": "Yes",
+  "@alert_general_yes": {
+    "description": ""
+  },
+  "alert_general_no": "Cancel",
+  "@alert_general_no": {
+    "description": ""
+  },
   "title_installer": "MSET9 Installer",
   "@title_installer": {
     "description": ""
@@ -87,6 +95,10 @@
   "@setup_loading": {
     "description": ""
   },
+  "setup_alert_confirm_title": "Setup - Confirm",
+  "@setup_alert_confirm_title": {
+    "description": ""
+  },
   "setup_alert_setup_title": "Setup Error",
   "@setup_alert_setup_title": {
     "description": ""
@@ -115,12 +127,8 @@
   "@setup_alert_dummy_db_title": {
     "description": ""
   },
-  "setup_alert_dummy_db_prompt_yes": "Yes",
-  "@setup_alert_dummy_db_prompt_yes": {
-    "description": ""
-  },
-  "setup_alert_dummy_db_prompt_no": "Cancel",
-  "@setup_alert_dummy_db_prompt_no": {
+  "setup_alert_repick_variant_prompt": "Are you sure you want to pick different model/version?",
+  "@setup_alert_repick_variant_prompt": {
     "description": ""
   },
   "setup_alert_hax_id1_created_title": "Setup - Hax ID1 Created",

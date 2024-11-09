@@ -189,12 +189,12 @@ class _InstallerState extends State<Installer> {
     }
   }
 
-  void _checkInjectState() async {
+  void _checkInjectState({bool silent = false}) async {
     talker.debug("Common: checking inject state");
     if (id1HaxFolder == null) {
       return;
     }
-    if (await _checkIfDummyDbs()) {
+    if (await _checkIfDummyDbs(silent: silent)) {
       talker.warning("Check: hax id1 dbs is missing/dummy");
       //showSnackbar(_s().inject_missing_hax_extdata);
       setState(() {
@@ -205,7 +205,9 @@ class _InstallerState extends State<Installer> {
     id1HaxExtdataFolder = (await findFileIgnoreCase(id1HaxFolder, "extdata")) as Directory?;
     if (id1HaxExtdataFolder == null) {
       talker.warning("Check: hax id1 extdata folder is missing");
-      await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_missing);
+      if (!silent) {
+        await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_missing);
+      }
       setState(() {
         _stage = Stage.postSetup;
       });
@@ -214,7 +216,9 @@ class _InstallerState extends State<Installer> {
     final extdata0 = await id1HaxExtdataFolder?.directory("00000000");
     if (extdata0 == null) {
       talker.error("Check: hax id1 extdata/00000000 folder is missing!");
-      await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_missing);
+      if (!silent) {
+        await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_missing);
+      }
       setState(() {
         _stage = Stage.postSetup;
       });
@@ -225,10 +229,14 @@ class _InstallerState extends State<Installer> {
       final partialExtdataPair = await ExtDataIdPair.findDirectory(extdata0, partialMatch: true);
       if (partialExtdataPair == null) {
         talker.warning("Check: No home menu extdata folder!");
-        await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_home_menu);
+        if (!silent) {
+          await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_home_menu);
+        }
       } else if (partialExtdataPair.miiMaker == null) {
         talker.warning("Check: No mii maker extdata folder!");
-        await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_mii_maker);
+        if (!silent) {
+          await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_mii_maker);
+        }
       } else {
         // only mii maker - WTF?
       }
@@ -372,11 +380,13 @@ class _InstallerState extends State<Installer> {
     return id1HaxFolder;
   }
 
+  Future<Variant?> _pickVariant() => Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => VariantSelector(extra: _extra)),
+  );
+
   void _doSetup() async {
-    final variant = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => VariantSelector(extra: _extra)),
-    );
+    final variant = await _pickVariant();
     if (variant == null) {
       return;
     }
@@ -389,14 +399,12 @@ class _InstallerState extends State<Installer> {
     if (context.mounted) {
       Navigator.of(context).pop();
     }
+    _checkInjectState(silent: true);
     if (result) {
       _showAlert(null, _s().setup_alert_hax_id1_created_title,
           "${_s().setup_alert_hax_id1_created}\n\n${_s().setup_alert_dummy_mii_maker_and_db_reset}",
           _buildAlertVisualAidButtonsFunc);
     }
-    setState(() {
-      _stage = result ? Stage.postSetup : Stage.setup;
-    });
   }
 
   Future<bool> _doActualSetup() async {
@@ -437,7 +445,7 @@ class _InstallerState extends State<Installer> {
     return true;
   }
 
-  Future<bool> _checkIfDummyDbs() async {
+  Future<bool> _checkIfDummyDbs({bool silent = false}) async {
     final dbs = await id1HaxFolder?.directory("dbs", caseInsensitive: true);
     if (dbs == null) {
       talker.warning("Setup: dbs doesn't exist");
@@ -453,12 +461,16 @@ class _InstallerState extends State<Installer> {
     }
     if (await title.length() == 0 || await import.length() == 0) {
       talker.warning("Setup: db files are dummy!");
-      await _showAlert(null, _s().setup_alert_dummy_db_title, "${_s().setup_alert_dummy_db_found}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
+      if (!silent) {
+        await _showAlert(null, _s().setup_alert_dummy_db_title, "${_s().setup_alert_dummy_db_found}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
+      }
       return true;
     }
     if (await title.length() != 0x31e400 || await import.length() != 0x31e400) {
       talker.error("Setup: db files are corrupted!");
-      await _showAlert(null, _s().setup_alert_dummy_db_title, "${_s().setup_alert_dummy_db_corrupted}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
+      if (!silent) {
+        await _showAlert(null, _s().setup_alert_dummy_db_title, "${_s().setup_alert_dummy_db_corrupted}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
+      }
       return true;
     }
     return false;
@@ -499,6 +511,39 @@ class _InstallerState extends State<Installer> {
     }
   }
 
+  void _doRepickVariant() async {
+    if (id1HaxFolder == null) {
+      return;
+    }
+    final variant = await _pickVariant();
+    if (variant == null || variant == this.variant) {
+      talker.debug("Setup: Repick Variant - Same Variant Picked");
+      return;
+    }
+    talker.debug("Setup: Repick Variant - ${variant.model.name} ${variant.version.major}.${variant.version.minor}");
+    final hax = Hax.find(variant);
+    if (hax == null) {
+      talker.error("Setup: Repick Variant - No available hax");
+      return;
+    }
+    setState(() {
+      _stage = Stage.doingWork;
+    });
+    _showLoading(null, _s().setup_loading);
+    try {
+      id1HaxFolder = await id1HaxFolder?.renameInplace(hax.id1);
+    } on FileSystemException catch (e) {
+      talker.error("Setup: Repick Variant - failed to rename hax id1");
+      talker.debug("Setup: Error: ${e.message} @ ${e.path}");
+      return;
+    }
+    this.variant = variant;
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
+    _checkInjectState(silent: true);
+  }
+
   void _doInjectTrigger() async {
     await (await id1HaxExtdataFolder?.file(kTriggerFile, create: true))?.writeAsBytes([], flush: true);
     _checkInjectState();
@@ -527,25 +572,40 @@ class _InstallerState extends State<Installer> {
     });
   }
 
-  Widget _genButton(BuildContext context, List<Stage> stages, Function() action, String text) {
+  Widget _genButton(BuildContext context, List<Stage> stages, Function() action, String text, {Function()? extraAction}) {
     const double margin = 8;
-    return Container(
-      margin: const EdgeInsets.fromLTRB(margin, 0, margin, margin),
-      child: FilledButton(
-        onPressed: (stages.isEmpty || stages.contains(_stage)) ? action : null,
-        style: FilledButton.styleFrom(
-          minimumSize: const Size.fromHeight(64),
-        ),
-        child: Text(
-          text,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+    final mainButton = FilledButton(
+      onPressed: (stages.isEmpty || stages.contains(_stage)) ? action : null,
+      style: FilledButton.styleFrom(
+        minimumSize: const Size.fromHeight(64),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
+    return Container(
+        margin: const EdgeInsets.fromLTRB(margin, 0, margin, margin),
+        child: extraAction == null ? mainButton : Stack(
+          alignment: Alignment.center,
+          children: [
+            mainButton,
+            Align(
+              alignment: Alignment.centerRight,
+              child: IconButton(
+                onPressed: extraAction,
+                icon: const Icon(Icons.more_vert),
+                color: Theme.of(context).secondaryHeaderColor,
+              ),
+            )
+          ],
+        )
+    );
   }
+
   @override
   void initState() {
     super.initState();
@@ -621,7 +681,20 @@ class _InstallerState extends State<Installer> {
               context,
               [Stage.postSetup, Stage.inject, Stage.trigger],
               _checkState,
-              S.of(context).installer_button_check
+              S.of(context).installer_button_check,
+              extraAction: () {
+                _showAlert(null, _s().setup_alert_confirm_title, _s().setup_alert_repick_variant_prompt, (context) {
+                  return <Widget>[
+                    _buildAlertButton(context, _s().alert_general_no, () {
+                      Navigator.of(context).pop();
+                    }),
+                    _buildAlertButton(context, _s().alert_general_yes, () {
+                      Navigator.of(context).pop();
+                      _doRepickVariant();
+                    }),
+                  ];
+                });
+              },
             ) :
             _genButton(
               context,
