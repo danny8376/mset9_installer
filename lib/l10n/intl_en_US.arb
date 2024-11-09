@@ -15,6 +15,14 @@
   "@alert_not_supported": {
     "description": ""
   },
+  "menu_extra": "Extra Versions",
+  "@menu_extra": {
+    "description": ""
+  },
+  "menu_log": "Show Logs",
+  "@menu_log": {
+    "description": ""
+  },
   "title_variant_selector": "Select Model & Version",
   "@title_variant_selector": {
     "description": ""

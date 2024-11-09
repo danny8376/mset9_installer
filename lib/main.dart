@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:pub_semver/pub_semver.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -15,7 +14,7 @@ import 'io.dart';
 import 'utils.dart';
 import 'talker.dart';
 
-enum Menu { log }
+enum Menu { extra, log }
 enum Stage { pick, setup, variant, postSetup, inject, trigger, broken, doingWork }
 
 void main() {
@@ -53,6 +52,7 @@ class Installer extends StatefulWidget {
 
 class _InstallerState extends State<Installer> {
   Stage _stage = Stage.pick;
+  bool _extra = false;
 
   Directory? sdRoot;
   Directory? n3dsFolder;
@@ -375,7 +375,7 @@ class _InstallerState extends State<Installer> {
   void _doSetup() async {
     final variant = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const VariantSelector()),
+      MaterialPageRoute(builder: (context) => VariantSelector(extra: _extra)),
     );
     if (variant == null) {
       return;
@@ -539,14 +539,13 @@ class _InstallerState extends State<Installer> {
         child: Text(
           text,
           style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
     );
   }
-
   @override
   void initState() {
     super.initState();
@@ -570,6 +569,8 @@ class _InstallerState extends State<Installer> {
             icon: const Icon(Icons.more_vert),
             onSelected: (Menu item) {
               switch (item) {
+                case Menu.extra:
+                  break;
                 case Menu.log:
                   Navigator.of(context).push(
                       MaterialPageRoute(
@@ -579,12 +580,27 @@ class _InstallerState extends State<Installer> {
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
-              //const PopupMenuDivider(),
-              const PopupMenuItem<Menu>(
+              PopupMenuItem<Menu>(
+                value: Menu.extra,
+                child: StatefulBuilder(
+                  builder: (subContext, subSetState) =>
+                      CheckboxListTile(
+                        title: Text(_s().menu_extra),
+                        value: _extra,
+                        onChanged: (bool? value) {
+                          subSetState(() {
+                            _extra = !_extra;
+                          });
+                        },
+                      ),
+                ),
+              ),
+              const PopupMenuDivider(),
+              PopupMenuItem<Menu>(
                 value: Menu.log,
                 child: ListTile(
-                  leading: Icon(Icons.history),
-                  title: Text('Show Log'),
+                  leading: const Icon(Icons.history),
+                  title: Text(_s().menu_log),
                 ),
               ),
             ],
@@ -598,7 +614,7 @@ class _InstallerState extends State<Installer> {
               context,
               [Stage.pick, Stage.setup, Stage.postSetup, Stage.inject, Stage.trigger, Stage.broken],
               _pickFolder,
-              showPickN3DS ? S.of(context).installer_button_pick_3ds : S.of(context).installer_button_pick_sd
+              showPickN3DS ? S.of(context).installer_button_pick_3ds : S.of(context).installer_button_pick_sd,
           ),
           [Stage.postSetup, Stage.inject, Stage.trigger].contains(_stage) ?
             _genButton(
@@ -606,32 +622,31 @@ class _InstallerState extends State<Installer> {
               [Stage.postSetup, Stage.inject, Stage.trigger],
               _checkState,
               S.of(context).installer_button_check
-            )
-            :
+            ) :
             _genButton(
               context,
               [Stage.setup],
               _doSetup,
-              S.of(context).installer_button_setup
+              S.of(context).installer_button_setup,
             )
           ,
           _genButton(
               context,
               [Stage.inject],
               _doInjectTrigger,
-              S.of(context).installer_button_inject_trigger
+              S.of(context).installer_button_inject_trigger,
           ),
           _genButton(
               context,
               [Stage.trigger],
               _doRemoveTrigger,
-              S.of(context).installer_button_remove_trigger
+              S.of(context).installer_button_remove_trigger,
           ),
           _genButton(
               context,
               [Stage.postSetup, Stage.inject, Stage.trigger, Stage.broken],
               _doRemove,
-              S.of(context).installer_button_remove
+              S.of(context).installer_button_remove,
           ),
         ],
       ),
@@ -646,7 +661,9 @@ class DirectoryHaxPair {
 }
 
 class VariantSelector extends StatefulWidget {
-  const VariantSelector({super.key});
+  final bool extra;
+
+  const VariantSelector({super.key, this.extra = false});
 
   @override
   State<VariantSelector> createState() => _VariantSelectorState();
@@ -654,13 +671,22 @@ class VariantSelector extends StatefulWidget {
 
 class _VariantSelectorState extends State<VariantSelector> {
   Model _model = Model.unknown;
-  //int _major = -1;
-  final _major = 11;
+  late int _major;
   int _minor = -1;
+
+  @override
+  void initState() {
+    super.initState();
+    _major = widget.extra ? -1 : 11;
+  }
 
   void _checkReturn(BuildContext context) {
     if (_model != Model.unknown && _major != -1 && _minor != -1) {
-      Navigator.pop(context, Variant(_model, Version(_major, _minor, 0)));
+      try {
+        Navigator.pop(context, Variant(_model, ver(_major, _minor, 0)));
+      } on InvalidVersionException {
+        talker.error("invalid version $_major.$_minor");
+      }
     }
   }
 
@@ -803,16 +829,17 @@ class _VariantSelectorState extends State<VariantSelector> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              genDropdown(context, 11, () => _major, null),
-              /*
-              genDropdown(context, 11, () => _major, (val) { setState(() {
-                _major = val ?? -1;
-              }); }),
-               */
+              genDropdown(context, 11, () => _major, widget.extra ? (val) {
+                setState(() {
+                  _major = val ?? -1;
+                });
+              } : null),
               const Text("."),
-              genDropdown(context, 17, () => _minor, (val) { setState(() {
-                _minor = val ?? -1;
-              }); }),
+              genDropdown(context, 17, () => _minor, (val) {
+                setState(() {
+                  _minor = val ?? -1;
+                });
+              }),
               const Text("."),
               genDropdown(context, 0, null, null),
             ],

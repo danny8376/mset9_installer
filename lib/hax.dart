@@ -1,9 +1,8 @@
 import 'dart:typed_data';
 
-import 'package:pub_semver/pub_semver.dart';
-
 import 'console.dart';
 import 'io.dart';
+import 'hax_list.dart';
 
 class ExtDataPair {
   ExtDataPair(this.homeMenu, this.miiMaker, this.region);
@@ -65,53 +64,8 @@ class Hax {
   static const kCode = "\uC001\uE28F\uFF1C\uE12F\u9911\u480B\u4685\u6569\uA107\u2201\u4B04\u4798\u4668\u4659\uAAC0\u1C17\u4643\u4C02\u47A0\u47B8";
   static const kLegacyCode = "\uFFFF\uFAFF\u9911\u4807\u4685\u6569\uA108\u2201\u4B05\u4798\u4668\u4659\uAAC0\u1C17\u4643\u4C03\u47A0\u47B8\u9000\u080A";
   static const kSdmcB9 = "\u0073\u0064\u006D\u0063\u9000\u080A\u0062\u0039";
-  static final list = [
-    Hax(
-      model: Model.oldModel,
-      minVersion: Version(11, 8, 0),
-      maxVersion: Version(11, 17, 0),
-      fopen: 0x0805A071,
-      fread: 0x0804CE99,
-    ),
-    Hax(
-      model: Model.newModel,
-      minVersion: Version(11, 8, 0),
-      maxVersion: Version(11, 17, 0),
-      fopen: 0x0805A071,
-      fread: 0x0804CE5D,
-    ),
-    Hax(
-      model: Model.oldModel,
-      minVersion: Version(11, 4, 0),
-      maxVersion: Version(11, 7, 0),
-      fopen: 0x08059E49,
-      fread: 0x0804CC99,
-    ),
-    Hax(
-      model: Model.newModel,
-      minVersion: Version(11, 4, 0),
-      maxVersion: Version(11, 7, 0),
-      fopen: 0x08059E45,
-      fread: 0x0804CC81,
-    ),
-    // extra
-    /*
-    Hax(
-      model: Model.oldModel,
-      minVersion: Version(, , 0),
-      maxVersion: Version(, , 0),
-      fopen: 0x,
-      fread: 0x,
-    ),
-    Hax(
-      model: Model.newModel,
-      minVersion: Version(, , 0),
-      maxVersion: Version(, , 0),
-      fopen: 0x,
-      fread: 0x,
-    ),
-     */
-  ];
+  static final extraVersions = VersionRange(max: Version(11, 3, 0), includeMax: true);
+  static final list = haxList;
   String get id1 => "$kCode$encodedAddresses$kSdmcB9";
   String get legacyId1 => "$kCode$encodedAddresses$kSdmcB9";
   String get encodedAddresses => "${encodeAddress(fopen)}${encodeAddress(fread)}";
@@ -125,7 +79,8 @@ class Hax {
     }
   }
   static Hax? find(Variant variant) => findByMV(variant.model, variant.version);
-  static Hax? findByMV(Model model, Version version) {
+  static Hax? findByMV(Model model, Version version, [bool extra = false]) {
+    if (!extra && extraVersions.allows(version)) return null;
     try {
       return list.firstWhere((hax) => hax.matchByMV(model, version));
     } on StateError {

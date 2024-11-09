@@ -90,6 +90,26 @@ class S {
     );
   }
 
+  /// `Extra Versions`
+  String get menu_extra {
+    return Intl.message(
+      'Extra Versions',
+      name: 'menu_extra',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show Logs`
+  String get menu_log {
+    return Intl.message(
+      'Show Logs',
+      name: 'menu_log',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Select Model & Version`
   String get title_variant_selector {
     return Intl.message(
