@@ -57,11 +57,12 @@ dependencies:
   talker_flutter: ^3.6.0
 
 #dependency_overrides:
-#  # hack... for making web compatible with flutter 3.22.3
+#  # hack... for making web compatible with flutter 3.22.3 & talker_flutter
 #  # do this break anything? we'll know eventually...
 #  # well, break 3.16.9 dev, so apply in github action only...
 #  # have feel that we'll have much more fun someday...
-#  web: ^0.4.0
+#  web: ^0.5.0
+#  share_plus: ^8.0.2
 
 dev_dependencies:
   flutter_test:
