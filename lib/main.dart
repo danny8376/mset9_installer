@@ -385,30 +385,35 @@ class _InstallerState extends State<Installer> {
       _stage = Stage.doingWork;
     });
     _showLoading(null, _s().setup_loading);
-    await _doActualSetup();
+    final result = await _doActualSetup();
     if (context.mounted) {
       Navigator.of(context).pop();
     }
+    if (result) {
+      _showAlert(null, _s().setup_alert_hax_id1_created_title,
+          "${_s().setup_alert_hax_id1_created}\n\n${_s().setup_alert_dummy_mii_maker_and_db_reset}",
+          _buildAlertVisualAidButtonsFunc);
+    }
     setState(() {
-      _stage = Stage.postSetup;
+      _stage = result ? Stage.postSetup : Stage.setup;
     });
   }
 
-  Future<void> _doActualSetup() async {
+  Future<bool> _doActualSetup() async {
     talker.debug("Setup: Setup - ${variant?.model.name} ${variant?.version.major}.${variant?.version.minor}");
     if (variant == null) {
       talker.error("Setup: No variant selected");
-      return;
+      return false;
     }
     final hax = Hax.find(variant!);
     if (hax == null) {
       talker.error("Setup: No available hax");
-      return;
+      return false;
     }
     if (!await _findId1()) {
       talker.error("Setup: ID1 Issue");
       await _showAlert(null, _s().setup_alert_setup_title, _s().setup_alert_no_or_more_id1);
-      return;
+      return false;
     }
 
     await _doSetupSDRoot();
@@ -418,16 +423,18 @@ class _InstallerState extends State<Installer> {
     } on FileSystemException catch (e) {
       talker.error("Setup: failed to rename id1");
       talker.debug("Setup: Error: ${e.message} @ ${e.path}");
-      return;
+      return false;
     }
     id1HaxFolder = await id0Folder?.directory(hax.id1, create: true);
     if (id1HaxFolder == null) {
       talker.error("Setup: failed to create hax id1");
-      return;
+      return false;
     }
 
-    await _createDummyDbs();
-    await _showAlert(null, _s().setup_alert_hax_id1_created_title, "${_s().setup_alert_hax_id1_created}\n\n${_s().setup_alert_dummy_mii_maker_and_db_reset}", _buildAlertVisualAidButtonsFunc);
+    if (!await _createDummyDbs()) {
+      return false;
+    }
+    return true;
   }
 
   Future<bool> _checkIfDummyDbs() async {
@@ -459,6 +466,7 @@ class _InstallerState extends State<Installer> {
 
   Future<bool> _createDummyDbs() async {
     if (id1HaxFolder == null) {
+      talker.error("Setup: id1HaxFolder missing!\n$e");
       return false;
     }
     Directory? dbs;
