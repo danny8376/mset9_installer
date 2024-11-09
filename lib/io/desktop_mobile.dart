@@ -15,14 +15,14 @@ bool get showPickN3DS => Platform.isAndroid;
 
 Future<Directory?> pickFolder() {
   return switch (Platform.operatingSystem) {
-    "windows" || "macos" || "linux" => pickFolderDartIO(),
+    "windows" || "macos" || "linux" => pickFolderDesktop(),
     "android" => pickFolderAndroid(),
-    "ios" => pickFolderDartIO(),
+    "ios" => throw UnimplementedError('Unsupported'),
     _ => throw UnimplementedError('Unsupported'),
   };
 }
 
-Future<Directory?> pickFolderDartIO() async {
+Future<Directory?> pickFolderDesktop() async {
   final picked = await FilePicker.platform.getDirectoryPath();
 
   if (picked == null) {
