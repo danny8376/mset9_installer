@@ -1,9 +1,5 @@
-import 'package:logger/logger.dart';
-
 import 'string_utils.dart';
 import 'io.dart';
-
-final logger = Logger();
 
 Future<bool> findJustOneFolder(Directory? parent, {required bool Function(Directory) rule, Function(Directory)? success, Function(int)? fail}) {
   return findJustOneFolderAsync(parent, rule: (d) async => rule(d), success: success, fail: fail);
