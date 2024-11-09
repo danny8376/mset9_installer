@@ -193,7 +193,7 @@ class _InstallerState extends State<Installer> {
       return;
     }
     if (await _checkIfDummyDbs()) {
-      talker.info("Check: hax id1 dbs is missing/dummy");
+      talker.warning("Check: hax id1 dbs is missing/dummy");
       //showSnackbar(_s().inject_missing_hax_extdata);
       setState(() {
         _stage = Stage.postSetup;
@@ -202,7 +202,7 @@ class _InstallerState extends State<Installer> {
     }
     id1HaxExtdataFolder = (await findFileIgnoreCase(id1HaxFolder, "extdata")) as Directory?;
     if (id1HaxExtdataFolder == null) {
-      talker.info("Check: hax id1 extdata folder is missing");
+      talker.warning("Check: hax id1 extdata folder is missing");
       await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_missing);
       setState(() {
         _stage = Stage.postSetup;
@@ -222,10 +222,10 @@ class _InstallerState extends State<Installer> {
     if (extdataPair == null) {
       final partialExtdataPair = await ExtDataIdPair.findDirectory(extdata0, partialMatch: true);
       if (partialExtdataPair == null) {
-        talker.info("Check: No home menu extdata folder!");
+        talker.warning("Check: No home menu extdata folder!");
         await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_home_menu);
       } else if (partialExtdataPair.miiMaker == null) {
-        talker.info("Check: No mii maker extdata folder!");
+        talker.warning("Check: No mii maker extdata folder!");
         await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_mii_maker);
       } else {
         // only mii maker - WTF?
@@ -431,24 +431,24 @@ class _InstallerState extends State<Installer> {
   Future<bool> _checkIfDummyDbs() async {
     final dbs = await id1HaxFolder?.directory("dbs", caseInsensitive: true);
     if (dbs == null) {
-      talker.info("Setup: dbs doesn't exist");
+      talker.warning("Setup: dbs doesn't exist");
       await _createDummyDbs();
       return true;
     }
     final title = await dbs.file("title.db", caseInsensitive: true);
     final import = await dbs.file("import.db", caseInsensitive: true);
     if (title == null || import == null) {
-      talker.info("Setup: db file doesn't exist");
+      talker.error("Setup: db file doesn't exist");
       await _createDummyDbs();
       return true;
     }
     if (await title.length() == 0 || await import.length() == 0) {
-      talker.error("Setup: db files are dummy!");
+      talker.warning("Setup: db files are dummy!");
       await _showAlert(null, _s().setup_alert_dummy_db_title, "${_s().setup_alert_dummy_db_found}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
       return true;
     }
     if (await title.length() != 0x31e400 || await import.length() != 0x31e400) {
-      talker.error("Setup: db files are likely corrupted!");
+      talker.error("Setup: db files are corrupted!");
       await _showAlert(null, _s().setup_alert_dummy_db_title, "${_s().setup_alert_dummy_db_corrupted}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
       return true;
     }
