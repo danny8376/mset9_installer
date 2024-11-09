@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:pub_semver/pub_semver.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -651,7 +652,7 @@ class _VariantSelectorState extends State<VariantSelector> {
 
   void _checkReturn(BuildContext context) {
     if (_model != Model.unknown && _major != -1 && _minor != -1) {
-      Navigator.pop(context, Variant(_model, Version(_major, _minor)));
+      Navigator.pop(context, Variant(_model, Version(_major, _minor, 0)));
     }
   }
 

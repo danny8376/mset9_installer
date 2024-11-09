@@ -1,3 +1,7 @@
+import 'dart:typed_data';
+
+import 'package:pub_semver/pub_semver.dart';
+
 import 'console.dart';
 import 'io.dart';
 
@@ -14,10 +18,10 @@ class ExtDataIdPair {
   String miiMaker;
   Region region;
   static final list = [
+    ExtDataIdPair("00000082", "00000207", Region.jp),
     ExtDataIdPair("0000008f", "00000217", Region.us),
     ExtDataIdPair("00000098", "00000227", Region.eu),
-    ExtDataIdPair("00000082", "00000207", Region.jp),
-    ExtDataIdPair("000000a1", "00000267", Region.ch),
+    ExtDataIdPair("000000a1", "00000267", Region.cn),
     ExtDataIdPair("000000a9", "00000277", Region.kr),
     ExtDataIdPair("000000b1", "00000287", Region.tw),
   ];
@@ -50,63 +54,76 @@ class ExtDataIdPair {
 }
 
 class Hax {
-  Hax({required this.model, required this.minVersion, required this.maxVersion, required this.id1});
-  String id1;
+  Hax({required this.model, required minVersion, required maxVersion, required this.fopen, required this.fread}) {
+    versions = VersionRange(min: minVersion, max: maxVersion, includeMin: true, includeMax: true);
+  }
   Model model;
-  Version minVersion;
-  Version maxVersion;
+  late VersionRange versions;
+  // since arm9 memory address is 0x08180000 max even on new model, so use int here even though it's not appropriate for 32-bit address
+  int fopen;
+  int fread;
+  static const kCode = "\uC001\uE28F\uFF1C\uE12F\u9911\u480B\u4685\u6569\uA107\u2201\u4B04\u4798\u4668\u4659\uAAC0\u1C17\u4643\u4C02\u47A0\u47B8";
+  static const kLegacyCode = "\uFFFF\uFAFF\u9911\u4807\u4685\u6569\uA108\u2201\u4B05\u4798\u4668\u4659\uAAC0\u1C17\u4643\u4C03\u47A0\u47B8\u9000\u080A";
+  static const kSdmcB9 = "\u0073\u0064\u006D\u0063\u9000\u080A\u0062\u0039";
   static final list = [
     Hax(
-        model: Model.oldModel,
-        minVersion: Version(11, 8),
-        maxVersion: Version(11, 17),
-        id1: "\uC001\uE28F\uFF1C\uE12F\u9911\u480B\u4685\u6569\uA107\u2201\u4B04\u4798\u4668\u4659\uAAC0\u1C17\u4643\u4C02\u47A0\u47B8\uA071\u0805\uCE99\u0804\u0073\u0064\u006D\u0063\u9000\u080A\u0062\u0039"
+      model: Model.oldModel,
+      minVersion: Version(11, 8, 0),
+      maxVersion: Version(11, 17, 0),
+      fopen: 0x0805A071,
+      fread: 0x0804CE99,
     ),
     Hax(
-        model: Model.newModel,
-        minVersion: Version(11, 8),
-        maxVersion: Version(11, 17),
-        id1: "\uC001\uE28F\uFF1C\uE12F\u9911\u480B\u4685\u6569\uA107\u2201\u4B04\u4798\u4668\u4659\uAAC0\u1C17\u4643\u4C02\u47A0\u47B8\uA071\u0805\uCE5D\u0804\u0073\u0064\u006D\u0063\u9000\u080A\u0062\u0039"
+      model: Model.newModel,
+      minVersion: Version(11, 8, 0),
+      maxVersion: Version(11, 17, 0),
+      fopen: 0x0805A071,
+      fread: 0x0804CE5D,
     ),
     Hax(
-        model: Model.oldModel,
-        minVersion: Version(11, 4),
-        maxVersion: Version(11, 7),
-        id1: "\uC001\uE28F\uFF1C\uE12F\u9911\u480B\u4685\u6569\uA107\u2201\u4B04\u4798\u4668\u4659\uAAC0\u1C17\u4643\u4C02\u47A0\u47B8\u9E49\u0805\uCC99\u0804\u0073\u0064\u006D\u0063\u9000\u080A\u0062\u0039"
+      model: Model.oldModel,
+      minVersion: Version(11, 4, 0),
+      maxVersion: Version(11, 7, 0),
+      fopen: 0x08059E49,
+      fread: 0x0804CC99,
     ),
     Hax(
-        model: Model.newModel,
-        minVersion: Version(11, 4),
-        maxVersion: Version(11, 7),
-        id1: "\uC001\uE28F\uFF1C\uE12F\u9911\u480B\u4685\u6569\uA107\u2201\u4B04\u4798\u4668\u4659\uAAC0\u1C17\u4643\u4C02\u47A0\u47B8\u9E45\u0805\uCC81\u0804\u0073\u0064\u006D\u0063\u9000\u080A\u0062\u0039"
+      model: Model.newModel,
+      minVersion: Version(11, 4, 0),
+      maxVersion: Version(11, 7, 0),
+      fopen: 0x08059E45,
+      fread: 0x0804CC81,
     ),
+    // extra
+    /*
+    Hax(
+      model: Model.oldModel,
+      minVersion: Version(, , 0),
+      maxVersion: Version(, , 0),
+      fopen: 0x,
+      fread: 0x,
+    ),
+    Hax(
+      model: Model.newModel,
+      minVersion: Version(, , 0),
+      maxVersion: Version(, , 0),
+      fopen: 0x,
+      fread: 0x,
+    ),
+     */
   ];
-  static final legacyList = [
-    Hax(
-        model: Model.oldModel,
-        minVersion: Version(11, 8),
-        maxVersion: Version(11, 17),
-        id1: "\uFFFF\uFAFF\u9911\u4807\u4685\u6569\uA108\u2201\u4B05\u4798\u4668\u4659\uAAC0\u1C17\u4643\u4C03\u47A0\u47B8\u9000\u080A\uA071\u0805\uCE99\u0804\u0073\u0064\u006D\u0063\u9000\u080A\u0062\u0039"
-    ),
-    Hax(
-        model: Model.newModel,
-        minVersion: Version(11, 8),
-        maxVersion: Version(11, 17),
-        id1: "\uFFFF\uFAFF\u9911\u4807\u4685\u6569\uA108\u2201\u4B05\u4798\u4668\u4659\uAAC0\u1C17\u4643\u4C03\u47A0\u47B8\u9000\u080A\uA071\u0805\uCE5D\u0804\u0073\u0064\u006D\u0063\u9000\u080A\u0062\u0039"
-    ),
-    Hax(
-        model: Model.oldModel,
-        minVersion: Version(11, 4),
-        maxVersion: Version(11, 7),
-        id1: "\uFFFF\uFAFF\u9911\u4807\u4685\u6569\uA108\u2201\u4B05\u4798\u4668\u4659\uAAC0\u1C17\u4643\u4C03\u47A0\u47B8\u9000\u080A\u9E49\u0805\uCC99\u0804\u0073\u0064\u006D\u0063\u9000\u080A\u0062\u0039"
-    ),
-    Hax(
-        model: Model.newModel,
-        minVersion: Version(11, 4),
-        maxVersion: Version(11, 7),
-        id1: "\uFFFF\uFAFF\u9911\u4807\u4685\u6569\uA108\u2201\u4B05\u4798\u4668\u4659\uAAC0\u1C17\u4643\u4C03\u47A0\u47B8\u9000\u080A\u9E45\u0805\uCC81\u0804\u0073\u0064\u006D\u0063\u9000\u080A\u0062\u0039"
-    ),
-  ];
+  String get id1 => "$kCode$encodedAddresses$kSdmcB9";
+  String get legacyId1 => "$kCode$encodedAddresses$kSdmcB9";
+  String get encodedAddresses => "${encodeAddress(fopen)}${encodeAddress(fread)}";
+  static String encodeAddress(int addr) {
+    final high = addr >> 16;
+    final low = addr & 0xFFFF;
+    if (Endian.host == Endian.little) {
+      return String.fromCharCodes([low, high]);
+    } else { // not tested, will we really ever encounter big-endian system?
+      return String.fromCharCodes([((low & 0xFF) << 8) | (low >> 8), ((high & 0xFF) << 8) | (high >> 8)]);
+    }
+  }
   static Hax? find(Variant variant) => findByMV(variant.model, variant.version);
   static Hax? findByMV(Model model, Version version) {
     try {
@@ -116,30 +133,19 @@ class Hax {
     }
   }
   static Hax? findById1(String id1) {
+    if (id1.length != 32) return null;
+    if (!id1.startsWith(kCode) && !id1.startsWith(kLegacyCode)) return null;
+    if (!id1.endsWith(kSdmcB9)) return null;
     try {
-      return [...list, ...legacyList].firstWhere((hax) => hax.matchById1(id1));
+      final m = id1.substring(20, 24);
+      return list.firstWhere((hax) => hax.matchByEncodedAddresses(m));
     } on StateError {
       return null;
     }
   }
-  Variant get dummyVariant {
-    return Variant(model, maxVersion);
-  }
+  Variant get dummyVariant => Variant(model, versions.max!);
   bool match(Variant variant) => matchByMV(variant.model, variant.version);
-  bool matchByMV(Model model, Version version) {
-    if (this.model != model) {
-      return false;
-    }
-    if (version.major > maxVersion.major || version.major < minVersion.major) {
-      return false;
-    }
-    if (version.major == maxVersion.major && version.minor > maxVersion.minor) {
-      return false;
-    }
-    if (version.major == minVersion.major && version.minor < minVersion.minor) {
-      return false;
-    }
-    return true;
-  }
-  bool matchById1(String m) => id1 == m;
+  bool matchByMV(Model model, Version version) => this.model == model && versions.allows(version);
+  bool matchById1(String m, [bool legacy = false]) => id1 == m || (legacy && legacyId1 == m);
+  bool matchByEncodedAddresses(String m) => encodedAddresses == m;
 }

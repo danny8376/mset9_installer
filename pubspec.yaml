@@ -41,6 +41,7 @@ dependencies:
 
   collection: any
   path: any
+  pub_semver: ^2.1.4
   # kotlin_flavor: ^0.2.0
   # file_picker: ^7.0.0
   file_picker:

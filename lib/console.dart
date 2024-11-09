@@ -1,10 +1,6 @@
-enum Model { unknown, oldModel, newModel }
+import 'package:pub_semver/pub_semver.dart';
 
-class Version {
-  Version(this.major, this.minor);
-  final int major;
-  final int minor;
-}
+enum Model { unknown, oldModel, newModel }
 
 class Variant {
   Variant(this.model, this.version);
@@ -12,4 +8,4 @@ class Variant {
   final Version version;
 }
 
-enum Region { us, eu, jp, ch, kr, tw }
+enum Region { jp, us, eu, cn, kr, tw }
