@@ -45,8 +45,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Remove trigger file"),
         "installer_button_setup":
             MessageLookupByLibrary.simpleMessage("Setup MSET9"),
+        "menu_advance": MessageLookupByLibrary.simpleMessage("Advance Options"),
+        "menu_credit": MessageLookupByLibrary.simpleMessage("Credit"),
         "menu_extra": MessageLookupByLibrary.simpleMessage("Extra Versions"),
-        "menu_log": MessageLookupByLibrary.simpleMessage("Show Logs"),
+        "menu_legacy": MessageLookupByLibrary.simpleMessage("Legacy Hax ID1"),
+        "menu_log": MessageLookupByLibrary.simpleMessage("Logs"),
         "pick_id0_not_1": MessageLookupByLibrary.simpleMessage(
             "There\'s no ID0 or more than one ID0 folder, please check"),
         "pick_multi_hax_id1": MessageLookupByLibrary.simpleMessage(

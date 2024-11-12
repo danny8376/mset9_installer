@@ -11,6 +11,7 @@ export 'dart:io';
 
 bool get isMobile => Platform.isAndroid || Platform.isIOS;
 bool get isSupported => true;
+bool get isLegacyCodeCompatible => !Platform.isMacOS && !Platform.isIOS;
 bool get showPickN3DS => Platform.isAndroid;
 
 Future<Directory?> pickFolder() {

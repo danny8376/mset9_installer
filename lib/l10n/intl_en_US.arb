@@ -23,11 +23,23 @@
   "@alert_not_supported": {
     "description": ""
   },
+  "menu_credit": "Credit",
+  "@menu_credit": {
+    "description": ""
+  },
+  "menu_advance": "Advance Options",
+  "@menu_advance": {
+    "description": ""
+  },
   "menu_extra": "Extra Versions",
   "@menu_extra": {
     "description": ""
   },
-  "menu_log": "Show Logs",
+  "menu_legacy": "Legacy Hax ID1",
+  "@menu_legacy": {
+    "description": ""
+  },
+  "menu_log": "Logs",
   "@menu_log": {
     "description": ""
   },

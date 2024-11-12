@@ -110,6 +110,26 @@ class S {
     );
   }
 
+  /// `Credit`
+  String get menu_credit {
+    return Intl.message(
+      'Credit',
+      name: 'menu_credit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Advance Options`
+  String get menu_advance {
+    return Intl.message(
+      'Advance Options',
+      name: 'menu_advance',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Extra Versions`
   String get menu_extra {
     return Intl.message(
@@ -120,10 +140,20 @@ class S {
     );
   }
 
-  /// `Show Logs`
+  /// `Legacy Hax ID1`
+  String get menu_legacy {
+    return Intl.message(
+      'Legacy Hax ID1',
+      name: 'menu_legacy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logs`
   String get menu_log {
     return Intl.message(
-      'Show Logs',
+      'Logs',
       name: 'menu_log',
       desc: '',
       args: [],

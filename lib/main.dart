@@ -14,7 +14,7 @@ import 'io.dart';
 import 'utils.dart';
 import 'talker.dart';
 
-enum Menu { extra, log }
+enum Menu { credit, advance, legacyCode, extra, log }
 enum Stage { pick, setup, variant, postSetup, inject, trigger, broken, doingWork }
 
 void main() {
@@ -52,7 +52,9 @@ class Installer extends StatefulWidget {
 
 class _InstallerState extends State<Installer> {
   Stage _stage = Stage.pick;
+  bool _advance = false;
   bool _extra = false;
+  bool _legacyCode = false;
 
   Directory? sdRoot;
   Directory? n3dsFolder;
@@ -433,7 +435,7 @@ class _InstallerState extends State<Installer> {
       talker.debug("Setup: Error: ${e.message} @ ${e.path}");
       return false;
     }
-    id1HaxFolder = await id0Folder?.directory(hax.id1, create: true);
+    id1HaxFolder = await id0Folder?.directory(_legacyCode ? hax.legacyId1 : hax.id1, create: true);
     if (id1HaxFolder == null) {
       talker.error("Setup: failed to create hax id1");
       return false;
@@ -531,7 +533,7 @@ class _InstallerState extends State<Installer> {
     });
     _showLoading(null, _s().setup_loading);
     try {
-      id1HaxFolder = await id1HaxFolder?.renameInplace(hax.id1);
+      id1HaxFolder = await id1HaxFolder?.renameInplace(_legacyCode ? hax.legacyId1 : hax.id1);
     } on FileSystemException catch (e) {
       talker.error("Setup: Repick Variant - failed to rename hax id1");
       talker.debug("Setup: Error: ${e.message} @ ${e.path}");
@@ -627,10 +629,18 @@ class _InstallerState extends State<Installer> {
         actions: <Widget>[
           PopupMenuButton<Menu>(
             icon: const Icon(Icons.more_vert),
+            constraints: const BoxConstraints(
+              minWidth: 3.5 * 56.0, // no sure why it's stuck to min...
+              maxWidth: 5.0 * 56.0,
+            ),
             onSelected: (Menu item) {
               switch (item) {
-                case Menu.extra:
+                case Menu.credit:
                   break;
+                case Menu.advance:
+                case Menu.legacyCode:
+                case Menu.extra:
+                  break; // Checkboxes are handled in their own events
                 case Menu.log:
                   Navigator.of(context).push(
                       MaterialPageRoute(
@@ -641,20 +651,56 @@ class _InstallerState extends State<Installer> {
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
               PopupMenuItem<Menu>(
-                value: Menu.extra,
-                child: StatefulBuilder(
-                  builder: (subContext, subSetState) =>
-                      CheckboxListTile(
-                        title: Text(_s().menu_extra),
-                        value: _extra,
-                        onChanged: (bool? value) {
-                          subSetState(() {
-                            _extra = !_extra;
-                          });
-                        },
-                      ),
+                value: Menu.credit,
+                child: ListTile(
+                  leading: const Icon(Icons.info_outline),
+                  title: Text(_s().menu_credit),
                 ),
               ),
+              const PopupMenuDivider(),
+              PopupMenuItem<Menu>(
+                value: Menu.advance,
+                child: CheckboxListTile(
+                  title: Text(_s().menu_advance),
+                  value: _advance,
+                  onChanged: (bool? value) {
+                    Navigator.of(context).pop();
+                    _advance = !_advance;
+                  },
+                ),
+              ),
+              ...(_advance ? [
+                PopupMenuItem<Menu>(
+                  value: Menu.extra,
+                  child: StatefulBuilder(
+                    builder: (subContext, subSetState) =>
+                        CheckboxListTile(
+                          title: Text(_s().menu_extra),
+                          value: _extra,
+                          onChanged: (bool? value) {
+                            subSetState(() {
+                              _extra = !_extra;
+                            });
+                          },
+                        ),
+                  ),
+                ),
+                ...(isLegacyCodeCompatible ? [PopupMenuItem<Menu>(
+                  value: Menu.legacyCode,
+                  child: StatefulBuilder(
+                    builder: (subContext, subSetState) =>
+                        CheckboxListTile(
+                          title: Text(_s().menu_legacy),
+                          value: _legacyCode,
+                          onChanged: (bool? value) {
+                            subSetState(() {
+                              _legacyCode = !_legacyCode;
+                            });
+                          },
+                        ),
+                  ),
+                )] : []),
+              ] : []),
               const PopupMenuDivider(),
               PopupMenuItem<Menu>(
                 value: Menu.log,
