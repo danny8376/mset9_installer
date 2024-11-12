@@ -887,7 +887,7 @@ class _VariantSelectorState extends State<VariantSelector> {
     );
   }
 
-  Widget genDropdown(BuildContext context, int max, int Function()? value, Function(int?)? action) {
+  Widget _genDropdown(BuildContext context, int max, int Function()? value, Function(int?)? action) {
     final list = List<int>.generate(max + 2, (i) {
       return i == 0 ? -1 : max - i + 1;
     });
@@ -984,19 +984,19 @@ class _VariantSelectorState extends State<VariantSelector> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              genDropdown(context, 11, () => _major, widget.extra ? (val) {
+              _genDropdown(context, 11, () => _major, widget.extra ? (val) {
                 setState(() {
                   _major = val ?? -1;
                 });
               } : null),
               const Text("."),
-              genDropdown(context, 17, () => _minor, (val) {
+              _genDropdown(context, 17, () => _minor, (val) {
                 setState(() {
                   _minor = val ?? -1;
                 });
               }),
               const Text("."),
-              genDropdown(context, 0, null, null),
+              _genDropdown(context, 0, null, null),
             ],
           ),
         ],
