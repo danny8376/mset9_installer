@@ -67,7 +67,7 @@ class Hax {
   static final extraVersions = VersionRange(max: Version(11, 3, 0), includeMax: true);
   static final list = haxList;
   String get id1 => "$kCode$encodedAddresses$kSdmcB9";
-  String get legacyId1 => "$kCode$encodedAddresses$kSdmcB9";
+  String get legacyId1 => "$kLegacyCode$encodedAddresses$kSdmcB9";
   String get encodedAddresses => "${encodeAddress(fopen)}${encodeAddress(fread)}";
   static String encodeAddress(int addr) {
     final high = addr >> 16;
