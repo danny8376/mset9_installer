@@ -190,6 +190,16 @@ class S {
     );
   }
 
+  /// `Checking...`
+  String get installer_button_dummy_checking {
+    return Intl.message(
+      'Checking...',
+      name: 'installer_button_dummy_checking',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Check MSET9 status`
   String get installer_button_check {
     return Intl.message(

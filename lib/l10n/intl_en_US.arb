@@ -55,6 +55,10 @@
   "@installer_button_pick_3ds": {
     "description": ""
   },
+  "installer_button_dummy_checking": "Checking...",
+  "@installer_button_dummy_checking": {
+    "description": ""
+  },
   "installer_button_check": "Check MSET9 status",
   "@installer_button_check": {
     "description": ""

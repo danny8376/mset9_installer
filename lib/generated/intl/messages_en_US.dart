@@ -33,6 +33,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Broken mset9 setup, extdata is missing"),
         "installer_button_check":
             MessageLookupByLibrary.simpleMessage("Check MSET9 status"),
+        "installer_button_dummy_checking":
+            MessageLookupByLibrary.simpleMessage("Checking..."),
         "installer_button_inject_trigger":
             MessageLookupByLibrary.simpleMessage("Inject trigger file"),
         "installer_button_pick_3ds":

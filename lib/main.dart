@@ -165,14 +165,14 @@ class _InstallerState extends State<Installer> {
     );
   }
 
-  void _checkState() async {
+  void _checkState({bool silent = false}) async {
     talker.debug("Common: checking state");
     if (id0Folder != null) {
       final matching = await _findMatchingHaxId1();
       if (matching != null) {
         id1HaxFolder = matching.folder;
         variant = matching.hax.dummyVariant;
-        _checkInjectState();
+        _checkInjectState(silent: silent);
       } else if ((await _findId1() && await _findBackupId1() != null) || (await _findId1() && await _findMatchingHaxId1() != null)) {
         setState(() {
           _stage = Stage.broken;
@@ -393,20 +393,17 @@ class _InstallerState extends State<Installer> {
       return;
     }
     this.variant = variant;
-    setState(() {
-      _stage = Stage.doingWork;
-    });
-    _showLoading(null, _s().setup_loading);
-    final result = await _doActualSetup();
-    if (context.mounted) {
-      Navigator.of(context).pop();
-    }
-    _checkInjectState(silent: true);
-    if (result) {
-      _showAlert(null, _s().setup_alert_hax_id1_created_title,
-          "${_s().setup_alert_hax_id1_created}\n\n${_s().setup_alert_dummy_mii_maker_and_db_reset}",
-          _buildAlertVisualAidButtonsFunc);
-    }
+    _doWorkWrap(
+      work: _doActualSetup,
+      done: (result) async {
+        _checkInjectState(silent: true);
+        if (result) {
+          _showAlert(null, _s().setup_alert_hax_id1_created_title,
+              "${_s().setup_alert_hax_id1_created}\n\n${_s().setup_alert_dummy_mii_maker_and_db_reset}",
+              _buildAlertVisualAidButtonsFunc);
+        }
+      },
+    );
   }
 
   Future<bool> _doActualSetup() async {
@@ -528,56 +525,88 @@ class _InstallerState extends State<Installer> {
       talker.error("Setup: Repick Variant - No available hax");
       return;
     }
-    setState(() {
-      _stage = Stage.doingWork;
-    });
-    _showLoading(null, _s().setup_loading);
-    try {
-      id1HaxFolder = await id1HaxFolder?.renameInplace(_legacyCode ? hax.legacyId1 : hax.id1);
-    } on FileSystemException catch (e) {
-      talker.error("Setup: Repick Variant - failed to rename hax id1");
-      talker.debug("Setup: Error: ${e.message} @ ${e.path}");
-      return;
-    }
-    this.variant = variant;
-    if (context.mounted) {
-      Navigator.of(context).pop();
-    }
-    _checkInjectState(silent: true);
+    _doWorkWrap(
+      work: () async {
+        try {
+          id1HaxFolder = await id1HaxFolder?.renameInplace(_legacyCode ? hax.legacyId1 : hax.id1);
+        } on FileSystemException catch (e) {
+          talker.error("Setup: Repick Variant - failed to rename hax id1");
+          talker.debug("Setup: Error: ${e.message} @ ${e.path}");
+          return false;
+        }
+        this.variant = variant;
+        return true;
+      },
+      done: (result) async {
+        _checkInjectState(silent: true);
+      },
+    );
   }
 
   void _doInjectTrigger() async {
-    await (await id1HaxExtdataFolder?.file(kTriggerFile, create: true))?.writeAsBytes([], flush: true);
-    _checkInjectState();
+    _doWorkWrap(
+      showLoading: false, // this is usually fast enough?
+      work: () async {
+        return await (await id1HaxExtdataFolder?.file(kTriggerFile, create: true))?.writeAsBytes([], flush: true) != null;
+      },
+      done: (result) async {
+        _checkInjectState();
+      },
+    );
   }
 
   void _doRemoveTrigger() async {
-    await (await id1HaxExtdataFolder?.file(kTriggerFile))?.delete();
-    _checkInjectState();
+    _doWorkWrap(
+      showLoading: false, // this is usually fast enough?
+      work: () async {
+        return await (await id1HaxExtdataFolder?.file(kTriggerFile))?.delete() != null;
+      },
+      done: (result) async {
+        _checkInjectState();
+      },
+    );
   }
 
   void _doRemove() async {
     talker.debug("Setup: Remove - ${variant?.model} ${variant?.version.major}.${variant?.version.minor}");
+    _doWorkWrap(
+      work: () async {
+        await (await _findHaxFolder())?.delete(recursive: true);
+        final backupId1 = await _findBackupId1();
+        await backupId1?.renameInplace(backupId1.name.replaceAll(kOldId1Suffix, ''));
+        return true;
+      },
+      done: (result) async {
+        variant = null;
+        _checkState(silent: true);
+      },
+    );
+  }
+
+  Future<bool> _doWorkWrap({required Future<bool> Function() work, required Future<void> Function(bool result) done, bool showLoading = true}) async {
     setState(() {
       _stage = Stage.doingWork;
     });
-    _showLoading(null, _s().remove_loading);
-    await (await _findHaxFolder())?.delete(recursive: true);
-    final backupId1 = await _findBackupId1();
-    await backupId1?.renameInplace(backupId1.name.replaceAll(kOldId1Suffix, ''));
-    if (context.mounted) {
+    if (showLoading) {
+      _showLoading(null, _s().setup_loading);
+    }
+    bool result = false;
+    try {
+      result = await work();
+    } catch (e, st) {
+      talker.handle(e, st);
+    }
+    if (showLoading && context.mounted) {
       Navigator.of(context).pop();
     }
-    variant = null;
-    setState(() {
-      _stage = Stage.setup;
-    });
+    await done(result);
+    return result;
   }
 
-  Widget _genButton(BuildContext context, List<Stage> stages, Function() action, String text, {Function()? extraAction}) {
+  Widget _genButton(BuildContext context, List<Stage>? stages, Function()? action, String text, {Function()? extraAction}) {
     const double margin = 8;
     final mainButton = FilledButton(
-      onPressed: (stages.isEmpty || stages.contains(_stage)) ? action : null,
+      onPressed: (stages != null && (stages.isEmpty || stages.contains(_stage))) ? action : null,
       style: FilledButton.styleFrom(
         minimumSize: const Size.fromHeight(64),
       ),
@@ -722,33 +751,40 @@ class _InstallerState extends State<Installer> {
               _pickFolder,
               showPickN3DS ? S.of(context).installer_button_pick_3ds : S.of(context).installer_button_pick_sd,
           ),
-          [Stage.postSetup, Stage.inject, Stage.trigger].contains(_stage) ?
-            _genButton(
-              context,
-              [Stage.postSetup, Stage.inject, Stage.trigger],
-              _checkState,
-              S.of(context).installer_button_check,
-              extraAction: () {
-                _showAlert(null, _s().setup_alert_confirm_title, _s().setup_alert_repick_variant_prompt, (context) {
-                  return <Widget>[
-                    _buildAlertButton(context, _s().alert_general_no, () {
-                      Navigator.of(context).pop();
-                    }),
-                    _buildAlertButton(context, _s().alert_general_yes, () {
-                      Navigator.of(context).pop();
-                      _doRepickVariant();
-                    }),
-                  ];
-                });
-              },
-            ) :
-            _genButton(
-              context,
-              [Stage.setup],
-              _doSetup,
-              S.of(context).installer_button_setup,
-            )
-          ,
+          switch (_stage) {
+            Stage.doingWork =>
+                _genButton(context, null, null, _s().installer_button_dummy_checking),
+            Stage.postSetup || Stage.inject || Stage.trigger || Stage.broken =>
+                _genButton(
+                  context,
+                  [],
+                  _checkState,
+                  _s().installer_button_check,
+                  extraAction: () {
+                    _showAlert(
+                      null,
+                      _s().setup_alert_confirm_title,
+                      _s().setup_alert_repick_variant_prompt,
+                      (context) => <Widget>[
+                        _buildAlertButton(context, _s().alert_general_no, () {
+                          Navigator.of(context).pop();
+                        }),
+                        _buildAlertButton(context, _s().alert_general_yes, () {
+                          Navigator.of(context).pop();
+                          _doRepickVariant();
+                        }),
+                      ],
+                    );
+                  },
+                ),
+            _ =>
+                _genButton(
+                  context,
+                  [Stage.setup],
+                  _doSetup,
+                  _s().installer_button_setup,
+                )
+          },
           _genButton(
               context,
               [Stage.inject],
