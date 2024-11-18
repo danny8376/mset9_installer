@@ -1,8 +1,11 @@
-Future<Directory?> pickFolder() => throw UnimplementedError('Unsupported');
 bool get isMobile => throw UnimplementedError('Unsupported');
 bool get isSupported => throw UnimplementedError('Unsupported');
 bool get isLegacyCodeCompatible => throw UnimplementedError('Unsupported');
+bool get canAccessParentOfPicked => throw UnimplementedError('Unsupported');
 bool get showPickN3DS => throw UnimplementedError('Unsupported');
+
+Future<Directory?> pickFolder() => throw UnimplementedError('Unsupported');
+Client httpClient() => throw UnimplementedError('Unsupported');
 
 class FileSystemUtils {
   static Future<bool> isDirectory(FileSystemEntity e) => throw UnimplementedError('Unsupported');
@@ -10,6 +13,7 @@ class FileSystemUtils {
 }
 
 abstract class FileSystemEntity {
+  Directory get parent => throw UnimplementedError('Unsupported');
   String get path => throw UnimplementedError('Unsupported');
 
   String get name => throw UnimplementedError('Unsupported');
@@ -33,9 +37,13 @@ abstract interface class File implements FileSystemEntity {
 
   Future<int> length() => throw UnimplementedError('Unsupported');
   Future<File> writeAsBytes(List<int> data, {bool flush = false}) => throw UnimplementedError('Unsupported');
+  Stream<List<int>> openRead([int? start, int? end]) => throw UnimplementedError('Unsupported');
 }
 
 class FileSystemException implements Exception {
   String get message => throw UnimplementedError('Unsupported');
   String get path => throw UnimplementedError('Unsupported');
+}
+
+class Client {
 }

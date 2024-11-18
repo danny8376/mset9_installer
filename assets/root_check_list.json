@@ -1,0 +1,141 @@
+{
+  "update": 1731464746,
+  "src": [
+    "https://raw.githubusercontent.com/danny8376/mset9_installer/refs/heads/master/assets/root_check_list.json",
+    "https://raw.githubusercontent.com/danny8376/mset9_installer/refs/heads/publish/assets/root_check_list.json"
+  ],
+  "checks": {
+    "b9": {
+      "localOnly": true,
+      "type": "mset9",
+      "hash": [
+        "22af6174c8b055cf3a9c5d7d35bcc26a6188f65fa51ba176d8a7dda23861dc28"
+      ],
+      "src": [
+        "local://assets/mset9-files/b9"
+      ]
+    },
+    "boot9strap.zip": {
+      "type": "archive",
+      "hash": [],
+      "info": {
+        "size": 11207,
+        "md5": "3cee35835e760340c8993080ec8e5586",
+        "update": "Sun, 22 May 2022 19:31:27 GMT"
+      },
+      "src": [
+        "github://latest-releases/SciresM/boot9strap/boot9strap-[^-]+\\.zip",
+        "https://github.com/SciresM/boot9strap/releases/download/1.4/boot9strap-1.4.zip",
+        "https://mset9-installer-files.pages.dev/boot9strap-1.4.zip"
+      ]
+    },
+    "boot9strap.firm#virtual": {
+      "type": "essential",
+      "hash": [
+        "72002296d1b8b1d4e462ea340124d836ba7f8d6bf16617f369ed90983c42bb98"
+      ],
+      "src": [ "archive://boot9strap.zip#boot9strap.firm" ]
+    },
+    "boot9strap.firm.sha#virtual": {
+      "type": "essential",
+      "hash": [
+        "a8e163486b124685709492059344d347544745c95ece3b66a8cea373722def52"
+      ],
+      "src": [ "archive://boot9strap.zip#boot9strap.firm.sha" ]
+    },
+    "SafeB9S.bin#1,0": {
+      "type": "essential",
+      "hash": [
+        "5c31f0feee8d5a7ae840b28456498797ada7384e5bc74750deb149f6fb9fd154"
+      ],
+      "src": [
+        "github://latest-releases/d0k3/SafeB9SInstaller/SafeB9SInstaller-.+\\.zip#SafeB9SInstaller.bin",
+        "https://github.com/d0k3/SafeB9SInstaller/releases/download/v0.0.7/SafeB9SInstaller-20170605-122940.zip#SafeB9SInstaller.bin",
+        "https://mset9-installer-files.pages.dev/SafeB9SInstaller.bin"
+      ]
+    },
+    "boot9strap/boot9strap.firm#1,0": {
+      "type": "link",
+      "hash": [],
+      "src": [ "link://boot9strap.firm" ]
+    },
+    "boot9strap/boot9strap.firm.sha#1,0": {
+      "type": "link",
+      "hash": [],
+      "src": [ "link://boot9strap.firm.sha" ]
+    },
+    "SafeB9S.bin#1,1": {
+      "type": "essential",
+      "hash": [
+        "566d34d8c247ae2c6569c5193c4e9899b00f782e043a1aed77c4f2dc30b93e1d"
+      ],
+      "src": [
+        "https://github.com/zoogie/MSET9/files/12879750/G.zip#SafeB9S.bin",
+        "https://mset9-installer-files.pages.dev/OFI-press2confirm.bin"
+      ]
+    },
+    "ofi/boot9strap.firm#1,1": {
+      "type": "link",
+      "hash": [],
+      "src": [ "link://boot9strap.firm" ]
+    },
+    "ofi/boot9strap.firm.sha#1,1": {
+      "type": "link",
+      "hash": [],
+      "src": [ "link://boot9strap.firm.sha" ]
+    },
+    "Luma3DS.zip": {
+      "type": "archive",
+      "hash": [],
+      "info": {
+        "size": 547664,
+        "md5": "2daa6c037397e667132d93b4c4cd3bf6",
+        "update": "Tue, 01 Oct 2024 23:19:35 GMT"
+      },
+      "src": [
+        "github://latest-releases/LumaTeam/Luma3DS/Luma3DSv.+\\.zip",
+        "https://github.com/LumaTeam/Luma3DS/releases/download/v13.2.1/Luma3DSv13.2.1.zip",
+        "https://mset9-installer-files.pages.dev/Luma3DSv13.2.1.zip"
+      ]
+    },
+    "boot.firm#2,0": {
+      "type": "essential",
+      "hash": [
+        "d380eff72c437e1de1bbc0398a8d55fedb36a39927c1e2fb6305b8962d48a872"
+      ],
+      "src": [ "archive://Luma3DS.zip#boot.firm" ]
+    },
+    "3ds-hbmenu.zip": {
+      "type": "archive",
+      "hash": [],
+      "info": {
+        "size": 333338,
+        "update": "2024-05-03T19:18:59Z"
+      },
+      "src": [
+        "github://latest-releases/devkitPro/3ds-hbmenu/3ds-hbmenu-v.+\\.zip",
+        "https://github.com/devkitPro/3ds-hbmenu/releases/download/v2.4.3/3ds-hbmenu-v2.4.3.zip"
+      ]
+    },
+    "boot.3dsx": {
+      "type": "essential",
+      "hash": [
+        "9c95ef995e34f7fce2dab7bf3d6ff19d952837d032586a11256f5ae0b2a3fee6"
+      ],
+      "src": [
+        "archive://Luma3DS.zip#boot.3dsx",
+        "archive://3ds-hbmenu.zip#boot.3dsx"
+      ]
+    },
+    "config/ssl/cacert.pem": {
+      "type": "essential",
+      "hash": [
+        "1794c1d4f7055b7d02c2170337b61b48a2ef6c90d77e95444fd2596f4cac609f"
+      ],
+      "src": [
+        "archive://Luma3DS.zip#config/ssl/cacert.pem",
+        "archive://3ds-hbmenu.zip#config/ssl/cacert.pem"
+      ]
+    }
+  }
+}

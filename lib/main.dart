@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:mset9_installer/root_check.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -11,10 +14,10 @@ import 'consts.dart';
 import 'hax.dart';
 import 'string_utils.dart';
 import 'io.dart';
-import 'utils.dart';
+import 'io_utils.dart';
 import 'talker.dart';
 
-enum Menu { credit, advance, legacyCode, extra, log }
+enum Menu { credit, advance, extra, looseRootCheck, legacyCode, log }
 enum Stage { pick, setup, variant, postSetup, inject, trigger, broken, doingWork }
 
 void main() {
@@ -54,6 +57,7 @@ class _InstallerState extends State<Installer> {
   Stage _stage = Stage.pick;
   bool _advance = false;
   bool _extra = false;
+  bool _looseRootCheck = false;
   bool _legacyCode = false;
 
   Directory? sdRoot;
@@ -72,50 +76,47 @@ class _InstallerState extends State<Installer> {
     return S.of(context);
   }
 
-  Widget _buildAlertButton(BuildContext context, String text, Function() action) {
+  Widget _buildAlertButton(BuildContext context, String text, void Function(void Function())? action) {
+    pop() {
+      Navigator.of(context).pop();
+    }
     return TextButton(
       style: TextButton.styleFrom(
         textStyle: Theme.of(context).textTheme.labelLarge,
       ),
-      onPressed: action,
+      onPressed: () => (action ?? (f) => f())(pop),
       child: Text(text),
     );
   }
 
   List<Widget> _buildAlertVisualAidButtonsFunc(context) {
     return <Widget>[
-      _buildAlertButton(context, _s().setup_alert_dummy_db_visual_aid, () {
+      _buildAlertButton(context, _s().setup_alert_dummy_db_visual_aid, (pop) {
         launchUrl(Uri.parse(_s().setup_alert_dummy_db_visual_aid_url));
       }),
       //const Spacer(),
-      _buildAlertButton(context, _s().alert_neutral, () {
-        Navigator.of(context).pop();
-      }),
+      _buildAlertButton(context, _s().alert_neutral, null),
     ];
   }
 
-  Future<void> _showAlert(BuildContext? context, String title, String message, [List<Widget> Function(BuildContext)? buttonBuilder, dismissible = true]) {
+  Future<void> _showAlert(BuildContext? context, String title, String message, [List<Widget> Function(BuildContext)? buttonBuilder, dismissible = true]) async {
+    // required or this will break when showLoading
+    await Future.delayed(Duration.zero);
     context ??= this.context;
     if (!context.mounted) {
-      throw Exception("S called outside of context!");
+      throw Exception("context somehow get unmounted!");
     }
-    final actions = !dismissible ? <Widget>[] : (
-      buttonBuilder?.call(context) ?? <Widget>[
-        _buildAlertButton(context, S.of(context).alert_neutral, () {
-          if (context?.mounted == true) {
-            Navigator.of(context!).pop();
-          }
-        }),
-      ]
-    );
-    return showDialog<void>(
+    buttonBuilder ??= (BuildContext dialogContext) => dismissible ? <Widget>[
+      _buildAlertButton(dialogContext, _s().alert_neutral, null),
+    ] : <Widget>[];
+    await showDialog<void>(
       context: context,
       barrierDismissible: dismissible,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: Text(title),
           content: Text(message),
-          actions: actions,
+          actions: buttonBuilder!(dialogContext),
         );
       },
     );
@@ -165,14 +166,14 @@ class _InstallerState extends State<Installer> {
     );
   }
 
-  void _checkState({bool silent = false}) async {
+  void _checkState({bool silent = false, bool skipSdRoot = false}) async {
     talker.debug("Common: checking state");
     if (id0Folder != null) {
       final matching = await _findMatchingHaxId1();
       if (matching != null) {
         id1HaxFolder = matching.folder;
         variant = matching.hax.dummyVariant;
-        _checkInjectState(silent: silent);
+        _checkInjectState(silent: silent, skipSdRoot: skipSdRoot);
       } else if ((await _findId1() && await _findBackupId1() != null) || (await _findId1() && await _findMatchingHaxId1() != null)) {
         setState(() {
           _stage = Stage.broken;
@@ -191,9 +192,16 @@ class _InstallerState extends State<Installer> {
     }
   }
 
-  void _checkInjectState({bool silent = false}) async {
+  void _checkInjectState({bool silent = false, bool skipSdRoot = false}) async {
     talker.debug("Common: checking inject state");
     if (id1HaxFolder == null) {
+      return;
+    }
+    if (skipSdRoot || await _checkSDRootMissing(silent: silent) != null) {
+      //showSnackbar(_s().);
+      setState(() {
+        _stage = Stage.postSetup;
+      });
       return;
     }
     if (await _checkIfDummyDbs(silent: silent)) {
@@ -264,10 +272,17 @@ class _InstallerState extends State<Installer> {
       if (kN3dsFolder.equalsIgnoreAsciiCase(dir.name)) {
         talker.debug("FolderPicking: Nintendo 3DS Folder Picked");
         n3dsFolder = dir;
+        if (canAccessParentOfPicked) {
+          sdRoot = n3dsFolder!.parent;
+        }
         await _pickID0FromN3DS();
       } else if (await _checkIfId0(dir)) {
         talker.debug("FolderPicking: ID0 Folder Picked");
         id0Folder = dir;
+        if (canAccessParentOfPicked) {
+          n3dsFolder = id0Folder!.parent;
+          sdRoot = n3dsFolder!.parent;
+        }
       } else if (await _checkIfId1(dir)) {
         talker.error("FolderPicking: ID1 Folder Picked");
         //showSnackbar(_s().pick_picked_id1, Snackbar.LENGTH_LONG)
@@ -396,7 +411,7 @@ class _InstallerState extends State<Installer> {
     _doWorkWrap(
       work: _doActualSetup,
       done: (result) async {
-        _checkInjectState(silent: true);
+        (result ? _checkInjectState : _checkState)(silent: true);
         if (result) {
           _showAlert(null, _s().setup_alert_hax_id1_created_title,
               "${_s().setup_alert_hax_id1_created}\n\n${_s().setup_alert_dummy_mii_maker_and_db_reset}",
@@ -423,7 +438,9 @@ class _InstallerState extends State<Installer> {
       return false;
     }
 
-    await _doSetupSDRoot();
+    if (!await _doSetupSDRoot()) {
+      return false;
+    }
 
     try {
       id1Folder = await id1Folder?.renameAddSuffix(kOldId1Suffix);
@@ -505,9 +522,79 @@ class _InstallerState extends State<Installer> {
     return true;
   }
 
-  Future<void> _doSetupSDRoot() async {
+  Future<bool> _doSetupSDRoot() async {
     if (sdRoot != null) {
     }
+    final missing = await _checkSDRootMissing(silent: true);
+    if (missing == null) {
+      talker.debug("Setup - SD root: no missing");
+      return true;
+    }
+    var getOptional = false;
+    if (missing.entries.any((entry) => entry.value.optional)) {
+      await _showAlert(
+        null,
+        _s().setup_alert_confirm_title,
+        _s().setup_alert_sd_setup_optional_prompt,
+        (context) => <Widget>[
+          _buildAlertButton(context, _s().alert_general_no, null),
+          _buildAlertButton(context, _s().alert_general_yes, (pop) {
+            pop();
+            getOptional = true;
+          }),
+        ],
+      );
+    }
+    final fileList = missing.entries.where((e) => getOptional || !e.value.optional).map((e) => e.key);
+    //talker.debug(fileList);
+    await downloadSdRootFiles(sdRoot!, fileList: fileList.toList(growable: false));
+    final verify = await _checkSDRootMissing(silent: true);
+    //talker.debug(verify);
+    if (verify != null && verify.keys.any((e) => fileList.contains(e))) {
+      _showAlert(null, _s().setup_alert_setup_title, _s().setup_alert_sd_setup_failed);
+      return false;
+    }
+    return true;
+  }
+
+  Future<Map<String, CheckState>?> _checkSDRootMissing({bool silent = false}) async {
+    if (sdRoot == null) { // always pass when unable to check
+      return null;
+    }
+    talker.debug("Setup: Checking SD root files...");
+    var missing = await sdRootCheck(sdRoot!, loose: _looseRootCheck);
+    //talker.debug(missing);
+    if (!silent && missing != null) {
+      final list = missing.entries.map<String>((entry) {
+        final state = switch (entry.value.state) {
+          CheckStateState.missing => _s().setup_alert_sd_setup_file_state_missing,
+          CheckStateState.outdated => _s().setup_alert_sd_setup_file_state_outdated,
+          CheckStateState.unknownOrCorrupted => _s().setup_alert_sd_setup_file_state_unknown_corrupted,
+        };
+        return "${entry.key}: $state";
+      }).sorted((a, b) => a.toUpperCase().compareTo(b.toUpperCase())).join("\n");
+      await _showAlert(
+          null,
+          _s().setup_alert_setup_title,
+          "${_s().setup_alert_sd_setup_file_missing}\n\n$list",
+          (context) => <Widget>[
+            _buildAlertButton(context, _s().setup_alert_sd_setup_action_setup, (pop) {
+              pop();
+              _doWorkWrap(
+                work: _doSetupSDRoot,
+                done: (result) async {
+                  if (result) {
+                    missing = null;
+                  }
+                },
+              );
+            }),
+            //const Spacer(),
+            _buildAlertButton(context, _s().alert_neutral, null),
+          ]
+      );
+    }
+    return missing;
   }
 
   void _doRepickVariant() async {
@@ -550,7 +637,7 @@ class _InstallerState extends State<Installer> {
         return await (await id1HaxExtdataFolder?.file(kTriggerFile, create: true))?.writeAsBytes([], flush: true) != null;
       },
       done: (result) async {
-        _checkInjectState();
+        _checkInjectState(skipSdRoot: true);
       },
     );
   }
@@ -562,7 +649,7 @@ class _InstallerState extends State<Installer> {
         return await (await id1HaxExtdataFolder?.file(kTriggerFile))?.delete() != null;
       },
       done: (result) async {
-        _checkInjectState();
+        _checkInjectState(skipSdRoot: true);
       },
     );
   }
@@ -578,7 +665,7 @@ class _InstallerState extends State<Installer> {
       },
       done: (result) async {
         variant = null;
-        _checkState(silent: true);
+        _checkState(silent: true, skipSdRoot: true);
       },
     );
   }
@@ -667,8 +754,9 @@ class _InstallerState extends State<Installer> {
                 case Menu.credit:
                   break;
                 case Menu.advance:
-                case Menu.legacyCode:
                 case Menu.extra:
+                case Menu.looseRootCheck:
+                case Menu.legacyCode:
                   break; // Checkboxes are handled in their own events
                 case Menu.log:
                   Navigator.of(context).push(
@@ -709,6 +797,21 @@ class _InstallerState extends State<Installer> {
                           onChanged: (bool? value) {
                             subSetState(() {
                               _extra = !_extra;
+                            });
+                          },
+                        ),
+                  ),
+                ),
+                PopupMenuItem<Menu>(
+                  value: Menu.looseRootCheck,
+                  child: StatefulBuilder(
+                    builder: (subContext, subSetState) =>
+                        CheckboxListTile(
+                          title: Text(_s().menu_loose_root_check),
+                          value: _looseRootCheck,
+                          onChanged: (bool? value) {
+                            subSetState(() {
+                              _looseRootCheck = !_looseRootCheck;
                             });
                           },
                         ),
@@ -766,11 +869,9 @@ class _InstallerState extends State<Installer> {
                       _s().setup_alert_confirm_title,
                       _s().setup_alert_repick_variant_prompt,
                       (context) => <Widget>[
-                        _buildAlertButton(context, _s().alert_general_no, () {
-                          Navigator.of(context).pop();
-                        }),
-                        _buildAlertButton(context, _s().alert_general_yes, () {
-                          Navigator.of(context).pop();
+                        _buildAlertButton(context, _s().alert_general_no, null),
+                        _buildAlertButton(context, _s().alert_general_yes, (pop) {
+                          pop();
                           _doRepickVariant();
                         }),
                       ],

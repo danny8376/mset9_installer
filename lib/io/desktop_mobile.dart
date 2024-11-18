@@ -1,6 +1,13 @@
 import 'dart:io';
+import 'dart:typed_data';
 
+//import 'package:archive/archive.dart';
+//import 'package:http/http.dart' show ByteStream, Client;
+import 'package:http/http.dart' show Client;
+import 'package:cronet_http/cronet_http.dart';
+import 'package:cupertino_http/cupertino_http.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:http/io_client.dart';
 import 'package:path/path.dart' as p;
 
 import '../string_utils.dart';
@@ -8,10 +15,14 @@ import 'extended_io.dart';
 import 'android.dart';
 
 export 'dart:io';
+export 'package:archive/archive_io.dart' show ZipDecoder;
+
+//int _httpDiskCacheSize = 10; // MiB
 
 bool get isMobile => Platform.isAndroid || Platform.isIOS;
 bool get isSupported => true;
 bool get isLegacyCodeCompatible => !Platform.isMacOS && !Platform.isIOS;
+bool get canAccessParentOfPicked => !isMobile;
 bool get showPickN3DS => Platform.isAndroid;
 
 Future<Directory?> pickFolder() {
@@ -31,6 +42,35 @@ Future<Directory?> pickFolderDesktop() async {
   }
 
   return Directory(picked);
+}
+
+Client? _client;
+
+Client httpClient() {
+  _client ??= _httpClient();
+  return _client!;
+}
+
+Client _httpClient() {
+  if (Platform.isAndroid) {
+    /*
+    final engine = CronetEngine.build(
+      cacheMode: CacheMode.disk,
+      cacheMaxSize: _httpDiskCacheSize * 1024 * 1024,
+    );
+    return CronetClient.fromCronetEngine(engine, closeEngine: true);
+    // */
+    return CronetClient.defaultCronetEngine();
+  }
+  if (Platform.isIOS || Platform.isMacOS) {
+    /*
+    final config = URLSessionConfiguration.ephemeralSessionConfiguration()
+      ..cache = URLCache.withCapacity(diskCapacity: _httpDiskCacheSize * 1024 * 1024);
+    return CupertinoClient.fromSessionConfiguration(config);
+    // */
+    return CupertinoClient.defaultSessionConfiguration();
+  }
+  return IOClient();
 }
 
 class FileSystemUtils {
@@ -55,10 +95,8 @@ extension DirectoryDesktopMobileExtention on Directory {
           return await action(null, sub);
         }
       }
-      return null;
-    } else {
-      return await action(p.join(path, name), null);
     }
+    return await action(p.join(path, name), null);
   }
   Future<File?> _file(String? name, {bool create = false, bool caseInsensitive = false}) async {
     return _childImpl(name, (child, sub) async {
@@ -126,3 +164,91 @@ extension DirectoryDesktopMobileExtention on Directory {
   Future<Directory> renameAddSuffix(String suffix) =>
       this is ExtendedDirectory ? (this as ExtendedDirectory).renameAddSuffix(suffix) : rename("$path$suffix");
 }
+
+extension FileDesktopMobileExtention on File {
+  Future<Stream<Uint8List>> _openReadAsync([int? start]) async {
+    return openRead(start).cast();
+  }
+
+  Future<Stream<Uint8List>> openReadAsync([int? start]) =>
+      (this is ExtendedFile ? (this as ExtendedFile).openReadAsync : _openReadAsync)(start);
+}
+
+/*
+class ByteStreamInputStream extends InputStream {
+  ByteStream stream;
+
+  ByteStreamInputStream(this.stream);
+
+  @override
+  List<int> get buffer => throw UnimplementedError();
+  @override
+  set buffer(List<int> buffer) => throw UnimplementedError();
+
+  @override
+  int offset;
+
+  @override
+  int position;
+
+  @override
+  int start;
+
+  @override
+  int operator [](int index) => throw UnimplementedError();
+
+  @override
+  Future<void> close() => throw UnimplementedError();
+
+  @override
+  void closeSync() => throw UnimplementedError();
+
+  @override
+  int indexOf(int value, [int offset = 0]) => throw UnimplementedError();
+
+  @override
+  bool get isEOS => throw UnimplementedError();
+
+  @override
+  int get length => throw UnimplementedError();
+
+  @override
+  InputStreamBase peekBytes(int count, [int offset = 0]) => throw UnimplementedError();
+
+  @override
+  int readByte() => throw UnimplementedError();
+
+  @override
+  InputStreamBase readBytes(int count) => throw UnimplementedError();
+
+  @override
+  String readString({int? size, bool utf8 = true}) => throw UnimplementedError();
+
+  @override
+  int readUint16() => throw UnimplementedError();
+
+  @override
+  int readUint24() => throw UnimplementedError();
+
+  @override
+  int readUint32() => throw UnimplementedError();
+
+  @override
+  int readUint64() => throw UnimplementedError();
+
+  @override
+  void reset() => throw UnimplementedError();
+
+  @override
+  void rewind([int length = 1]) => throw UnimplementedError();
+
+  @override
+  void skip(int count) => throw UnimplementedError();
+
+  @override
+  InputStreamBase subset([int? position, int? length]) => throw UnimplementedError();
+
+  @override
+  Uint8List toUint8List([Uint8List? bytes]) => throw UnimplementedError();
+}
+ */

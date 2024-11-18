@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 abstract class ExtendedFileSystemEntity {
   String get name => throw UnimplementedError('Unsupported');
@@ -14,4 +15,8 @@ abstract interface class ExtendedDirectory {
 
   Future<Directory> renameInplace(String newName) => throw UnimplementedError('Unsupported');
   Future<Directory> renameAddSuffix(String suffix) => throw UnimplementedError('Unsupported');
+}
+
+abstract interface class ExtendedFile {
+  Future<Stream<Uint8List>> openReadAsync([int? start]) => throw UnimplementedError('Unsupported');
 }

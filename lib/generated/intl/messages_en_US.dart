@@ -52,6 +52,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "menu_extra": MessageLookupByLibrary.simpleMessage("Extra Versions"),
         "menu_legacy": MessageLookupByLibrary.simpleMessage("Legacy Hax ID1"),
         "menu_log": MessageLookupByLibrary.simpleMessage("Logs"),
+        "menu_loose_root_check":
+            MessageLookupByLibrary.simpleMessage("Loose Root Check"),
         "pick_id0_not_1": MessageLookupByLibrary.simpleMessage(
             "There\'s no ID0 or more than one ID0 folder, please check"),
         "pick_multi_hax_id1": MessageLookupByLibrary.simpleMessage(
@@ -99,6 +101,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "setup_alert_repick_variant_prompt":
             MessageLookupByLibrary.simpleMessage(
                 "Are you sure you want to pick different model/version?"),
+        "setup_alert_sd_setup_action_setup":
+            MessageLookupByLibrary.simpleMessage("Do SD Setup"),
+        "setup_alert_sd_setup_failed": MessageLookupByLibrary.simpleMessage(
+            "Failed to setup SD root automatically!"),
+        "setup_alert_sd_setup_file_missing": MessageLookupByLibrary.simpleMessage(
+            "The following files on your sd root are missing/corrupted/unknown:"),
+        "setup_alert_sd_setup_file_state_missing":
+            MessageLookupByLibrary.simpleMessage("Missing"),
+        "setup_alert_sd_setup_file_state_outdated":
+            MessageLookupByLibrary.simpleMessage("Outdated"),
+        "setup_alert_sd_setup_file_state_unknown_corrupted":
+            MessageLookupByLibrary.simpleMessage("Corrupted/Unknown"),
+        "setup_alert_sd_setup_optional_prompt":
+            MessageLookupByLibrary.simpleMessage(
+                "Do you want to automatically download corrupted/unknown/optional files?"),
         "setup_alert_setup_title":
             MessageLookupByLibrary.simpleMessage("Setup Error"),
         "setup_loading":

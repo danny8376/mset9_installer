@@ -35,6 +35,10 @@
   "@menu_extra": {
     "description": ""
   },
+  "menu_loose_root_check": "Loose Root Check",
+  "@menu_loose_root_check": {
+    "description": ""
+  },
   "menu_legacy": "Legacy Hax ID1",
   "@menu_legacy": {
     "description": ""
@@ -117,6 +121,34 @@
   },
   "setup_alert_setup_title": "Setup Error",
   "@setup_alert_setup_title": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_optional_prompt": "Do you want to automatically download corrupted/unknown/optional files?",
+  "@setup_alert_sd_setup_optional_prompt": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_failed": "Failed to setup SD root automatically!",
+  "@setup_alert_sd_setup_failed": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_file_state_missing": "Missing",
+  "@setup_alert_sd_setup_file_state_missing": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_file_state_outdated": "Outdated",
+  "@setup_alert_sd_setup_file_state_outdated": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_file_state_unknown_corrupted": "Corrupted/Unknown",
+  "@setup_alert_sd_setup_file_state_unknown_corrupted": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_file_missing": "The following files on your sd root are missing/corrupted/unknown:",
+  "@setup_alert_sd_setup_file_missing": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_action_setup": "Do SD Setup",
+  "@setup_alert_sd_setup_action_setup": {
     "description": ""
   },
   "setup_alert_no_or_more_id1": "There's no ID1 folder or multiple ID1 folders!",

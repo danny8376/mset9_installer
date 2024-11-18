@@ -103,10 +103,8 @@ class _Directory extends _FileSystemEntity implements Directory, ExtendedDirecto
           return await action(null, sub);
         }
       }
-      return null;
-    } else {
-      return await action(name, null);
     }
+    return await action(name, null);
   }
 
   @override
@@ -173,7 +171,7 @@ class _Directory extends _FileSystemEntity implements Directory, ExtendedDirecto
   Future<Directory> renameAddSuffix(String suffix) => renameInplace("$name$suffix");
 }
 
-class _File extends _FileSystemEntity implements File {
+class _File extends _FileSystemEntity implements File, ExtendedFile {
   late SafDocumentFile? _doc; // ignore: prefer_final_fields
   late String? _name; // only exists when this is new file that's not created yet
   final Directory? _parent;
@@ -299,4 +297,7 @@ class _File extends _FileSystemEntity implements File {
 
   @override
   void writeAsStringSync(String contents, {FileMode mode = FileMode.write, Encoding encoding = utf8, bool flush = false}) => throw UnimplementedError();
+
+  @override
+  Future<Stream<Uint8List>> openReadAsync([int? start]) => _safStream.readFileStream(path, start: start);
 }

@@ -140,6 +140,16 @@ class S {
     );
   }
 
+  /// `Loose Root Check`
+  String get menu_loose_root_check {
+    return Intl.message(
+      'Loose Root Check',
+      name: 'menu_loose_root_check',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Legacy Hax ID1`
   String get menu_legacy {
     return Intl.message(
@@ -345,6 +355,76 @@ class S {
     return Intl.message(
       'Setup Error',
       name: 'setup_alert_setup_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to automatically download corrupted/unknown/optional files?`
+  String get setup_alert_sd_setup_optional_prompt {
+    return Intl.message(
+      'Do you want to automatically download corrupted/unknown/optional files?',
+      name: 'setup_alert_sd_setup_optional_prompt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to setup SD root automatically!`
+  String get setup_alert_sd_setup_failed {
+    return Intl.message(
+      'Failed to setup SD root automatically!',
+      name: 'setup_alert_sd_setup_failed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Missing`
+  String get setup_alert_sd_setup_file_state_missing {
+    return Intl.message(
+      'Missing',
+      name: 'setup_alert_sd_setup_file_state_missing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Outdated`
+  String get setup_alert_sd_setup_file_state_outdated {
+    return Intl.message(
+      'Outdated',
+      name: 'setup_alert_sd_setup_file_state_outdated',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Corrupted/Unknown`
+  String get setup_alert_sd_setup_file_state_unknown_corrupted {
+    return Intl.message(
+      'Corrupted/Unknown',
+      name: 'setup_alert_sd_setup_file_state_unknown_corrupted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The following files on your sd root are missing/corrupted/unknown:`
+  String get setup_alert_sd_setup_file_missing {
+    return Intl.message(
+      'The following files on your sd root are missing/corrupted/unknown:',
+      name: 'setup_alert_sd_setup_file_missing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do SD Setup`
+  String get setup_alert_sd_setup_action_setup {
+    return Intl.message(
+      'Do SD Setup',
+      name: 'setup_alert_sd_setup_action_setup',
       desc: '',
       args: [],
     );

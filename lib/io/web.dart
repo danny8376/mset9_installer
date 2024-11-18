@@ -1,14 +1,20 @@
+import 'dart:async';
 import 'dart:html'; // ignore: avoid_web_libraries_in_flutter
 import 'dart:typed_data';
 
+import 'package:http/http.dart' show Client;
+import 'package:fetch_client/fetch_client.dart';
 import 'package:file_system_access_api/file_system_access_api.dart';
 import 'package:path/path.dart' as p;
 
 import '../string_utils.dart';
 
+int _chunkSize = 1 * 1024 * 1024;
+
 bool get isMobile => false;
 bool get isSupported => FileSystemAccess.supported;
 bool get isLegacyCodeCompatible => false;
+bool get canAccessParentOfPicked => false;
 bool get showPickN3DS => false;
 
 Future<Directory?> pickFolder() async {
@@ -20,6 +26,13 @@ Future<Directory?> pickFolder() async {
   } on AbortError {
     return null;
   }
+}
+
+Client? _client;
+
+Client httpClient() {
+  _client ??= FetchClient(mode: RequestMode.cors);
+  return _client!;
 }
 
 class FileSystemUtils {
@@ -67,10 +80,8 @@ class Directory extends FileSystemEntity {
           return await action(null, sub);
         }
       }
-      return null;
-    } else {
-      return await action(name, null);
     }
+    return await action(name, null);
   }
   Future<File?> file(String? name, {bool create = false, bool caseInsensitive = false}) async {
     return _childImpl(name, (child, sub) async {
@@ -79,6 +90,8 @@ class Directory extends FileSystemEntity {
       }
       try {
         return File(await dirHandle.getFileHandle(child!, create: create), dirHandle);
+      } on NotFoundError {
+        return null;
       } on FileSystemException {
         return null;
       }
@@ -91,6 +104,8 @@ class Directory extends FileSystemEntity {
       }
       try {
         return Directory(await dirHandle.getDirectoryHandle(child!, create: create), dirHandle);
+      } on NotFoundError {
+        return null;
       } on FileSystemException {
         return null;
       }
@@ -103,10 +118,12 @@ class Directory extends FileSystemEntity {
       }
       try {
         return File(await dirHandle.getFileHandle(child!), dirHandle);
+      } on NotFoundError { // ignore
       } on FileSystemException { // ignore
       }
       try {
         return Directory(await dirHandle.getDirectoryHandle(child!), dirHandle);
+      } on NotFoundError { // ignore
       } on FileSystemException { // ignore
       }
       return null;
@@ -157,6 +174,19 @@ class File extends FileSystemEntity {
     await stream.writeAsArrayBuffer(Uint8List.fromList(data));
     flush ? await stream.close() : stream.close();
     return this;
+  }
+
+  Stream<Uint8List> _openReadAsync([int? start]) async* {
+    final file = await fileHandle.getFile();
+    final reader = FileReader();
+    for (var i = 0; i < file.size; i += _chunkSize) {
+      reader.readAsArrayBuffer(file.slice(i, i + _chunkSize));
+      await reader.onLoad.first;
+      yield reader.result as Uint8List;
+    }
+  }
+  Future<Stream<Uint8List>> openReadAsync([int? start]) async {
+    return _openReadAsync(start);
   }
 }
 
