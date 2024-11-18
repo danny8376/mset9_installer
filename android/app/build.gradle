@@ -22,6 +22,8 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+def defaultAppName = "MSET9 Installer"
+
 android {
     namespace "moe.saru.homebrew.console3ds.mset9_installer"
     //compileSdkVersion flutter.compileSdkVersion
@@ -42,7 +44,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "moe.saru.homebrew.console3ds.mset9_installer"
+        applicationId "moe.saru.homebrew.console3ds.mset9_installer_android"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         //minSdkVersion flutter.minSdkVersion
@@ -50,6 +52,8 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+
+        manifestPlaceholders.appName = "@string/appName"
     }
 
     buildTypes {
@@ -57,6 +61,11 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-dbg"
+            manifestPlaceholders.appName = "!D|$defaultAppName"
         }
     }
 }
