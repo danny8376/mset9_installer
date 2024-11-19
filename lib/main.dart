@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mset9_installer/root_check.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'generated/l10n.dart';
 import 'console.dart';
@@ -20,7 +21,11 @@ import 'talker.dart';
 enum Menu { credit, advance, extra, looseRootCheck, legacyCode, log }
 enum Stage { pick, setup, variant, postSetup, inject, trigger, broken, doingWork }
 
-void main() {
+void main() async {
+  if (isDesktop) {
+    WidgetsFlutterBinding.ensureInitialized();
+    await windowManager.ensureInitialized();
+  }
   runApp(const MyApp());
 }
 
@@ -30,7 +35,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "MSET9 Installer",
       theme: ThemeData.light(useMaterial3: true),
       darkTheme: ThemeData.dark(useMaterial3: true),
       themeMode: ThemeMode.system,
@@ -42,6 +46,13 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: S.delegate.supportedLocales,
       home: const Installer(),
+      onGenerateTitle: (context) {
+        final title = S.of(context).title_installer;
+        if (isDesktop) {
+          windowManager.setTitle(title);
+        }
+        return title;
+      },
     );
   }
 }

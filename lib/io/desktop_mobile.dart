@@ -19,8 +19,9 @@ export 'package:archive/archive_io.dart' show ZipDecoder;
 
 //int _httpDiskCacheSize = 10; // MiB
 
+bool get isDesktop => Platform.isWindows || Platform.isMacOS || Platform.isLinux;
 bool get isMobile => Platform.isAndroid || Platform.isIOS;
-bool get isSupported => true;
+const bool isSupported = true;
 bool get isLegacyCodeCompatible => !Platform.isMacOS && !Platform.isIOS;
 bool get canAccessParentOfPicked => !isMobile;
 bool get showPickN3DS => Platform.isAndroid;

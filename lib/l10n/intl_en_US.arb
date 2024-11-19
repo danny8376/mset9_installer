@@ -1,4 +1,8 @@
 {
+  "title_installer": "MSET9 Installer",
+  "@title_installer": {
+    "description": ""
+  },
   "alert_neutral": "OK",
   "@alert_neutral": {
     "description": ""
@@ -9,10 +13,6 @@
   },
   "alert_general_no": "Cancel",
   "@alert_general_no": {
-    "description": ""
-  },
-  "title_installer": "MSET9 Installer",
-  "@title_installer": {
     "description": ""
   },
   "alert_not_supported_title": "Not Supported",

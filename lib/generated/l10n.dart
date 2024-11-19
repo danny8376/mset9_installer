@@ -50,6 +50,16 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `MSET9 Installer`
+  String get title_installer {
+    return Intl.message(
+      'MSET9 Installer',
+      name: 'title_installer',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `OK`
   String get alert_neutral {
     return Intl.message(
@@ -75,16 +85,6 @@ class S {
     return Intl.message(
       'Cancel',
       name: 'alert_general_no',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `MSET9 Installer`
-  String get title_installer {
-    return Intl.message(
-      'MSET9 Installer',
-      name: 'title_installer',
       desc: '',
       args: [],
     );

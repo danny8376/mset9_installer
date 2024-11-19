@@ -65,6 +65,7 @@ dependencies:
   webcrypto: ^0.5.5
   convert: ^3.1.1
   http_parser: ^4.0.2
+  window_manager: ^0.4.2
 
 dependency_overrides:
 # this is heavily broken, trash wasm support for now

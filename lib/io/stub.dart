@@ -1,3 +1,4 @@
+bool get isDesktop => throw UnimplementedError('Unsupported');
 bool get isMobile => throw UnimplementedError('Unsupported');
 bool get isSupported => throw UnimplementedError('Unsupported');
 bool get isLegacyCodeCompatible => throw UnimplementedError('Unsupported');

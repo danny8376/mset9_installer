@@ -11,11 +11,12 @@ import '../string_utils.dart';
 
 int _chunkSize = 1 * 1024 * 1024;
 
-bool get isMobile => false;
+const bool isDesktop = false;
+const bool isMobile = false;
 bool get isSupported => FileSystemAccess.supported;
-bool get isLegacyCodeCompatible => false;
-bool get canAccessParentOfPicked => false;
-bool get showPickN3DS => false;
+const bool isLegacyCodeCompatible = false;
+const bool canAccessParentOfPicked = false;
+const bool showPickN3DS = false;
 
 Future<Directory?> pickFolder() async {
   if (!FileSystemAccess.supported) return null;
