@@ -145,7 +145,7 @@ class _InstallerState extends State<Installer> {
         return Center(
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.5),
+              color: Colors.white.withOpacity(0.6),
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(10)
             ),
@@ -154,7 +154,8 @@ class _InstallerState extends State<Installer> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const CircularProgressIndicator(
+                  CircularProgressIndicator(
+                    color: Theme.of(context).indicatorColor,
                     strokeWidth: 7,
                   ),
                   const Padding(
@@ -165,7 +166,8 @@ class _InstallerState extends State<Installer> {
                     style: TextStyle(
                       fontSize: 20,
                       color: Theme.of(context).secondaryHeaderColor,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w800,
+                      decoration: TextDecoration.none
                     ),
                   )
                 ],
