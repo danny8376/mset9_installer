@@ -862,10 +862,10 @@ class _InstallerState extends State<Installer> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           _genButton(
-              context,
-              [Stage.pick, Stage.setup, Stage.postSetup, Stage.inject, Stage.trigger, Stage.broken],
-              _pickFolder,
-              showPickN3DS ? S.of(context).installer_button_pick_3ds : S.of(context).installer_button_pick_sd,
+            context,
+            const [Stage.pick, Stage.setup, Stage.postSetup, Stage.inject, Stage.trigger, Stage.broken],
+            _pickFolder,
+            showPickN3DS ? S.of(context).installer_button_pick_3ds : S.of(context).installer_button_pick_sd,
           ),
           switch (_stage) {
             Stage.doingWork =>
@@ -873,7 +873,7 @@ class _InstallerState extends State<Installer> {
             Stage.postSetup || Stage.inject || Stage.trigger || Stage.broken =>
                 _genButton(
                   context,
-                  [],
+                  const [],
                   _checkState,
                   _s().installer_button_check,
                   extraAction: () {
@@ -894,28 +894,28 @@ class _InstallerState extends State<Installer> {
             _ =>
                 _genButton(
                   context,
-                  [Stage.setup],
+                  const [Stage.setup],
                   _doSetup,
                   _s().installer_button_setup,
                 )
           },
           _genButton(
-              context,
-              [Stage.inject],
-              _doInjectTrigger,
-              S.of(context).installer_button_inject_trigger,
+            context,
+            const [Stage.inject],
+            _doInjectTrigger,
+            S.of(context).installer_button_inject_trigger,
           ),
           _genButton(
-              context,
-              [Stage.trigger],
-              _doRemoveTrigger,
-              S.of(context).installer_button_remove_trigger,
+            context,
+            const [Stage.trigger],
+            _doRemoveTrigger,
+            S.of(context).installer_button_remove_trigger,
           ),
           _genButton(
-              context,
-              [Stage.postSetup, Stage.inject, Stage.trigger, Stage.broken],
-              _doRemove,
-              S.of(context).installer_button_remove,
+            context,
+            const [Stage.postSetup, Stage.inject, Stage.trigger, Stage.broken],
+            _doRemove,
+            S.of(context).installer_button_remove,
           ),
         ],
       ),

@@ -194,5 +194,5 @@ class File extends FileSystemEntity {
 class FileSystemException implements Exception {
   final String message;
   final String path;
-  FileSystemException(this.message, this.path);
+  const FileSystemException(this.message, this.path);
 }

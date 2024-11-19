@@ -34,7 +34,7 @@ class CheckState {
 Map<int, int> _ensureVariantSelections(Map<int, int>? variantSelections) {
   variantSelections ??= const {};
   if (variantSelections.containsKey(0)) {
-    throw Exception("invalid variantSelections, group 0 can't have variants");
+    throw const InvalidVariantSelectionException("invalid variantSelections, group 0 can't have variants");
   }
   return variantSelections;
 }
@@ -49,7 +49,7 @@ Future<Map<String, CheckState>?> sdRootCheck(Directory sdRoot, {Map<int, int>? v
     if (variantSelection != null) {
       final variant = variantList[variantSelection];
       if (variant == null) {
-        throw Exception("invalid variantSelections, variant $variantSelection doesn't exist in group $group");
+        throw InvalidVariantSelectionException("invalid variantSelections, variant $variantSelection doesn't exist in group $group");
       }
       variantMissing = await _checkVariant(sdRoot, variant, loose: loose);
     } else {
@@ -172,8 +172,8 @@ Future<void> downloadSdRootFiles(Directory sdRoot, {List<String>? fileList, Map<
           "local" => await rootBundle.load("${uri.host}${uri.path}"),
           "http" || "https" => await (await uri.get()).toBytes(),
           // TODO: add github release support
-          "github" => throw _SdRootDownloadSkip(),
-          "archive" => throw _SdRootDownloadSkip(),
+          "github" => throw const _SdRootDownloadSkip(),
+          "archive" => throw const _SdRootDownloadSkip(),
           _ => throw UnimplementedError(),
         };
         final input = InputStream(bytes);
@@ -258,6 +258,7 @@ extension _IterableDistinctUtil<T> on Iterable<T> {
 }
 
 class _SdRootDownloadSkip implements Exception {
+  const _SdRootDownloadSkip();
 }
 
 @JsonSerializable()
@@ -297,11 +298,11 @@ class RootCheckList {
     }
     final uri = file.src.first;
     if (uri.scheme != "link") {
-      throw InvalidRootCheckListJsonException();
+      throw const InvalidRootCheckListJsonException();
     }
     final linked = checks["${uri.host}#virtual"];
     if (linked == null) {
-      throw InvalidRootCheckListJsonException();
+      throw const InvalidRootCheckListJsonException();
     }
     return linked;
   }
@@ -331,14 +332,14 @@ class RootCheckList {
       // check.extractMap && localOnly
       for (final uri in check.src) {
         if (localOnly && uri.scheme != "local") {
-          throw InvalidRootCheckListJsonException();
+          throw const InvalidRootCheckListJsonException();
         }
         if (groupKey == "virtual" || uri.scheme != "archive") {
           continue;
         }
         final archive = checks[uri.host] ?? checks["${uri.host}#$groupKey"];
         if (archive == null) {
-          throw InvalidRootCheckListJsonException();
+          throw const InvalidRootCheckListJsonException();
         }
         final extractKey = "${uri.fragment}#${groupKey ?? "0,0"}";
         archive.extractMap[extractKey] = fileName;
@@ -499,12 +500,18 @@ extension _UriUtil on Uri {
 }
 
 class _HTTPError implements Exception {
-  int code;
-  String? phrase;
-  _HTTPError(this.code, this.phrase);
+  final int code;
+  final String? phrase;
+  const _HTTPError(this.code, this.phrase);
   @override
   String toString() => "HTTPError($code, $phrase)";
 }
 
+class InvalidVariantSelectionException implements Exception {
+  final String message;
+  const InvalidVariantSelectionException(this.message);
+}
+
 class InvalidRootCheckListJsonException implements Exception {
+  const InvalidRootCheckListJsonException();
 }
