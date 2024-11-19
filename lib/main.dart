@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mset9_installer/root_check.dart';
@@ -389,6 +390,9 @@ class _InstallerState extends State<Installer> {
             null, _s().alert_not_supported_title, _s().alert_not_supported,
             null, false);
       });
+    }
+    if (kDebugMode) {
+      _advance = true;
     }
     installer = HaxInstaller(
       stageUpdateCallback: _stageUpdate,
