@@ -1,10 +1,6 @@
-import 'string_utils.dart';
 import 'io.dart';
 
-Future<bool> findJustOneFolder(Directory? parent, {required bool Function(Directory) rule, Function(Directory)? success, Function(int)? fail}) {
-  return findJustOneFolderAsync(parent, rule: (d) async => rule(d), success: success, fail: fail);
-}
-Future<bool> findJustOneFolderAsync(Directory? parent, {required Future<bool> Function(Directory) rule, Function(Directory)? success, Function(int)? fail}) async {
+Future<bool> findJustOneFolder(Directory? parent, {required Future<bool> Function(Directory) rule, void Function(Directory)? success, void Function(int)? fail}) async {
   var count = 0;
   Directory? candidate;
   if (parent != null) {
@@ -24,14 +20,15 @@ Future<bool> findJustOneFolderAsync(Directory? parent, {required Future<bool> Fu
   }
 }
 
-Future<FileSystemEntity?> findFileIgnoreCase(Directory? parent, String name) async {
-  if (parent == null) {
-    return null;
-  }
-  await for (final sub in parent.list()) {
-    if (name.equalsIgnoreAsciiCase(sub.name)) {
-      return sub;
+Future<bool> findFirstMatchingFolder(Directory? parent, {required Future<bool> Function(Directory) rule, void Function(Directory)? success, void Function(int)? fail}) async {
+  if (parent != null) {
+    await for (final sub in parent.list()) {
+      if (await FileSystemUtils.isDirectory(sub) && await rule(sub as Directory)) {
+        success?.call(sub);
+        return true;
+      }
     }
   }
-  return null;
+  fail?.call(0);
+  return false;
 }

@@ -11,15 +11,11 @@ import 'package:window_manager/window_manager.dart';
 
 import 'generated/l10n.dart';
 import 'console.dart';
-import 'consts.dart';
-import 'hax.dart';
-import 'string_utils.dart';
+import 'hax_installer.dart';
 import 'io.dart';
-import 'io_utils.dart';
 import 'talker.dart';
 
 enum Menu { credit, advance, extra, looseRootCheck, legacyCode, log }
-enum Stage { pick, setup, variant, postSetup, inject, trigger, broken, doingWork }
 
 void main() async {
   if (isDesktop) {
@@ -65,20 +61,9 @@ class Installer extends StatefulWidget {
 }
 
 class _InstallerState extends State<Installer> {
-  Stage _stage = Stage.pick;
   bool _advance = false;
-  bool _extra = false;
-  bool _looseRootCheck = false;
-  bool _legacyCode = false;
 
-  Directory? sdRoot;
-  Directory? n3dsFolder;
-  Directory? id0Folder;
-  Variant? variant;
-
-  Directory? id1Folder;
-  Directory? id1HaxFolder;
-  Directory? id1HaxExtdataFolder;
+  late final HaxInstaller installer;
 
   S _s() {
     if (!context.mounted) {
@@ -179,240 +164,32 @@ class _InstallerState extends State<Installer> {
     );
   }
 
-  void _checkState({bool silent = false, bool skipSdRoot = false}) async {
-    talker.debug("Common: checking state");
-    if (id0Folder != null) {
-      final matching = await _findMatchingHaxId1();
-      if (matching != null) {
-        id1HaxFolder = matching.folder;
-        variant = matching.hax.dummyVariant;
-        _checkInjectState(silent: silent, skipSdRoot: skipSdRoot);
-      } else if ((await _findId1() && await _findBackupId1() != null) || (await _findId1() && await _findMatchingHaxId1() != null)) {
-        setState(() {
-          _stage = Stage.broken;
-        });
-      } else if (_stage == Stage.variant && variant != null) {
-        _doSetup();
-      } else {
-        setState(() {
-          _stage = Stage.setup;
-        });
-      }
-    } else {
-      setState(() {
-        _stage = Stage.pick;
-      });
-    }
-  }
-
-  void _checkInjectState({bool silent = false, bool skipSdRoot = false}) async {
-    talker.debug("Common: checking inject state");
-    if (id1HaxFolder == null) {
-      return;
-    }
-    if (skipSdRoot || await _checkSDRootMissing(silent: silent) != null) {
-      //showSnackbar(_s().);
-      setState(() {
-        _stage = Stage.postSetup;
-      });
-      return;
-    }
-    if (await _checkIfDummyDbs(silent: silent)) {
-      talker.warning("Check: hax id1 dbs is missing/dummy");
-      //showSnackbar(_s().inject_missing_hax_extdata);
-      setState(() {
-        _stage = Stage.postSetup;
-      });
-      return;
-    }
-    id1HaxExtdataFolder = (await findFileIgnoreCase(id1HaxFolder, "extdata")) as Directory?;
-    if (id1HaxExtdataFolder == null) {
-      talker.warning("Check: hax id1 extdata folder is missing");
-      if (!silent) {
-        await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_missing);
-      }
-      setState(() {
-        _stage = Stage.postSetup;
-      });
-      return;
-    }
-    final extdata0 = await id1HaxExtdataFolder?.directory("00000000");
-    if (extdata0 == null) {
-      talker.error("Check: hax id1 extdata/00000000 folder is missing!");
-      if (!silent) {
-        await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_missing);
-      }
-      setState(() {
-        _stage = Stage.postSetup;
-      });
-      return;
-    }
-    final extdataPair = await ExtDataIdPair.findDirectory(extdata0);
-    if (extdataPair == null) {
-      final partialExtdataPair = await ExtDataIdPair.findDirectory(extdata0, partialMatch: true);
-      if (partialExtdataPair == null) {
-        talker.warning("Check: No home menu extdata folder!");
-        if (!silent) {
-          await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_home_menu);
-        }
-      } else if (partialExtdataPair.miiMaker == null) {
-        talker.warning("Check: No mii maker extdata folder!");
-        if (!silent) {
-          await _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_mii_maker);
-        }
-      } else {
-        // only mii maker - WTF?
-      }
-      setState(() {
-        _stage = Stage.postSetup;
-      });
-      return;
-    }
-    if (await findFileIgnoreCase(id1HaxExtdataFolder, kTriggerFile) == null) {
-      setState(() {
-        _stage = Stage.inject;
-      });
-    } else {
-      setState(() {
-        _stage = Stage.trigger;
-      });
-    }
-  }
-
   void _pickFolder() async {
-    final dir = await pickFolder();
-    if (dir != null) {
-      if (kN3dsFolder.equalsIgnoreAsciiCase(dir.name)) {
-        talker.debug("FolderPicking: Nintendo 3DS Folder Picked");
-        n3dsFolder = dir;
-        if (canAccessParentOfPicked) {
-          sdRoot = n3dsFolder!.parent;
-        }
-        await _pickID0FromN3DS();
-      } else if (await _checkIfId0(dir)) {
-        talker.debug("FolderPicking: ID0 Folder Picked");
-        id0Folder = dir;
-        if (canAccessParentOfPicked) {
-          n3dsFolder = id0Folder!.parent;
-          sdRoot = n3dsFolder!.parent;
-        }
-      } else if (await _checkIfId1(dir)) {
-        talker.error("FolderPicking: ID1 Folder Picked");
-        //showSnackbar(_s().pick_picked_id1, Snackbar.LENGTH_LONG)
-      } else if (await _pickN3DSFromSDRoot(dir)) {
-        talker.debug("FolderPicking: SD Root Picked");
-      } else {
-        talker.error("FolderPicking: Unknown Folder Picked");
-        //showSnackbar(_s().pick_picked_unknown, Snackbar.LENGTH_LONG)
+    var dir = await pickFolder();
+    if (dir == null) {
+      return;
+    }
+    try {
+      await installer.checkAndAssignFolders(dir);
+    } on FolderAssignmentException catch (e) {
+      switch (e.type) {
+        case FolderAssignmentExceptionType.noN3DS:
+          // TODO: Handle this case.
+        case FolderAssignmentExceptionType.noId0:
+          // TODO: Handle this case.
+        case FolderAssignmentExceptionType.multipleId0:
+          // TODO: Handle this case.
+        case FolderAssignmentExceptionType.id1Picked:
+          // TODO: Handle this case.
+        case FolderAssignmentExceptionType.unknown:
+          // TODO: Handle this case.
       }
-      _checkState();
     }
-  }
-
-  Future<bool> _pickN3DSFromSDRoot(Directory folder) async {
-    final sub = await findFileIgnoreCase(folder, kN3dsFolder);
-    if (sub != null && await FileSystemUtils.isDirectory(sub)) {
-      sdRoot = folder;
-      n3dsFolder = sub as Directory;
-      await _pickID0FromN3DS();
-      return true;
-    }
-    return false;
-  }
-
-  Future<bool> _pickID0FromN3DS([Directory? folder]) {
-    folder ??= n3dsFolder;
-    return findJustOneFolderAsync(
-      folder,
-      rule: (sub) => _checkIfId0(sub),
-      success: (sub) {
-        //talker.debug("FolderPicking: ID0 Folder Auto Picked - ${id0Folder?.path}");
-        id0Folder = sub;
-      },
-      fail: (_) {
-        talker.error("FolderPicking: 0 or more than 1 ID0 found");
-        //showSnackbar(_s().pick_id0_not_1)
-      },
-    );
-  }
-
-  Future<bool> _checkIfId0(Directory folder) async {
-    if (!kId0Regex.hasMatch(folder.name)) {
-      return false;
-    }
-    return await folder.list().asyncAny((sub) => FileSystemUtils.isDirectory(sub));
-  }
-
-  Future<bool> _checkIfId1(Directory folder) async {
-    return _getHax(folder) != null || kId1Regex.hasMatch(folder.name);
-  }
-
-  Hax? _getHax(Directory folder) {
-    return Hax.findById1(folder.name);
-  }
-
-  Future<DirectoryHaxPair?> _findMatchingHaxId1([Directory? folder]) async {
-    folder ??= id0Folder;
-    DirectoryHaxPair? ret;
-    Hax? hax;
-    await findJustOneFolder(
-      folder,
-      rule: (sub) {
-        final tmpHax = _getHax(sub);
-        if (tmpHax != null) {
-          hax = tmpHax;
-          return true;
-        }
-        return false;
-      },
-      success: (sub) => ret = DirectoryHaxPair(sub, hax!),
-      fail: (count) {
-        if (count > 1) {
-          talker.error("Prepare: Multiple Hax ID1 ???");
-          //showSnackbar(_s().pick_multi_hax_id1)
-          // WTF???
-        }
-      },
-    );
-    return ret;
-  }
-
-  Future<Directory?> _findId1Common(Directory? folder, bool backupIdOrNot) async {
-    folder ??= id0Folder;
-    Directory? ret;
-    await findJustOneFolderAsync(
-      folder,
-      rule: (sub) async => await _checkIfId1(sub) && sub.name.endsWith(kOldId1Suffix) == backupIdOrNot,
-      success: (sub) => ret = sub,
-    );
-    return ret;
-  }
-  Future<Directory?> _findBackupId1([Directory? folder]) => _findId1Common(folder, true);
-  Future<bool> _findId1([Directory? folder]) async {
-    final tmpId1 = await _findId1Common(folder, false);
-    if (tmpId1 != null) {
-      id1Folder = tmpId1;
-      return true;
-    }
-    return false;
-  }
-
-  Future<Directory?> _findHaxFolder([Directory? folder]) async {
-    folder ??= id0Folder;
-    if (id0Folder == null || variant == null) {
-      return null;
-    }
-    final hax = Hax.find(variant!);
-    final tmpId1HaxFolder = await id0Folder?.directory(hax?.id1);
-    if (tmpId1HaxFolder != null) {
-      id1HaxFolder = tmpId1HaxFolder;
-    }
-    return id1HaxFolder;
   }
 
   Future<Variant?> _pickVariant() => Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => VariantSelector(extra: _extra)),
+    MaterialPageRoute(builder: (context) => VariantSelector(extra: installer.extraVersions)),
   );
 
   void _doSetup() async {
@@ -420,11 +197,10 @@ class _InstallerState extends State<Installer> {
     if (variant == null) {
       return;
     }
-    this.variant = variant;
+    installer.switchVariant(variant);
     _doWorkWrap(
-      work: _doActualSetup,
+      work: installer.setupHaxId1,
       done: (result) async {
-        (result ? _checkInjectState : _checkState)(silent: true);
         if (result) {
           _showAlert(null, _s().setup_alert_hax_id1_created_title,
               "${_s().setup_alert_hax_id1_created}\n\n${_s().setup_alert_dummy_mii_maker_and_db_reset}",
@@ -434,259 +210,42 @@ class _InstallerState extends State<Installer> {
     );
   }
 
-  Future<bool> _doActualSetup() async {
-    talker.debug("Setup: Setup - ${variant?.model.name} ${variant?.version.major}.${variant?.version.minor}");
-    if (variant == null) {
-      talker.error("Setup: No variant selected");
-      return false;
-    }
-    final hax = Hax.find(variant!);
-    if (hax == null) {
-      talker.error("Setup: No available hax");
-      return false;
-    }
-    if (!await _findId1()) {
-      talker.error("Setup: ID1 Issue");
-      await _showAlert(null, _s().setup_alert_setup_title, _s().setup_alert_no_or_more_id1);
-      return false;
-    }
-
-    if (!await _doSetupSDRoot()) {
-      return false;
-    }
-
-    try {
-      id1Folder = await id1Folder?.renameAddSuffix(kOldId1Suffix);
-    } on FileSystemException catch (e) {
-      talker.error("Setup: failed to rename id1");
-      talker.debug("Setup: Error: ${e.message} @ ${e.path}");
-      return false;
-    }
-    id1HaxFolder = await id0Folder?.directory(_legacyCode ? hax.legacyId1 : hax.id1, create: true);
-    if (id1HaxFolder == null) {
-      talker.error("Setup: failed to create hax id1");
-      return false;
-    }
-
-    if (!await _createDummyDbs()) {
-      return false;
-    }
-    return true;
-  }
-
-  Future<bool> _checkIfDummyDbs({bool silent = false}) async {
-    final dbs = await id1HaxFolder?.directory("dbs", caseInsensitive: true);
-    if (dbs == null) {
-      talker.warning("Setup: dbs doesn't exist");
-      await _createDummyDbs();
-      return true;
-    }
-    final title = await dbs.file("title.db", caseInsensitive: true);
-    final import = await dbs.file("import.db", caseInsensitive: true);
-    if (title == null || import == null) {
-      talker.error("Setup: db file doesn't exist");
-      await _createDummyDbs();
-      return true;
-    }
-    if (await title.length() == 0 || await import.length() == 0) {
-      talker.warning("Setup: db files are dummy!");
-      if (!silent) {
-        await _showAlert(null, _s().setup_alert_dummy_db_title, "${_s().setup_alert_dummy_db_found}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
-      }
-      return true;
-    }
-    if (await title.length() != 0x31e400 || await import.length() != 0x31e400) {
-      talker.error("Setup: db files are corrupted!");
-      if (!silent) {
-        await _showAlert(null, _s().setup_alert_dummy_db_title, "${_s().setup_alert_dummy_db_corrupted}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
-      }
-      return true;
-    }
-    return false;
-  }
-
-  Future<bool> _createDummyDbs() async {
-    if (id1HaxFolder == null) {
-      talker.error("Setup: id1HaxFolder missing!\n$e");
-      return false;
-    }
-    Directory? dbs;
-    try {
-      dbs = await id1HaxFolder?.directory("dbs", caseInsensitive: true) ??
-          await id1HaxFolder?.directory("dbs", create: true);
-    } on FileSystemException catch (e) {
-      talker.error("Setup: can't create dbs folder!\n$e");
-      return false;
-    }
-    try {
-      await dbs?.file("title.db", caseInsensitive: true) ??
-        await dbs?.file("title.db", create: true).then((f) => f?.writeAsBytes([], flush: true));
-    } on FileSystemException catch (e) {
-      talker.error("Setup: can't create title.db!\n$e");
-      return false;
-    }
-    try {
-      await dbs?.file("import.db", caseInsensitive: true) ??
-        await dbs?.file("import.db", create: true).then((f) => f?.writeAsBytes([], flush: true));
-    } on FileSystemException catch (e) {
-      talker.error("Setup: can't create title.db!\n$e");
-      return false;
-    }
-    return true;
-  }
-
-  Future<bool> _doSetupSDRoot() async {
-    if (sdRoot != null) {
-    }
-    final missing = await _checkSDRootMissing(silent: true);
-    if (missing == null) {
-      talker.debug("Setup - SD root: no missing");
-      return true;
-    }
-    var getOptional = false;
-    if (missing.entries.any((entry) => entry.value.optional)) {
-      await _showAlert(
-        null,
-        _s().setup_alert_confirm_title,
-        _s().setup_alert_sd_setup_optional_prompt,
-        (context) => <Widget>[
-          _buildAlertButton(context, _s().alert_general_no, null),
-          _buildAlertButton(context, _s().alert_general_yes, (pop) {
-            pop();
-            getOptional = true;
-          }),
-        ],
-      );
-    }
-    final fileList = missing.entries.where((e) => getOptional || !e.value.optional).map((e) => e.key);
-    //talker.debug(fileList);
-    await downloadSdRootFiles(sdRoot!, fileList: fileList.toList(growable: false));
-    final verify = await _checkSDRootMissing(silent: true);
-    //talker.debug(verify);
-    if (verify != null && verify.keys.any((e) => fileList.contains(e))) {
-      _showAlert(null, _s().setup_alert_setup_title, _s().setup_alert_sd_setup_failed);
-      return false;
-    }
-    return true;
-  }
-
-  Future<Map<String, CheckState>?> _checkSDRootMissing({bool silent = false}) async {
-    if (sdRoot == null) { // always pass when unable to check
-      return null;
-    }
-    talker.debug("Setup: Checking SD root files...");
-    var missing = await sdRootCheck(sdRoot!, loose: _looseRootCheck);
-    //talker.debug(missing);
-    if (!silent && missing != null) {
-      final list = missing.entries.map<String>((entry) {
-        final state = switch (entry.value.state) {
-          CheckStateState.missing => _s().setup_alert_sd_setup_file_state_missing,
-          CheckStateState.outdated => _s().setup_alert_sd_setup_file_state_outdated,
-          CheckStateState.unknownOrCorrupted => _s().setup_alert_sd_setup_file_state_unknown_corrupted,
-        };
-        return "${entry.key}: $state";
-      }).sorted((a, b) => a.toUpperCase().compareTo(b.toUpperCase())).join("\n");
-      await _showAlert(
-          null,
-          _s().setup_alert_setup_title,
-          "${_s().setup_alert_sd_setup_file_missing}\n\n$list",
-          (context) => <Widget>[
-            _buildAlertButton(context, _s().setup_alert_sd_setup_action_setup, (pop) {
-              pop();
-              _doWorkWrap(
-                work: _doSetupSDRoot,
-                done: (result) async {
-                  if (result) {
-                    missing = null;
-                  }
-                },
-              );
-            }),
-            //const Spacer(),
-            _buildAlertButton(context, _s().alert_neutral, null),
-          ]
-      );
-    }
-    return missing;
-  }
-
   void _doRepickVariant() async {
-    if (id1HaxFolder == null) {
+    if (installer.id1HaxFolder == null) {
       return;
     }
     final variant = await _pickVariant();
-    if (variant == null || variant == this.variant) {
-      talker.debug("Setup: Repick Variant - Same Variant Picked");
-      return;
-    }
-    talker.debug("Setup: Repick Variant - ${variant.model.name} ${variant.version.major}.${variant.version.minor}");
-    final hax = Hax.find(variant);
-    if (hax == null) {
-      talker.error("Setup: Repick Variant - No available hax");
+    if (variant == null || variant == installer.variant) {
+      talker.debug("Setup: Repick Variant - Cancelled / Same Variant Picked");
       return;
     }
     _doWorkWrap(
-      work: () async {
-        try {
-          id1HaxFolder = await id1HaxFolder?.renameInplace(_legacyCode ? hax.legacyId1 : hax.id1);
-        } on FileSystemException catch (e) {
-          talker.error("Setup: Repick Variant - failed to rename hax id1");
-          talker.debug("Setup: Error: ${e.message} @ ${e.path}");
-          return false;
-        }
-        this.variant = variant;
-        return true;
-      },
+      work: () => installer.switchVariant(variant),
       done: (result) async {
-        _checkInjectState(silent: true);
+        installer.checkInjectState(silent: true);
       },
     );
   }
 
-  void _doInjectTrigger() async {
-    _doWorkWrap(
-      showLoading: false, // this is usually fast enough?
-      work: () async {
-        return await (await id1HaxExtdataFolder?.file(kTriggerFile, create: true))?.writeAsBytes([], flush: true) != null;
-      },
-      done: (result) async {
-        _checkInjectState(skipSdRoot: true);
-      },
-    );
-  }
+  void _doInjectTrigger() => _doWorkWrap(
+    showLoading: false, // this is usually fast enough?
+    work: installer.injectTrigger,
+  );
 
-  void _doRemoveTrigger() async {
-    _doWorkWrap(
-      showLoading: false, // this is usually fast enough?
-      work: () async {
-        return await (await id1HaxExtdataFolder?.file(kTriggerFile))?.delete() != null;
-      },
-      done: (result) async {
-        _checkInjectState(skipSdRoot: true);
-      },
-    );
-  }
+  void _doRemoveTrigger() => _doWorkWrap(
+    showLoading: false, // this is usually fast enough?
+    work: installer.removeTrigger,
+  );
 
-  void _doRemove() async {
-    talker.debug("Setup: Remove - ${variant?.model} ${variant?.version.major}.${variant?.version.minor}");
-    _doWorkWrap(
-      work: () async {
-        await (await _findHaxFolder())?.delete(recursive: true);
-        final backupId1 = await _findBackupId1();
-        await backupId1?.renameInplace(backupId1.name.replaceAll(kOldId1Suffix, ''));
-        return true;
-      },
-      done: (result) async {
-        variant = null;
-        _checkState(silent: true, skipSdRoot: true);
-      },
-    );
-  }
+  void _doRemove() => _doWorkWrap(
+    work: installer.removeHaxId1,
+  );
 
-  Future<bool> _doWorkWrap({required Future<bool> Function() work, required Future<void> Function(bool result) done, bool showLoading = true}) async {
-    setState(() {
-      _stage = Stage.doingWork;
-    });
+  Future<bool> _doWorkWrap({
+    bool showLoading = true,
+    required Future<bool> Function() work,
+    Future<void> Function(bool result)? done,
+  }) async {
     if (showLoading) {
       _showLoading(null, _s().setup_loading);
     }
@@ -699,14 +258,16 @@ class _InstallerState extends State<Installer> {
     if (showLoading && context.mounted) {
       Navigator.of(context).pop();
     }
-    await done(result);
+    if (done != null) {
+      await done(result);
+    }
     return result;
   }
 
-  Widget _genButton(BuildContext context, List<Stage>? stages, Function()? action, String text, {Function()? extraAction}) {
+  Widget _genButton(BuildContext context, List<HaxStage>? stages, Function()? action, String text, {Function()? extraAction}) {
     const double margin = 8;
     final mainButton = FilledButton(
-      onPressed: (stages != null && (stages.isEmpty || stages.contains(_stage))) ? action : null,
+      onPressed: (stages != null && (stages.isEmpty || stages.contains(installer.stage))) ? action : null,
       style: FilledButton.styleFrom(
         minimumSize: const Size.fromHeight(64),
       ),
@@ -737,6 +298,88 @@ class _InstallerState extends State<Installer> {
     );
   }
 
+  void _stageUpdate(HaxStage stage) async {
+    talker.debug("Installer: stage updated to $stage");
+    await Future.delayed(Duration.zero);
+    setState(() {
+    });
+  }
+
+  void _handleConfirmation(HaxConfirmationType confirmationType, Future<bool> Function(bool) confirm, [dynamic extraData]) async {
+    switch (confirmationType) {
+      case HaxConfirmationType.autoSdRootSetup:
+        final missing = extraData as Map<String, CheckState>;
+        final list = missing.entries.map<String>((entry) {
+          final state = switch (entry.value.state) {
+            CheckStateState.missing => _s().setup_alert_sd_setup_file_state_missing,
+            CheckStateState.outdated => _s().setup_alert_sd_setup_file_state_outdated,
+            CheckStateState.unknownOrCorrupted => _s().setup_alert_sd_setup_file_state_unknown_corrupted,
+          };
+          return "${entry.key}: $state";
+        }).sorted((a, b) => a.toUpperCase().compareTo(b.toUpperCase())).join("\n");
+        var doSDSetup = false;
+        await _showAlert(
+            null,
+            _s().setup_alert_setup_title,
+            "${_s().setup_alert_sd_setup_file_missing}\n\n$list",
+            (context) => <Widget>[
+              _buildAlertButton(context, _s().setup_alert_sd_setup_action_setup, (pop) {
+                pop();
+                doSDSetup = true;
+              }),
+              //const Spacer(),
+              _buildAlertButton(context, _s().alert_neutral, null),
+            ]
+        );
+        if (doSDSetup) {
+          _doWorkWrap(
+              work: () => confirm(true),
+              done: (result) async {}
+          );
+        } else {
+          confirm(false);
+        }
+      case HaxConfirmationType.sdRootSetupIncludeOptional:
+        var getOptional = false;
+        await _showAlert(
+          null,
+          _s().setup_alert_confirm_title,
+          _s().setup_alert_sd_setup_optional_prompt,
+          (context) => <Widget>[
+            _buildAlertButton(context, _s().alert_general_no, null),
+            _buildAlertButton(context, _s().alert_general_yes, (pop) {
+              pop();
+              getOptional = true;
+            }),
+          ],
+        );
+        confirm(getOptional);
+    }
+  }
+
+  void _handleAlert(HaxAlertType exceptionType) {
+    switch (exceptionType) {
+      case HaxAlertType.noHaxAvailable:
+      case HaxAlertType.multipleHaxId1:
+      case HaxAlertType.noId1:
+        _showAlert(null, _s().setup_alert_setup_title, _s().setup_alert_no_or_more_id1);
+      case HaxAlertType.multipleId1:
+        _showAlert(null, _s().setup_alert_setup_title, _s().setup_alert_no_or_more_id1);
+      case HaxAlertType.sdSetupFailed:
+        _showAlert(null, _s().setup_alert_setup_title, _s().setup_alert_sd_setup_failed);
+      case HaxAlertType.dummyDb:
+        _showAlert(null, _s().setup_alert_dummy_db_title, "${_s().setup_alert_dummy_db_found}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
+      case HaxAlertType.corruptedDb:
+        _showAlert(null, _s().setup_alert_dummy_db_title, "${_s().setup_alert_dummy_db_corrupted}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
+      case HaxAlertType.extdataFolderMissing:
+        _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_missing);
+      case HaxAlertType.homeMenuExtdataMissing:
+        _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_home_menu);
+      case HaxAlertType.miiMakerExtdataMissing:
+        _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_mii_maker);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -747,6 +390,11 @@ class _InstallerState extends State<Installer> {
             null, false);
       });
     }
+    installer = HaxInstaller(
+      stageUpdateCallback: _stageUpdate,
+      alertCallback: _handleAlert,
+      confirmationCallback: _handleConfirmation,
+    );
   }
 
   @override
@@ -806,10 +454,10 @@ class _InstallerState extends State<Installer> {
                     builder: (subContext, subSetState) =>
                         CheckboxListTile(
                           title: Text(_s().menu_extra),
-                          value: _extra,
+                          value: installer.extraVersions,
                           onChanged: (bool? value) {
                             subSetState(() {
-                              _extra = !_extra;
+                              installer.extraVersions = !installer.extraVersions;
                             });
                           },
                         ),
@@ -821,10 +469,10 @@ class _InstallerState extends State<Installer> {
                     builder: (subContext, subSetState) =>
                         CheckboxListTile(
                           title: Text(_s().menu_loose_root_check),
-                          value: _looseRootCheck,
+                          value: installer.looseRootCheck,
                           onChanged: (bool? value) {
                             subSetState(() {
-                              _looseRootCheck = !_looseRootCheck;
+                              installer.looseRootCheck = !installer.looseRootCheck;
                             });
                           },
                         ),
@@ -836,10 +484,10 @@ class _InstallerState extends State<Installer> {
                     builder: (subContext, subSetState) =>
                         CheckboxListTile(
                           title: Text(_s().menu_legacy),
-                          value: _legacyCode,
+                          value: installer.legacyCode,
                           onChanged: (bool? value) {
                             subSetState(() {
-                              _legacyCode = !_legacyCode;
+                              installer.legacyCode = !installer.legacyCode;
                             });
                           },
                         ),
@@ -863,18 +511,18 @@ class _InstallerState extends State<Installer> {
         children: <Widget>[
           _genButton(
             context,
-            const [Stage.pick, Stage.setup, Stage.postSetup, Stage.inject, Stage.trigger, Stage.broken],
+            const [HaxStage.pickFolder, HaxStage.folderPicked, HaxStage.postSetup, HaxStage.readyToInject, HaxStage.doExploit, HaxStage.broken],
             _pickFolder,
             showPickN3DS ? S.of(context).installer_button_pick_3ds : S.of(context).installer_button_pick_sd,
           ),
-          switch (_stage) {
-            Stage.doingWork =>
+          switch (installer.stage) {
+            HaxStage.doingWork =>
                 _genButton(context, null, null, _s().installer_button_dummy_checking),
-            Stage.postSetup || Stage.inject || Stage.trigger || Stage.broken =>
+            HaxStage.postSetup || HaxStage.readyToInject || HaxStage.doExploit || HaxStage.broken =>
                 _genButton(
                   context,
                   const [],
-                  _checkState,
+                  installer.checkState,
                   _s().installer_button_check,
                   extraAction: () {
                     _showAlert(
@@ -894,26 +542,26 @@ class _InstallerState extends State<Installer> {
             _ =>
                 _genButton(
                   context,
-                  const [Stage.setup],
+                  const [HaxStage.folderPicked],
                   _doSetup,
                   _s().installer_button_setup,
                 )
           },
           _genButton(
             context,
-            const [Stage.inject],
+            const [HaxStage.readyToInject],
             _doInjectTrigger,
             S.of(context).installer_button_inject_trigger,
           ),
           _genButton(
             context,
-            const [Stage.trigger],
+            const [HaxStage.doExploit],
             _doRemoveTrigger,
             S.of(context).installer_button_remove_trigger,
           ),
           _genButton(
             context,
-            const [Stage.postSetup, Stage.inject, Stage.trigger, Stage.broken],
+            const [HaxStage.postSetup, HaxStage.readyToInject, HaxStage.doExploit, HaxStage.broken],
             _doRemove,
             S.of(context).installer_button_remove,
           ),
@@ -921,12 +569,6 @@ class _InstallerState extends State<Installer> {
       ),
     );
   }
-}
-
-class DirectoryHaxPair {
-  DirectoryHaxPair(this.folder, this.hax);
-  Directory folder;
-  Hax hax;
 }
 
 class VariantSelector extends StatefulWidget {

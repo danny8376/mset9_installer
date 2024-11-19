@@ -13,6 +13,8 @@ abstract interface class ExtendedDirectory {
   Future<Directory?> directory(String? name, {bool create = false, bool caseInsensitive = false}) => throw UnimplementedError('Unsupported');
   Future<FileSystemEntity?> child(String? name, {bool caseInsensitive = false}) => throw UnimplementedError('Unsupported');
 
+  bool get isRoot => throw UnimplementedError('Unsupported');
+
   Future<Directory> renameInplace(String newName) => throw UnimplementedError('Unsupported');
   Future<Directory> renameAddSuffix(String suffix) => throw UnimplementedError('Unsupported');
 }

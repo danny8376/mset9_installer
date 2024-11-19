@@ -45,7 +45,12 @@ class _Directory extends _FileSystemEntity implements Directory, ExtendedDirecto
   final SafDocumentFile _doc;
   final Directory? _parent;
 
-  _Directory(this._doc, [this._parent]);
+  @override
+  late final bool isRoot;
+
+  _Directory(this._doc, [this._parent]) {
+    isRoot = _parent == null;
+  }
 
   @override
   Directory get absolute => throw UnimplementedError();

@@ -44,7 +44,11 @@ class FileSystemUtils {
 class FileSystemEntity {
   final FileSystemHandle handle;
   final FileSystemDirectoryHandle? parentHandle;
-  FileSystemEntity(this.handle, [this.parentHandle]);
+  late final bool isRoot;
+
+  FileSystemEntity(this.handle, [this.parentHandle]) {
+    isRoot = parentHandle == null;
+  }
 
   // if this is file picked directly, will crash, but should be fine for our case
   Directory get parent => parentHandle == null ? this as Directory : Directory(parentHandle!);

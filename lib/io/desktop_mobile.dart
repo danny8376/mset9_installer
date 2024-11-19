@@ -23,7 +23,7 @@ bool get isDesktop => Platform.isWindows || Platform.isMacOS || Platform.isLinux
 bool get isMobile => Platform.isAndroid || Platform.isIOS;
 const bool isSupported = true;
 bool get isLegacyCodeCompatible => !Platform.isMacOS && !Platform.isIOS;
-bool get canAccessParentOfPicked => !isMobile;
+bool get canAccessParentOfPicked => isDesktop;
 bool get showPickN3DS => Platform.isAndroid;
 
 Future<Directory?> pickFolder() {
@@ -152,6 +152,8 @@ extension DirectoryDesktopMobileExtention on Directory {
       (this is ExtendedDirectory ? (this as ExtendedDirectory).directory : _directory)(name, create: create, caseInsensitive: caseInsensitive);
   Future<FileSystemEntity?> child(String? name, {bool caseInsensitive = false}) =>
       (this is ExtendedDirectory ? (this as ExtendedDirectory).child : _child)(name, caseInsensitive: caseInsensitive);
+
+  bool get isRoot => this is ExtendedDirectory ? (this as ExtendedDirectory).isRoot : path == parent.path;
 
   Future<Directory> renameInplace(String newName) {
     if (this is ExtendedDirectory) {
