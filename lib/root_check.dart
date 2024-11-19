@@ -162,7 +162,7 @@ Future<void> downloadSdRootFiles(Directory sdRoot, {List<String>? fileList, Map<
     }
     // all files extracted, skip
     if (extractMap?.values.every((e) => downloadList[e]?.done == true) == true) {
-      talker.debug("downloadSdRootFiles: all files for $fileName are already done, skip.");
+      talker.debug("RootCheck: all files for $fileName are already done, skip.");
       continue;
     }
     for (final uri in check.src) {
@@ -206,7 +206,7 @@ Future<void> downloadSdRootFiles(Directory sdRoot, {List<String>? fileList, Map<
             }
             await file?.writeAsBytes(content);
             extractToDownloadEntry.done = true;
-            talker.debug("downloadSdRootFiles: $fileName : ${archiveFile.name} => $extractTo");
+            talker.debug("RootCheck: $fileName : ${archiveFile.name} => $extractTo");
           }
         } else {
           final file = await _resolveFile(sdRoot, fileName, create: true);
@@ -218,7 +218,7 @@ Future<void> downloadSdRootFiles(Directory sdRoot, {List<String>? fileList, Map<
       } on _SdRootDownloadSkip {
         continue;
       } catch (e, st) {
-        talker.debug("downloadSdRootFiles: Error getting remote file: $uri", e, st);
+        talker.debug("RootCheck: Error getting remote file: $uri", e, st);
         continue;
       }
     }
@@ -353,15 +353,15 @@ class RootCheckList {
     RootCheckList? newData;
     for (final uri in src) {
       try {
+        talker.debug("RootCheck: checking remote JSON: $uri");
         final stream = await uri.get();
-        newData =
-            RootCheckList._fromJson(jsonDecode(stream.toString()), checks);
+        newData = RootCheckList._fromJson(jsonDecode(await stream.bytesToString()), checks);
         if (newData.update < update) {
           return;
         }
         break;
       } catch (e, st) {
-        talker.debug("downloadSdRootFiles: Error getting remote JSON: $uri", e, st);
+        talker.debug("RootCheck: Error getting remote JSON: $uri", e, st);
         continue;
       }
     }
