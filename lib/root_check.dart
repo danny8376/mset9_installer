@@ -81,7 +81,9 @@ Future<Map<String, CheckState>?> _checkVariant(Directory sdRoot, Map<String, SDR
     if (check.type == SDRootFileType.archive) {
       continue;
     }
-    final optional = loose ? check.type != SDRootFileType.mset9 : check.type == SDRootFileType.recommended;
+    final optional = loose ?
+        !const [SDRootFileType.mset9, SDRootFileType.critical].contains(check.type) :
+        check.type == SDRootFileType.recommended;
     final file = await _resolveFile(sdRoot, path, create: false);
     if (file == null) {
       missing[path] = CheckState(CheckStateState.missing, optional);
@@ -387,7 +389,7 @@ class RootCheckList {
   }
 }
 
-enum SDRootFileType { archive, link, mset9, essential, recommended }
+enum SDRootFileType { archive, link, mset9, critical, essential, recommended }
 
 @JsonSerializable()
 class SDRootFile {

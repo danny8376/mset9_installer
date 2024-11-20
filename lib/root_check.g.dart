@@ -60,6 +60,7 @@ const _$SDRootFileTypeEnumMap = {
   SDRootFileType.archive: 'archive',
   SDRootFileType.link: 'link',
   SDRootFileType.mset9: 'mset9',
+  SDRootFileType.critical: 'critical',
   SDRootFileType.essential: 'essential',
   SDRootFileType.recommended: 'recommended',
 };

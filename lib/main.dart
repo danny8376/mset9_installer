@@ -310,18 +310,22 @@ class _InstallerState extends State<Installer> {
     switch (confirmationType) {
       case HaxConfirmationType.autoSdRootSetup:
         final missing = extraData as Map<String, CheckState>;
+        final optionalOnly = missing.entries.every((e) => e.value.optional);
         final list = missing.entries.map<String>((entry) {
           final state = switch (entry.value.state) {
             CheckStateState.missing => _s().setup_alert_sd_setup_file_state_missing,
             CheckStateState.outdated => _s().setup_alert_sd_setup_file_state_outdated,
             CheckStateState.unknownOrCorrupted => _s().setup_alert_sd_setup_file_state_unknown_corrupted,
           };
-          return "${entry.key}: $state";
+          final suffix = installer.looseRootCheck ?
+              (entry.value.optional ? "" : " (${_s().setup_alert_sd_setup_file_state_required})") :
+              (entry.value.optional ? " (${_s().setup_alert_sd_setup_file_state_optional})" : "");
+          return "${entry.key}: $state$suffix";
         }).sorted((a, b) => a.toUpperCase().compareTo(b.toUpperCase())).join("\n");
         var doSDSetup = false;
         await _showAlert(
             null,
-            _s().setup_alert_setup_title,
+            optionalOnly ? _s().setup_alert_warning_title : _s().setup_alert_error_title,
             "${_s().setup_alert_sd_setup_file_missing}\n\n$list",
             (context) => <Widget>[
               _buildAlertButton(context, _s().setup_alert_sd_setup_action_setup, (pop) {
@@ -340,7 +344,7 @@ class _InstallerState extends State<Installer> {
         } else {
           confirm(false);
         }
-      case HaxConfirmationType.sdRootSetupIncludeOptional:
+      case HaxConfirmationType.sdRootSetupIncludeCorruptedUnknownOptional:
         var getOptional = false;
         await _showAlert(
           null,
@@ -363,11 +367,11 @@ class _InstallerState extends State<Installer> {
       case HaxAlertType.noHaxAvailable:
       case HaxAlertType.multipleHaxId1:
       case HaxAlertType.noId1:
-        _showAlert(null, _s().setup_alert_setup_title, _s().setup_alert_no_or_more_id1);
+        _showAlert(null, _s().setup_alert_error_title, _s().setup_alert_no_or_more_id1);
       case HaxAlertType.multipleId1:
-        _showAlert(null, _s().setup_alert_setup_title, _s().setup_alert_no_or_more_id1);
+        _showAlert(null, _s().setup_alert_error_title, _s().setup_alert_no_or_more_id1);
       case HaxAlertType.sdSetupFailed:
-        _showAlert(null, _s().setup_alert_setup_title, _s().setup_alert_sd_setup_failed);
+        _showAlert(null, _s().setup_alert_error_title, _s().setup_alert_sd_setup_failed);
       case HaxAlertType.dummyDb:
         _showAlert(null, _s().setup_alert_dummy_db_title, "${_s().setup_alert_dummy_db_found}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
       case HaxAlertType.corruptedDb:
@@ -534,7 +538,7 @@ class _InstallerState extends State<Installer> {
                       _s().setup_alert_confirm_title,
                       _s().setup_alert_repick_variant_prompt,
                       (context) => <Widget>[
-                        _buildAlertButton(context, _s().alert_general_no, null),
+                        _buildAlertButton(context, _s().alert_general_cancel, null),
                         _buildAlertButton(context, _s().alert_general_yes, (pop) {
                           pop();
                           _doRepickVariant();

@@ -11,8 +11,12 @@
   "@alert_general_yes": {
     "description": ""
   },
-  "alert_general_no": "Cancel",
+  "alert_general_no": "No",
   "@alert_general_no": {
+    "description": ""
+  },
+  "alert_general_cancel": "Cancel",
+  "@alert_general_cancel": {
     "description": ""
   },
   "alert_not_supported_title": "Not Supported",
@@ -119,11 +123,15 @@
   "@setup_alert_confirm_title": {
     "description": ""
   },
-  "setup_alert_setup_title": "Setup Error",
-  "@setup_alert_setup_title": {
+  "setup_alert_warning_title": "Setup - Warning",
+  "@setup_alert_warning_title": {
     "description": ""
   },
-  "setup_alert_sd_setup_optional_prompt": "Do you want to automatically download corrupted/unknown/optional files?",
+  "setup_alert_error_title": "Setup Error",
+  "@setup_alert_error_title": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_optional_prompt": "Do you want to automatically download corrupted/unknown/non-critical files?",
   "@setup_alert_sd_setup_optional_prompt": {
     "description": ""
   },
@@ -141,6 +149,14 @@
   },
   "setup_alert_sd_setup_file_state_unknown_corrupted": "Corrupted/Unknown",
   "@setup_alert_sd_setup_file_state_unknown_corrupted": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_file_state_required": "Required",
+  "@setup_alert_sd_setup_file_state_required": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_file_state_optional": "Optional",
+  "@setup_alert_sd_setup_file_state_optional": {
     "description": ""
   },
   "setup_alert_sd_setup_file_missing": "The following files on your sd root are missing/corrupted/unknown:",

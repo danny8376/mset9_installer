@@ -22,7 +22,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "alert_general_no": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "alert_general_cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "alert_general_no": MessageLookupByLibrary.simpleMessage("No"),
         "alert_general_yes": MessageLookupByLibrary.simpleMessage("Yes"),
         "alert_neutral": MessageLookupByLibrary.simpleMessage("OK"),
         "alert_not_supported": MessageLookupByLibrary.simpleMessage(
@@ -84,6 +85,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "setup_alert_dummy_mii_maker_and_db_reset":
             MessageLookupByLibrary.simpleMessage(
                 "Put sd card back to your 3ds, power it on, then open Mii Maker.\nAfter Mii Maker loaded, press HOME, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset."),
+        "setup_alert_error_title":
+            MessageLookupByLibrary.simpleMessage("Setup Error"),
         "setup_alert_extdata_home_menu":
             MessageLookupByLibrary.simpleMessage("There\'s no Home Menu Data"),
         "setup_alert_extdata_mii_maker":
@@ -109,15 +112,19 @@ class MessageLookup extends MessageLookupByLibrary {
             "The following files on your sd root are missing/corrupted/unknown:"),
         "setup_alert_sd_setup_file_state_missing":
             MessageLookupByLibrary.simpleMessage("Missing"),
+        "setup_alert_sd_setup_file_state_optional":
+            MessageLookupByLibrary.simpleMessage("Optional"),
         "setup_alert_sd_setup_file_state_outdated":
             MessageLookupByLibrary.simpleMessage("Outdated"),
+        "setup_alert_sd_setup_file_state_required":
+            MessageLookupByLibrary.simpleMessage("Required"),
         "setup_alert_sd_setup_file_state_unknown_corrupted":
             MessageLookupByLibrary.simpleMessage("Corrupted/Unknown"),
         "setup_alert_sd_setup_optional_prompt":
             MessageLookupByLibrary.simpleMessage(
-                "Do you want to automatically download corrupted/unknown/optional files?"),
-        "setup_alert_setup_title":
-            MessageLookupByLibrary.simpleMessage("Setup Error"),
+                "Do you want to automatically download corrupted/unknown/non-critical files?"),
+        "setup_alert_warning_title":
+            MessageLookupByLibrary.simpleMessage("Setup - Warning"),
         "setup_loading":
             MessageLookupByLibrary.simpleMessage("Setting up MSET9 ..."),
         "title_installer":

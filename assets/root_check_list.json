@@ -1,5 +1,5 @@
 {
-  "update": 1731464746,
+  "update": 1732059364,
   "src": [
     "https://raw.githubusercontent.com/danny8376/mset9_installer/refs/heads/master/assets/root_check_list.json",
     "https://raw.githubusercontent.com/danny8376/mset9_installer/refs/heads/publish/assets/root_check_list.json"
@@ -44,7 +44,7 @@
       "src": [ "archive://boot9strap.zip#boot9strap.firm.sha" ]
     },
     "SafeB9S.bin#1,0": {
-      "type": "essential",
+      "type": "critical",
       "hash": [
         "5c31f0feee8d5a7ae840b28456498797ada7384e5bc74750deb149f6fb9fd154"
       ],
@@ -65,7 +65,7 @@
       "src": [ "link://boot9strap.firm.sha" ]
     },
     "SafeB9S.bin#1,1": {
-      "type": "essential",
+      "type": "critical",
       "hash": [
         "566d34d8c247ae2c6569c5193c4e9899b00f782e043a1aed77c4f2dc30b93e1d"
       ],

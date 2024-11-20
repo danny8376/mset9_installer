@@ -80,11 +80,21 @@ class S {
     );
   }
 
-  /// `Cancel`
+  /// `No`
   String get alert_general_no {
     return Intl.message(
-      'Cancel',
+      'No',
       name: 'alert_general_no',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get alert_general_cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'alert_general_cancel',
       desc: '',
       args: [],
     );
@@ -350,20 +360,30 @@ class S {
     );
   }
 
-  /// `Setup Error`
-  String get setup_alert_setup_title {
+  /// `Setup - Warning`
+  String get setup_alert_warning_title {
     return Intl.message(
-      'Setup Error',
-      name: 'setup_alert_setup_title',
+      'Setup - Warning',
+      name: 'setup_alert_warning_title',
       desc: '',
       args: [],
     );
   }
 
-  /// `Do you want to automatically download corrupted/unknown/optional files?`
+  /// `Setup Error`
+  String get setup_alert_error_title {
+    return Intl.message(
+      'Setup Error',
+      name: 'setup_alert_error_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to automatically download corrupted/unknown/non-critical files?`
   String get setup_alert_sd_setup_optional_prompt {
     return Intl.message(
-      'Do you want to automatically download corrupted/unknown/optional files?',
+      'Do you want to automatically download corrupted/unknown/non-critical files?',
       name: 'setup_alert_sd_setup_optional_prompt',
       desc: '',
       args: [],
@@ -405,6 +425,26 @@ class S {
     return Intl.message(
       'Corrupted/Unknown',
       name: 'setup_alert_sd_setup_file_state_unknown_corrupted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Required`
+  String get setup_alert_sd_setup_file_state_required {
+    return Intl.message(
+      'Required',
+      name: 'setup_alert_sd_setup_file_state_required',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Optional`
+  String get setup_alert_sd_setup_file_state_optional {
+    return Intl.message(
+      'Optional',
+      name: 'setup_alert_sd_setup_file_state_optional',
       desc: '',
       args: [],
     );

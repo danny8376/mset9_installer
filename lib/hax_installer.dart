@@ -12,7 +12,7 @@ import 'talker.dart';
 enum HaxStage { pickFolder, folderPicked, /*pickVariant,*/ postSetup, readyToInject, doExploit, broken, doingWork }
 
 enum FolderAssignmentExceptionType { noN3DS, noId0, multipleId0, id1Picked, unknown }
-enum HaxConfirmationType { autoSdRootSetup, sdRootSetupIncludeOptional }
+enum HaxConfirmationType { autoSdRootSetup, sdRootSetupIncludeCorruptedUnknownOptional }
 enum HaxAlertType {
   noHaxAvailable,
   multipleHaxId1,
@@ -93,7 +93,7 @@ class HaxInstaller {
       if (id1HaxFolder == null) {
         return;
       }
-      if (!skipSdRoot && await checkSDRootMissing(silent: silent) != null) {
+      if (!skipSdRoot && await checkSDRootMissing(silent: silent, ignoreOptional: true) != null) {
         stageUpdateCallback(_stage = HaxStage.postSetup);
         return;
       }
@@ -389,7 +389,7 @@ class HaxInstaller {
     return result;
   }
 
-  Future<Map<String, CheckState>?> checkSDRootMissing({bool silent = false}) async {
+  Future<Map<String, CheckState>?> checkSDRootMissing({bool silent = false, bool ignoreOptional = false}) async {
     if (sdRoot == null) { // always pass when unable to check
       return null;
     }
@@ -413,10 +413,13 @@ class HaxInstaller {
           missing
       );
       if (await completer.future) {
-        missing = null;
+        missing = await sdRootCheck(sdRoot!, loose: looseRootCheck);
       }
     }
-    return missing;
+    if (ignoreOptional) {
+      missing?.removeWhere((k, v) => v.optional);
+    }
+    return missing?.isEmpty == true ? null : missing;
   }
 
   Future<bool> switchVariant(Variant variant) async {
@@ -519,20 +522,24 @@ class HaxInstaller {
         talker.debug("Setup - SD root: no missing");
         return true;
       }
-      var getOptional = false;
+      var getCorruptedUnknownOptional = true;
       if (missing.entries.any((entry) => entry.value.optional)) {
         final completer = Completer();
         confirmationCallback(
-          HaxConfirmationType.sdRootSetupIncludeOptional,
+          HaxConfirmationType.sdRootSetupIncludeCorruptedUnknownOptional,
           (answer) async {
             completer.complete(answer);
             return true;
           },
         );
-        getOptional = await completer.future;
+        getCorruptedUnknownOptional = await completer.future;
+        talker.debug("getCorruptedUnknownOptional: $getCorruptedUnknownOptional");
       }
       talker.debug("Setup - SD root: Downloading files...");
-      final fileList = missing.entries.where((e) => getOptional || !e.value.optional).map((e) => e.key);
+      final fileList = missing.entries.where((e) =>
+          getCorruptedUnknownOptional ||
+          (e.value.state == CheckStateState.missing && !e.value.optional)
+      ).map((e) => e.key);
       //talker.debug(fileList);
       await downloadSdRootFiles(sdRoot!, fileList: fileList.toList(growable: false));
       final verify = await checkSDRootMissing(silent: true);
