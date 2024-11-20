@@ -1,0 +1,24 @@
+# MSET9 Installer Todo
+
+### Todo
+
+- [ ] Show current status clearly in app
+- [ ] Auto SD card detection for desktop (with disks_desktop)
+- [ ] SD card monitoring for auto checking status
+- [ ] Eject/umount SD card after setup/inject
+- [ ] root_check.dart
+  - [ ] Add github release support
+  - [ ] Implement streamed zip decoder properly
+- [ ] iOS support
+  - [ ] Implement folder picker and scoped uri fs wrapper
+  - [ ] TrollStore folder picker issue, maybe unsandboxed version that can list/access SD card directly
+- [ ] Fully guided exploit, maybe integrate guide in app somehow
+- [ ] CLI support
+
+### In Progress
+
+- [ ] Replace and phasing out MSET9Installer4Android on Play Store
+
+### Done ✓
+
+- [x] Auto release with GitHub Actions
