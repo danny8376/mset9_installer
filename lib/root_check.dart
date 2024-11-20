@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
+import 'package:crypto/crypto.dart' as crypto;
 import 'package:collection/collection.dart' as c;
 import 'package:convert/convert.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' show ByteStream, Request;
+import 'package:http/http.dart' show ByteStream, Request, StreamedResponse;
 import 'package:http_parser/http_parser.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mset9_installer/talker.dart';
@@ -172,7 +173,7 @@ Future<void> downloadSdRootFiles(Directory sdRoot, {List<String>? fileList, Map<
         // TODO: implement streamed decoder properly, while we're probably never going to have really huge zip
         TypedData bytes = switch(uri.scheme) {
           "local" => await rootBundle.load("${uri.host}${uri.path}"),
-          "http" || "https" => await (await uri.get()).toBytes(),
+          "http" || "https" => await _getFileFromHttp(uri),
           // TODO: add github release support
           "github" => throw const _SdRootDownloadSkip(),
           "archive" => throw const _SdRootDownloadSkip(),
@@ -228,6 +229,28 @@ Future<void> downloadSdRootFiles(Directory sdRoot, {List<String>? fileList, Map<
       }
     }
   }
+}
+
+Future<TypedData> _getFileFromHttp(Uri uri) async {
+  final res = await uri.get();
+  final targetMsMd5 = res.headers["x-ms-blob-content-md5"];
+  final targetSha256 = res.headers["x-hash-sha256"];
+  final content = await res.stream.toBytes();
+  if (targetMsMd5 != null) {
+    talker.debug("RootCheck: targetMd5 (base64) of $uri : $targetMsMd5");
+    final hash = crypto.md5.convert(content);
+    if (base64Encode(hash.bytes) != targetMsMd5) {
+      throw const _HTTPDataCorruptedException();
+    }
+  }
+  if (targetSha256 != null) {
+    talker.debug("RootCheck: targetSha256 of $uri : $targetSha256");
+    final hash = await Hash.sha256.digestBytes(content);
+    if (hex.encode(hash) != targetSha256) {
+      throw const _HTTPDataCorruptedException();
+    }
+  }
+  return content;
 }
 
 Future<File?> _resolveFile(Directory parent, String path, {bool create = false, bool caseInsensitive = true}) async {
@@ -359,8 +382,8 @@ class RootCheckList {
     for (final uri in src) {
       try {
         talker.debug("RootCheck: checking remote JSON: $uri");
-        final stream = await uri.get();
-        newData = RootCheckList._fromJson(jsonDecode(await stream.bytesToString()), checks);
+        final res = await uri.get();
+        newData = RootCheckList._fromJson(jsonDecode(await res.stream.bytesToString()), checks);
         if (newData.update < update) {
           return;
         }
@@ -493,23 +516,27 @@ class _DateTimeConverter implements JsonConverter<DateTime, dynamic> {
 }
 
 extension _UriUtil on Uri {
-  Future<ByteStream> get() async {
+  Future<StreamedResponse> get() async {
     final req = Request("GET", this)
       ..followRedirects = true;
     final res = await _client.send(req);
     if (res.statusCode < 200 || res.statusCode > 299) {
-      throw _HTTPError(res.statusCode, res.reasonPhrase);
+      throw _HTTPErrorException(res.statusCode, res.reasonPhrase);
     }
-    return res.stream;
+    return res;
   }
 }
 
-class _HTTPError implements Exception {
+class _HTTPErrorException implements Exception {
   final int code;
   final String? phrase;
-  const _HTTPError(this.code, this.phrase);
+  const _HTTPErrorException(this.code, this.phrase);
   @override
   String toString() => "HTTPError($code, $phrase)";
+}
+
+class _HTTPDataCorruptedException implements Exception {
+  const _HTTPDataCorruptedException();
 }
 
 class InvalidVariantSelectionException implements Exception {
