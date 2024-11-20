@@ -1,0 +1,82 @@
+name: Build Steps - Linux
+description: Specific steps to build for Linux
+
+inputs:
+  architecture:
+    required: true
+  apt-arch:
+    required: true
+  appimage-arch:
+    required: true
+  build-android:
+    default: false
+
+env:
+  shell: bash
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install System Dependencies
+      shell: ${{ env.shell }}
+      run: sudo apt-get install -y clang cmake git ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-10-dev
+
+    - name: Enable Linux Build
+      shell: ${{ env.shell }}
+      run: flutter config --enable-linux-desktop
+
+    - name: Enable Android Build
+      shell: ${{ env.shell }}
+      run: flutter config --enable-android
+      if: ${{ inputs.build-android == true || inputs.build-android == 'true' }}
+
+    - name: Build for Linux
+      shell: ${{ env.shell }}
+      run: flutter build linux
+
+    - name: Generate Linux zip
+      shell: ${{ env.shell }}
+      run: |
+        cd build
+        mv linux/${{ inputs.architecture }}/release/bundle mset9_installer
+        zip -r mset9_installer-linux_${{ inputs.architecture }}.zip mset9_installer
+
+    - name: Read pubspec.yaml
+      uses: actions-tools/yaml-outputs@v2
+      id: pubspec
+      with:
+        file-path: 'pubspec.yaml'
+        export-env-variables: false
+
+    - name: Prepare for appimage-builder
+      shell: ${{ env.shell }}
+      run: |
+        mv build/mset9_installer AppDir
+        mkdir -p AppDir/usr/share/icons
+        cp linux/appimage/app_icon_256.png AppDir/usr/share/icons/mset9_installer.png
+        cp linux/appimage/AppImageBuilder.yml .
+        version=$(echo "${{ steps.pubspec.outputs.version }}" | cut -d'+' -f1)
+        echo "APP_VERSION=$version" >> $GITHUB_ENV
+
+    - name: Build AppImage
+      uses: AppImageCrafters/build-appimage-action@master
+      env:
+        APT_ARCH: ${{ inputs.apt-arch }}
+        APPIMAGE_ARCH: ${{ inputs.appimage-arch }}
+      with:
+        recipe: AppImageBuilder.yml
+
+    - name: Move AppImage into build folder
+      shell: ${{ env.shell }}
+      run: mv mset9_installer-${{ inputs.appimage-arch }}.AppImage* build
+
+    # TODO: add Android
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Releases-for-Linux-${{ inputs.architecture }}
+        path: |
+          build/mset9_installer-linux_${{ inputs.architecture }}.zip
+          build/mset9_installer-${{ inputs.appimage-arch }}.AppImage
+          build/mset9_installer-${{ inputs.appimage-arch }}.AppImage.zsync

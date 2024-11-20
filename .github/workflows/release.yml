@@ -1,0 +1,131 @@
+name: "Release"
+
+on:
+  push:
+    branches:
+      - publish
+
+env:
+  FLUTTER_VERSION: '3.16.9'
+  FLUTTER_CHANNEL: 'stable'
+
+jobs:
+  build-with-windows:
+    name: Build with Window
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Common Build Steps for Flutter
+        uses: ./.github/actions/build-steps-flutter-common
+        with:
+          shell: pwsh
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          flutter-channel: ${{ env.FLUTTER_CHANNEL }}
+
+      - name: Build Steps for Windows
+        uses: ./.github/actions/build-steps-win
+        with:
+          architecture: x64
+
+  build-with-macos:
+    name: Build with macOS
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Common Build Steps for Flutter
+        uses: ./.github/actions/build-steps-flutter-common
+        with:
+          shell: bash
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          flutter-channel: ${{ env.FLUTTER_CHANNEL }}
+
+      - name: Build Steps for macOS
+        uses: ./.github/actions/build-steps-macos
+
+  build-with-linux:
+    name: Build with Linux
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Common Build Steps for Flutter
+        uses: ./.github/actions/build-steps-flutter-common
+        with:
+          shell: bash
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          flutter-channel: ${{ env.FLUTTER_CHANNEL }}
+
+      - name: Build Steps for Linux
+        uses: ./.github/actions/build-steps-linux
+        with:
+          architecture: x64
+          apt-arch: amd64
+          appimage-arch: x86_64
+
+  publish:
+    name: Publish Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs: [build-with-windows, build-with-macos, build-with-linux]
+    if: github.ref == 'refs/heads/publish'
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Read pubspec.yaml
+        uses: actions-tools/yaml-outputs@v2
+        id: pubspec
+        with:
+          file-path: 'pubspec.yaml'
+          export-env-variables: false
+
+      - name: Extract version from pubspec.yaml
+        run: |
+          version=$(echo "${{ steps.pubspec.outputs.version }}" | cut -d'+' -f1)
+          echo "VERSION=$version" >> $GITHUB_ENV
+
+      - name: Check if Pre-Release
+        run: |
+          if echo "${{ env.VERSION }}" | grep -q '^[0-9]\+\.[0-9]\+\(\.[0-9]\+\)\?-'; then
+            echo "PRE_RELEASE=true" >> $GITHUB_ENV
+          else
+            echo "PRE_RELEASE=false" >> $GITHUB_ENV
+          fi
+
+      - name: Check if Tag Exists
+        run: |
+          if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
+            echo "TAG_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "TAG_EXISTS=false" >> $GITHUB_ENV
+          fi
+
+      - name: Modify Tag if Already Exists
+        if: env.TAG_EXISTS == 'true'
+        run: |
+          new_version="${{ env.VERSION }}-build-${{ github.run_number }}"
+          echo "VERSION=$new_version" >> $GITHUB_ENV
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "artifacts/*"
+          tag: v${{ env.VERSION }}
+          prerelease: ${{ env.PRE_RELEASE }}
+          generateReleaseNotes: true

@@ -1,0 +1,43 @@
+name: Build Steps - macOS
+description: Specific steps to build for macOS
+
+env:
+  shell: bash
+
+runs:
+  using: "composite"
+  steps:
+    - name: Enable macOS/iOS Build
+      shell: ${{ env.shell }}
+      run: flutter config --enable-macos-desktop --enable-ios
+
+    - name: Build for macOS
+      shell: ${{ env.shell }}
+      run: flutter build macos
+
+    - name: Generate macOS zip
+      shell: ${{ env.shell }}
+      run: |
+        cd build
+        mv macos/Build/Products/Release/*.app .
+        zip -r mset9_installer-macos.zip *.app
+
+    - name: Build IPA
+      shell: ${{ env.shell }}
+      run: flutter build ipa --no-codesign
+
+    - name: Generate Unsigned IPA
+      shell: ${{ env.shell }}
+      run: |
+        cd build
+        mkdir Payload
+        mv ios/archive/Runner.xcarchive/Products/Applications/Runner.app Payload
+        zip -r mset9_installer.ipa Payload
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Releases-with-macOS
+        path: |
+          build/mset9_installer-macos.zip
+          build/mset9_installer.ipa
