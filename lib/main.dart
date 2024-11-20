@@ -64,6 +64,8 @@ class Installer extends StatefulWidget {
 class _InstallerState extends State<Installer> {
   bool _advance = false;
 
+  bool _disclaimerShown = false;
+
   late final HaxInstaller installer;
 
   S _s() {
@@ -193,7 +195,36 @@ class _InstallerState extends State<Installer> {
     MaterialPageRoute(builder: (context) => VariantSelector(extra: installer.extraVersions)),
   );
 
+  Future<bool> _showDisclaimer() async {
+    if (_advance && _disclaimerShown) {
+      return true;
+    }
+    var confirm = false;
+    var disclaimer = _s().setup_alert_disclaimer;
+    if (isLinux) disclaimer += "\n\n${_s().setup_alert_disclaimer_linux_addition}";
+    if (kIsWeb) disclaimer += "\n\n${_s().setup_alert_disclaimer_web_addition}";
+    disclaimer += "\n\n${_s().setup_alert_disclaimer_confirm_to_continue}";
+    await _showAlert(
+      null,
+      _s().setup_alert_disclaimer_title,
+      disclaimer,
+      (context) => <Widget>[
+        _buildAlertButton(context, _s().alert_general_cancel, null),
+        _buildAlertButton(context, _s().alert_general_confirm, (pop) {
+          pop();
+          confirm = true;
+        }),
+      ],
+    );
+    _disclaimerShown = true;
+    return confirm;
+  }
+
   void _doSetup() async {
+    if (!await _showDisclaimer()) {
+      return;
+    }
+
     final variant = await _pickVariant();
     if (variant == null) {
       return;

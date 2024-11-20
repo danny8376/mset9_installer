@@ -23,6 +23,8 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "alert_general_cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "alert_general_confirm":
+            MessageLookupByLibrary.simpleMessage("Confirm"),
         "alert_general_no": MessageLookupByLibrary.simpleMessage("No"),
         "alert_general_yes": MessageLookupByLibrary.simpleMessage("Yes"),
         "alert_neutral": MessageLookupByLibrary.simpleMessage("OK"),
@@ -67,6 +69,17 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Removing MSET9 ..."),
         "setup_alert_confirm_title":
             MessageLookupByLibrary.simpleMessage("Setup - Confirm"),
+        "setup_alert_disclaimer": MessageLookupByLibrary.simpleMessage(
+            "This process will temporarily reset all your 3DS data.\nMost of your applications and themes will disappear.\nThis is perfectly normal, and if everything goes right, it will re-appear at the end of the process.\n\nIn any case, it is highly recommended to make a backup of your SD card\'s contents to a folder on your PC/Device.\n(Especially the \'Nintendo 3DS\' folder.)"),
+        "setup_alert_disclaimer_confirm_to_continue":
+            MessageLookupByLibrary.simpleMessage("Press confirm to continue."),
+        "setup_alert_disclaimer_linux_addition":
+            MessageLookupByLibrary.simpleMessage(
+                "(On Linux, things like to not go right - please ensure that your SD card is mounted with the \'utf8\' option.)"),
+        "setup_alert_disclaimer_title":
+            MessageLookupByLibrary.simpleMessage("Disclaimer"),
+        "setup_alert_disclaimer_web_addition": MessageLookupByLibrary.simpleMessage(
+            "(Due to web api limitation, this implementation have slightly higher risk of data corruption, thus backup is even more recommended.)"),
         "setup_alert_dummy_db_corrupted": MessageLookupByLibrary.simpleMessage(
             "Title database is likely corrupted."),
         "setup_alert_dummy_db_failed": MessageLookupByLibrary.simpleMessage(

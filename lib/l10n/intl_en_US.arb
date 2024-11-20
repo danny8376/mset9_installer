@@ -15,6 +15,10 @@
   "@alert_general_no": {
     "description": ""
   },
+  "alert_general_confirm": "Confirm",
+  "@alert_general_confirm": {
+    "description": ""
+  },
   "alert_general_cancel": "Cancel",
   "@alert_general_cancel": {
     "description": ""
@@ -129,6 +133,26 @@
   },
   "setup_alert_error_title": "Setup Error",
   "@setup_alert_error_title": {
+    "description": ""
+  },
+  "setup_alert_disclaimer_title": "Disclaimer",
+  "@setup_alert_disclaimer_title": {
+    "description": ""
+  },
+  "setup_alert_disclaimer": "This process will temporarily reset all your 3DS data.\nMost of your applications and themes will disappear.\nThis is perfectly normal, and if everything goes right, it will re-appear at the end of the process.\n\nIn any case, it is highly recommended to make a backup of your SD card's contents to a folder on your PC/Device.\n(Especially the 'Nintendo 3DS' folder.)",
+  "@setup_alert_disclaimer": {
+    "description": ""
+  },
+  "setup_alert_disclaimer_linux_addition": "(On Linux, things like to not go right - please ensure that your SD card is mounted with the 'utf8' option.)",
+  "@setup_alert_disclaimer_linux_addition": {
+    "description": ""
+  },
+  "setup_alert_disclaimer_web_addition": "(Due to web api limitation, this implementation have slightly higher risk of data corruption, thus backup is even more recommended.)",
+  "@setup_alert_disclaimer_web_addition": {
+    "description": ""
+  },
+  "setup_alert_disclaimer_confirm_to_continue": "Press confirm to continue.",
+  "@setup_alert_disclaimer_confirm_to_continue": {
     "description": ""
   },
   "setup_alert_sd_setup_optional_prompt": "Do you want to automatically download corrupted/unknown/non-critical files?",

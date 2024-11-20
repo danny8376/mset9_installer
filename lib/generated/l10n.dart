@@ -90,6 +90,16 @@ class S {
     );
   }
 
+  /// `Confirm`
+  String get alert_general_confirm {
+    return Intl.message(
+      'Confirm',
+      name: 'alert_general_confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Cancel`
   String get alert_general_cancel {
     return Intl.message(
@@ -375,6 +385,56 @@ class S {
     return Intl.message(
       'Setup Error',
       name: 'setup_alert_error_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Disclaimer`
+  String get setup_alert_disclaimer_title {
+    return Intl.message(
+      'Disclaimer',
+      name: 'setup_alert_disclaimer_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This process will temporarily reset all your 3DS data.\nMost of your applications and themes will disappear.\nThis is perfectly normal, and if everything goes right, it will re-appear at the end of the process.\n\nIn any case, it is highly recommended to make a backup of your SD card's contents to a folder on your PC/Device.\n(Especially the 'Nintendo 3DS' folder.)`
+  String get setup_alert_disclaimer {
+    return Intl.message(
+      'This process will temporarily reset all your 3DS data.\nMost of your applications and themes will disappear.\nThis is perfectly normal, and if everything goes right, it will re-appear at the end of the process.\n\nIn any case, it is highly recommended to make a backup of your SD card\'s contents to a folder on your PC/Device.\n(Especially the \'Nintendo 3DS\' folder.)',
+      name: 'setup_alert_disclaimer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(On Linux, things like to not go right - please ensure that your SD card is mounted with the 'utf8' option.)`
+  String get setup_alert_disclaimer_linux_addition {
+    return Intl.message(
+      '(On Linux, things like to not go right - please ensure that your SD card is mounted with the \'utf8\' option.)',
+      name: 'setup_alert_disclaimer_linux_addition',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(Due to web api limitation, this implementation have slightly higher risk of data corruption, thus backup is even more recommended.)`
+  String get setup_alert_disclaimer_web_addition {
+    return Intl.message(
+      '(Due to web api limitation, this implementation have slightly higher risk of data corruption, thus backup is even more recommended.)',
+      name: 'setup_alert_disclaimer_web_addition',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Press confirm to continue.`
+  String get setup_alert_disclaimer_confirm_to_continue {
+    return Intl.message(
+      'Press confirm to continue.',
+      name: 'setup_alert_disclaimer_confirm_to_continue',
       desc: '',
       args: [],
     );
