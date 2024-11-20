@@ -570,10 +570,10 @@ class S {
     );
   }
 
-  /// `The following files on your sd root are missing/corrupted/unknown:`
+  /// `The following files on your SD root are missing/corrupted/unknown:`
   String get setup_alert_sd_setup_file_missing {
     return Intl.message(
-      'The following files on your sd root are missing/corrupted/unknown:',
+      'The following files on your SD root are missing/corrupted/unknown:',
       name: 'setup_alert_sd_setup_file_missing',
       desc: '',
       args: [],
@@ -730,20 +730,20 @@ class S {
     );
   }
 
-  /// `Put sd card back to your 3ds, power it on, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.`
+  /// `Put SD card back to your 3ds, power it on, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.`
   String get setup_alert_dummy_db_reset {
     return Intl.message(
-      'Put sd card back to your 3ds, power it on, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.',
+      'Put SD card back to your 3ds, power it on, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.',
       name: 'setup_alert_dummy_db_reset',
       desc: '',
       args: [],
     );
   }
 
-  /// `Put sd card back to your 3ds, power it on, then open Mii Maker.\nAfter Mii Maker loaded, press HOME, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.`
+  /// `Put SD card back to your 3ds, power it on, then open Mii Maker.\nAfter Mii Maker loaded, press HOME, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.`
   String get setup_alert_dummy_mii_maker_and_db_reset {
     return Intl.message(
-      'Put sd card back to your 3ds, power it on, then open Mii Maker.\nAfter Mii Maker loaded, press HOME, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.',
+      'Put SD card back to your 3ds, power it on, then open Mii Maker.\nAfter Mii Maker loaded, press HOME, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.',
       name: 'setup_alert_dummy_mii_maker_and_db_reset',
       desc: '',
       args: [],

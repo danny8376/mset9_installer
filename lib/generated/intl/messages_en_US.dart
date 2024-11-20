@@ -106,7 +106,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "setup_alert_dummy_db_found":
             MessageLookupByLibrary.simpleMessage("Dummy title database found."),
         "setup_alert_dummy_db_reset": MessageLookupByLibrary.simpleMessage(
-            "Put sd card back to your 3ds, power it on, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset."),
+            "Put SD card back to your 3ds, power it on, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset."),
         "setup_alert_dummy_db_title": MessageLookupByLibrary.simpleMessage(
             "Setup Error - Dummy Title Database"),
         "setup_alert_dummy_db_visual_aid":
@@ -116,7 +116,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "https://3ds.hacks.guide/images/screenshots/database-reset.jpg"),
         "setup_alert_dummy_mii_maker_and_db_reset":
             MessageLookupByLibrary.simpleMessage(
-                "Put sd card back to your 3ds, power it on, then open Mii Maker.\nAfter Mii Maker loaded, press HOME, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset."),
+                "Put SD card back to your 3ds, power it on, then open Mii Maker.\nAfter Mii Maker loaded, press HOME, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset."),
         "setup_alert_error_title":
             MessageLookupByLibrary.simpleMessage("Setup Error"),
         "setup_alert_extdata_home_menu":
@@ -141,7 +141,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "setup_alert_sd_setup_failed": MessageLookupByLibrary.simpleMessage(
             "Failed to setup SD root automatically!"),
         "setup_alert_sd_setup_file_missing": MessageLookupByLibrary.simpleMessage(
-            "The following files on your sd root are missing/corrupted/unknown:"),
+            "The following files on your SD root are missing/corrupted/unknown:"),
         "setup_alert_sd_setup_file_state_missing":
             MessageLookupByLibrary.simpleMessage("Missing"),
         "setup_alert_sd_setup_file_state_optional":
