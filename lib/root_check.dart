@@ -206,13 +206,16 @@ Future<void> downloadSdRootFiles(Directory sdRoot, {List<String>? fileList, Map<
             if (content is! Uint8List) {
               throw const FormatException("archiveFile content is unknown type");
             }
+            check.remoteHash = await Hash.sha256.digestBytes(content);
             await file?.writeAsBytes(content);
             extractToDownloadEntry.done = true;
             talker.debug("RootCheck: $fileName : ${archiveFile.name} => $extractTo");
           }
         } else {
           final file = await _resolveFile(sdRoot, fileName, create: true);
-          await file?.writeAsBytes(bytes.buffer.asUint8List());
+          final content = bytes.buffer.asUint8List();
+          check.remoteHash = await Hash.sha256.digestBytes(content);
+          await file?.writeAsBytes(content);
           downloadEntry.done = true;
           talker.debug("$uri => $fileName");
         }
