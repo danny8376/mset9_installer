@@ -12,6 +12,20 @@ if (localPropertiesFile.exists()) {
     }
 }
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+def passwordProperties = new Properties()
+def passwordPropertiesFilePath = keystoreProperties.getProperty('passwordPropertiesFilePath')
+if (passwordPropertiesFilePath) {
+    def passwordPropertiesFile = rootProject.file(passwordPropertiesFilePath)
+    if (passwordPropertiesFile.exists()) {
+        passwordProperties.load(new FileInputStream(passwordPropertiesFile))
+    }
+}
+
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
     flutterVersionCode = '1'
@@ -56,11 +70,19 @@ android {
         manifestPlaceholders.appName = "@string/appName"
     }
 
+    signingConfigs {
+        release {
+            keyAlias = System.getenv("KEY_ALIAS") ?: keystoreProperties['keyAlias']
+            keyPassword = System.getenv("KEY_PASS") ?: keystoreProperties['keyPassword'] ?: passwordProperties['keyPassword']
+            def storeFilePath = System.getenv("STORE_FILE") ?: keystoreProperties['storeFile']
+            storeFile = storeFilePath ? file(storeFilePath) : null
+            storePassword = System.getenv("STORE_PASS") ?: keystoreProperties['storePassword'] ?: passwordProperties['storePassword']
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
         debug {
             applicationIdSuffix ".debug"
