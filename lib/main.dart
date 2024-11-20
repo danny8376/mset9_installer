@@ -88,10 +88,23 @@ class _InstallerState extends State<Installer> {
     );
   }
 
-  List<Widget> _buildAlertVisualAidButtonsFunc(context) {
+  List<Widget> _buildAlertTroubleshootingButtonsFunc(BuildContext context, [String? link]) {
+    return <Widget>[
+      _buildAlertButton(context, _s().alert_action_troubleshooting, (pop) {
+        launchUrl(Uri.parse(link ?? _s().alert_general_troubleshooting_url));
+      }),
+      //const Spacer(),
+      _buildAlertButton(context, _s().alert_neutral, null),
+    ];
+  }
+
+  List<Widget> _buildAlertVisualAidButtonsFunc(BuildContext context) {
     return <Widget>[
       _buildAlertButton(context, _s().setup_alert_dummy_db_visual_aid, (pop) {
         launchUrl(Uri.parse(_s().setup_alert_dummy_db_visual_aid_url));
+      }),
+      _buildAlertButton(context, _s().alert_action_troubleshooting, (pop) {
+        launchUrl(Uri.parse(_s().alert_general_troubleshooting_url));
       }),
       //const Spacer(),
       _buildAlertButton(context, _s().alert_neutral, null),
@@ -177,15 +190,15 @@ class _InstallerState extends State<Installer> {
     } on FolderAssignmentException catch (e) {
       switch (e.type) {
         case FolderAssignmentExceptionType.noN3DS:
-          // TODO: Handle this case.
+          _showAlert(null, _s().pick_alert_title, "${_s().pick_no_n3ds}\n${_s().pick_common_n3ds_info}", _buildAlertTroubleshootingButtonsFunc);
         case FolderAssignmentExceptionType.noId0:
-          // TODO: Handle this case.
+          _showAlert(null, _s().pick_alert_title, "${_s().pick_no_id0}\n${_s().pick_common_n3ds_info}", _buildAlertTroubleshootingButtonsFunc);
         case FolderAssignmentExceptionType.multipleId0:
-          // TODO: Handle this case.
+          _showAlert(null, _s().pick_alert_title, _s().pick_multiple_id0, _buildAlertTroubleshootingButtonsFunc);
         case FolderAssignmentExceptionType.id1Picked:
-          // TODO: Handle this case.
+          _showAlert(null, _s().pick_alert_title, _s().pick_picked_id1, _buildAlertTroubleshootingButtonsFunc);
         case FolderAssignmentExceptionType.unknown:
-          // TODO: Handle this case.
+          _showAlert(null, _s().pick_alert_title, _s().pick_picked_unknown);
       }
     }
   }
@@ -424,9 +437,9 @@ class _InstallerState extends State<Installer> {
       case HaxAlertType.noHaxAvailable:
       case HaxAlertType.multipleHaxId1:
       case HaxAlertType.noId1:
-        _showAlert(null, _s().setup_alert_error_title, _s().setup_alert_no_or_more_id1);
+        _showAlert(null, _s().setup_alert_error_title, _s().setup_alert_no_or_more_id1, _buildAlertTroubleshootingButtonsFunc);
       case HaxAlertType.multipleId1:
-        _showAlert(null, _s().setup_alert_error_title, _s().setup_alert_no_or_more_id1);
+        _showAlert(null, _s().setup_alert_error_title, _s().setup_alert_no_or_more_id1, _buildAlertTroubleshootingButtonsFunc);
       case HaxAlertType.sdSetupFailed:
         _showAlert(null, _s().setup_alert_error_title, _s().setup_alert_sd_setup_failed);
       case HaxAlertType.dummyDb:
@@ -434,11 +447,11 @@ class _InstallerState extends State<Installer> {
       case HaxAlertType.corruptedDb:
         _showAlert(null, _s().setup_alert_dummy_db_title, "${_s().setup_alert_dummy_db_corrupted}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
       case HaxAlertType.extdataFolderMissing:
-        _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_missing);
+        _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_missing, _buildAlertTroubleshootingButtonsFunc);
       case HaxAlertType.homeMenuExtdataMissing:
-        _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_home_menu);
+        _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_home_menu, _buildAlertTroubleshootingButtonsFunc);
       case HaxAlertType.miiMakerExtdataMissing:
-        _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_mii_maker);
+        _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_mii_maker, _buildAlertTroubleshootingButtonsFunc);
     }
   }
 

@@ -26,7 +26,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
 
   FlutterWindow window(project);
   Win32Window::Point origin(0x80000000, 0x80000000); // CW_USEDEFAULT
-  Win32Window::Size size(400, 600);
+  Win32Window::Size size(440, 640);
   if (!window.Create(L"MSET9 Installer", origin, size)) {
     return EXIT_FAILURE;
   }

@@ -22,10 +22,15 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "alert_action_troubleshooting":
+            MessageLookupByLibrary.simpleMessage("Troubleshooting"),
         "alert_general_cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "alert_general_confirm":
             MessageLookupByLibrary.simpleMessage("Confirm"),
         "alert_general_no": MessageLookupByLibrary.simpleMessage("No"),
+        "alert_general_troubleshooting_url":
+            MessageLookupByLibrary.simpleMessage(
+                "https://3ds.hacks.guide/troubleshooting-mset9.html"),
         "alert_general_yes": MessageLookupByLibrary.simpleMessage("Yes"),
         "alert_neutral": MessageLookupByLibrary.simpleMessage("OK"),
         "alert_not_supported": MessageLookupByLibrary.simpleMessage(
@@ -57,14 +62,22 @@ class MessageLookup extends MessageLookupByLibrary {
         "menu_log": MessageLookupByLibrary.simpleMessage("Logs"),
         "menu_loose_root_check":
             MessageLookupByLibrary.simpleMessage("Loose Root Check"),
-        "pick_id0_not_1": MessageLookupByLibrary.simpleMessage(
-            "There\'s no ID0 or more than one ID0 folder, please check"),
+        "pick_alert_title":
+            MessageLookupByLibrary.simpleMessage("Folder Picking - Error"),
+        "pick_common_n3ds_info": MessageLookupByLibrary.simpleMessage(
+            "Ensure that you put SD card in the console and boot normally first.\nDon\'t try to create Nintendo 3DS folder yourself."),
         "pick_multi_hax_id1": MessageLookupByLibrary.simpleMessage(
             "There\'s more than one hax ID1 ???"),
+        "pick_multiple_id0": MessageLookupByLibrary.simpleMessage(
+            "There\'s more than one ID0 folder, please check."),
+        "pick_no_id0":
+            MessageLookupByLibrary.simpleMessage("There\'s no ID0 folder."),
+        "pick_no_n3ds": MessageLookupByLibrary.simpleMessage(
+            "There\'s no Nintendo 3DS folder."),
         "pick_picked_id1": MessageLookupByLibrary.simpleMessage(
-            "ID1 picked, please pick ID0 or Nintendo 3DS folder instead"),
+            "ID1 picked, please pick ID0 or Nintendo 3DS folder instead.\n(Pick the upper folder, which contains the folder that you just picked, instead.)"),
         "pick_picked_unknown": MessageLookupByLibrary.simpleMessage(
-            "Unknown folder picked, please pick correct folder"),
+            "Unknown folder picked, please pick the correct folder."),
         "remove_alert_action_repick":
             MessageLookupByLibrary.simpleMessage("Repick"),
         "remove_alert_confirm": MessageLookupByLibrary.simpleMessage(

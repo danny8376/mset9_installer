@@ -110,6 +110,26 @@ class S {
     );
   }
 
+  /// `Troubleshooting`
+  String get alert_action_troubleshooting {
+    return Intl.message(
+      'Troubleshooting',
+      name: 'alert_action_troubleshooting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `https://3ds.hacks.guide/troubleshooting-mset9.html`
+  String get alert_general_troubleshooting_url {
+    return Intl.message(
+      'https://3ds.hacks.guide/troubleshooting-mset9.html',
+      name: 'alert_general_troubleshooting_url',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Not Supported`
   String get alert_not_supported_title {
     return Intl.message(
@@ -280,31 +300,71 @@ class S {
     );
   }
 
-  /// `ID1 picked, please pick ID0 or Nintendo 3DS folder instead`
+  /// `Folder Picking - Error`
+  String get pick_alert_title {
+    return Intl.message(
+      'Folder Picking - Error',
+      name: 'pick_alert_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There's no Nintendo 3DS folder.`
+  String get pick_no_n3ds {
+    return Intl.message(
+      'There\'s no Nintendo 3DS folder.',
+      name: 'pick_no_n3ds',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There's no ID0 folder.`
+  String get pick_no_id0 {
+    return Intl.message(
+      'There\'s no ID0 folder.',
+      name: 'pick_no_id0',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ensure that you put SD card in the console and boot normally first.\nDon't try to create Nintendo 3DS folder yourself.`
+  String get pick_common_n3ds_info {
+    return Intl.message(
+      'Ensure that you put SD card in the console and boot normally first.\nDon\'t try to create Nintendo 3DS folder yourself.',
+      name: 'pick_common_n3ds_info',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There's more than one ID0 folder, please check.`
+  String get pick_multiple_id0 {
+    return Intl.message(
+      'There\'s more than one ID0 folder, please check.',
+      name: 'pick_multiple_id0',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ID1 picked, please pick ID0 or Nintendo 3DS folder instead.\n(Pick the upper folder, which contains the folder that you just picked, instead.)`
   String get pick_picked_id1 {
     return Intl.message(
-      'ID1 picked, please pick ID0 or Nintendo 3DS folder instead',
+      'ID1 picked, please pick ID0 or Nintendo 3DS folder instead.\n(Pick the upper folder, which contains the folder that you just picked, instead.)',
       name: 'pick_picked_id1',
       desc: '',
       args: [],
     );
   }
 
-  /// `Unknown folder picked, please pick correct folder`
+  /// `Unknown folder picked, please pick the correct folder.`
   String get pick_picked_unknown {
     return Intl.message(
-      'Unknown folder picked, please pick correct folder',
+      'Unknown folder picked, please pick the correct folder.',
       name: 'pick_picked_unknown',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `There's no ID0 or more than one ID0 folder, please check`
-  String get pick_id0_not_1 {
-    return Intl.message(
-      'There\'s no ID0 or more than one ID0 folder, please check',
-      name: 'pick_id0_not_1',
       desc: '',
       args: [],
     );
