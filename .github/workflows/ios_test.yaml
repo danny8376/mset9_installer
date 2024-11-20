@@ -3,7 +3,7 @@ name: "Build"
 on:
   push:
     branches:
-      - test
+      - ios_test
 
 jobs:
   build:
@@ -52,4 +52,4 @@ jobs:
       - name: Commit & Push
         uses: GuillaumeFalourd/git-commit-push@v1.3
         with:
-          target_branch: test2
+          target_branch: ios_test_ci_update
