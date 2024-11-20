@@ -709,6 +709,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Remove - Confirm`
+  String get remove_alert_confirm_title {
+    return Intl.message(
+      'Remove - Confirm',
+      name: 'remove_alert_confirm_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It seems that you haven't installed boot9strap yet, are you sure you want to remove MSET9?\n\nIf you picked wrong model/version, you can click Repick to pick again.`
+  String get remove_alert_confirm {
+    return Intl.message(
+      'It seems that you haven\'t installed boot9strap yet, are you sure you want to remove MSET9?\n\nIf you picked wrong model/version, you can click Repick to pick again.',
+      name: 'remove_alert_confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Repick`
+  String get remove_alert_action_repick {
+    return Intl.message(
+      'Repick',
+      name: 'remove_alert_action_repick',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

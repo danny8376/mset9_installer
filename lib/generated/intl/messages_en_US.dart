@@ -65,6 +65,12 @@ class MessageLookup extends MessageLookupByLibrary {
             "ID1 picked, please pick ID0 or Nintendo 3DS folder instead"),
         "pick_picked_unknown": MessageLookupByLibrary.simpleMessage(
             "Unknown folder picked, please pick correct folder"),
+        "remove_alert_action_repick":
+            MessageLookupByLibrary.simpleMessage("Repick"),
+        "remove_alert_confirm": MessageLookupByLibrary.simpleMessage(
+            "It seems that you haven\'t installed boot9strap yet, are you sure you want to remove MSET9?\n\nIf you picked wrong model/version, you can click Repick to pick again."),
+        "remove_alert_confirm_title":
+            MessageLookupByLibrary.simpleMessage("Remove - Confirm"),
         "remove_loading":
             MessageLookupByLibrary.simpleMessage("Removing MSET9 ..."),
         "setup_alert_confirm_title":

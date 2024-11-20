@@ -263,5 +263,17 @@
   "@remove_loading": {
     "description": ""
   },
+  "remove_alert_confirm_title": "Remove - Confirm",
+  "@remove_alert_confirm_title": {
+    "description": ""
+  },
+  "remove_alert_confirm": "It seems that you haven't installed boot9strap yet, are you sure you want to remove MSET9?\n\nIf you picked wrong model/version, you can click Repick to pick again.",
+  "@remove_alert_confirm": {
+    "description": ""
+  },
+  "remove_alert_action_repick": "Repick",
+  "@remove_alert_action_repick": {
+    "description": ""
+  },
   "@@locale": "en_US"
 }

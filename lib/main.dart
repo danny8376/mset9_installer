@@ -269,9 +269,35 @@ class _InstallerState extends State<Installer> {
     work: installer.removeTrigger,
   );
 
-  void _doRemove() => _doWorkWrap(
-    work: installer.removeHaxId1,
-  );
+  void _doRemove() async {
+    if (!_advance && !await installer.checkIfCfwInstalled()) {
+      var cancel = true;
+      await _showAlert(
+          null,
+          _s().remove_alert_confirm_title,
+          _s().remove_alert_confirm,
+          (context) => <Widget>[
+            _buildAlertButton(context, _s().remove_alert_action_repick, (pop) {
+              pop();
+              _doRepickVariant();
+            }),
+            //const Spacer(),
+            _buildAlertButton(context, _s().alert_general_cancel, null),
+            _buildAlertButton(context, _s().alert_general_confirm, (pop) {
+              pop();
+              cancel = false;
+            }),
+          ]
+      );
+      if (cancel) {
+        return;
+      }
+    }
+
+    _doWorkWrap(
+      work: installer.removeHaxId1,
+    );
+  }
 
   Future<bool> _doWorkWrap({
     bool showLoading = true,

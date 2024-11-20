@@ -588,6 +588,22 @@ class HaxInstaller {
       checkState(silent: true, skipSdRoot: true);
     },
   );
+
+  Future<bool> checkIfCfwInstalled() => _exceptionGuard(
+    faultResult: false,
+    work: () async {
+      if (sdRoot == null) {
+        return true; // can't check, return true and hope user knows stuff
+      }
+      var installerDir = await sdRoot?.directory("boot9strap", caseInsensitive: true);
+      installerDir ??= await sdRoot?.directory("ofi", caseInsensitive: true);
+      return await installerDir?.list().asyncAny(
+          (child) async =>
+              await FileSystemUtils.isFile(child) &&
+              kFirmBakRegex.hasMatch((child as FileSystemEntity).name)
+      ) == true;
+    },
+  );
 }
 
 class DirectoryHaxPair {
