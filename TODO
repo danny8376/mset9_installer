@@ -2,6 +2,7 @@
 
 ### Todo
 
+- [ ] Proper credits
 - [ ] Show current status clearly in app
 - [ ] Auto SD card detection for desktop (with disks_desktop)
 - [ ] SD card monitoring for auto checking status
@@ -10,6 +11,7 @@
 - [ ] root_check.dart
   - [ ] Add github release support
   - [ ] Implement streamed zip decoder properly
+- [ ] Add movable.sed support for directly making valid title db (mainly for CHN console)
 - [ ] iOS support
   - [ ] Implement folder picker and scoped uri fs wrapper
   - [ ] TrollStore folder picker issue, maybe unsandboxed version that can list/access SD card directly
