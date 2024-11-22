@@ -8,10 +8,11 @@ import 'package:collection/collection.dart' as c;
 import 'package:convert/convert.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' show ByteStream, Request, StreamedResponse;
+import 'package:http/http.dart' show Request, StreamedResponse;
 import 'package:http_parser/http_parser.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mset9_installer/talker.dart';
+import 'package:path/path.dart' as p;
 import 'package:webcrypto/webcrypto.dart';
 
 import 'io.dart';
@@ -254,7 +255,7 @@ Future<TypedData> _getFileFromHttp(Uri uri) async {
 }
 
 Future<File?> _resolveFile(Directory parent, String path, {bool create = false, bool caseInsensitive = true}) async {
-  final pathList = path.split("/");
+  final pathList = p.split(path);
   final fileName = pathList.last;
   for (final dirName in pathList.sublist(0, pathList.length - 1)) {
     final folder = await parent.directory(dirName, create: create, caseInsensitive: caseInsensitive);
@@ -315,7 +316,9 @@ class RootCheckList {
         hashCode: (a) => a.toLowerCase().hashCode
     );
     for (final MapEntry(:key, :value) in json.entries) {
-      map[key] = SDRootFile.fromJson(value as Map<String, dynamic>);
+      // we use / in json for unified config, replace with system specific separator here
+      // for easy handling if external code involved (able to use path package directly)
+      map[key.replaceAll("/", p.separator)] = SDRootFile.fromJson(value as Map<String, dynamic>);
     }
     return map;
   }

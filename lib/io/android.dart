@@ -44,6 +44,7 @@ abstract class _FileSystemEntity extends FileSystemEntity implements ExtendedFil
 class _Directory extends _FileSystemEntity implements Directory, ExtendedDirectory {
   final SafDocumentFile _doc;
   final Directory? _parent;
+  Uri? _uri;
 
   @override
   late final bool isRoot;
@@ -60,6 +61,9 @@ class _Directory extends _FileSystemEntity implements Directory, ExtendedDirecto
 
   @override
   String get path => _doc.uri;
+
+  @override
+  Uri get uri => _uri ??= Uri.parse(_doc.uri);
 
   @override
   Directory get parent => _parent ?? this;
@@ -190,8 +194,10 @@ class _File extends _FileSystemEntity implements File, ExtendedFile {
   @override
   String get name => _doc?.name ?? _name!;
 
+  String get _genUri => "${parent.path}/${Uri.encodeComponent(_name!)}";
+
   @override
-  String get path => _doc?.uri ?? p.join(parent.path, _name!);
+  String get path => _doc?.uri ?? _genUri;
 
   @override
   Directory get parent {
