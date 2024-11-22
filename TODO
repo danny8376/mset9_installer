@@ -6,6 +6,7 @@
 - [ ] Show current status clearly in app
 - [ ] Auto SD card detection for desktop (with disks_desktop)
 - [ ] SD card monitoring for auto checking status
+- [ ] Check if drive is mounted with utf8 option for Linux and prompt for remount automatically
 - [ ] SD read-only check after folder picked
 - [ ] Eject/umount SD card after setup/inject
 - [ ] root_check.dart
