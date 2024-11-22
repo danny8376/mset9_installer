@@ -160,6 +160,26 @@ class S {
     );
   }
 
+  /// `Force Light Mode`
+  String get menu_force_light_mode {
+    return Intl.message(
+      'Force Light Mode',
+      name: 'menu_force_light_mode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Force Dark Mode`
+  String get menu_force_dark_mode {
+    return Intl.message(
+      'Force Dark Mode',
+      name: 'menu_force_dark_mode',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Advance Options`
   String get menu_advance {
     return Intl.message(
@@ -540,10 +560,10 @@ class S {
     );
   }
 
-  /// `Corrupted/Unknown`
+  /// `Corrupted/~Unknown`
   String get setup_alert_sd_setup_file_state_unknown_corrupted {
     return Intl.message(
-      'Corrupted/Unknown',
+      'Corrupted/~Unknown',
       name: 'setup_alert_sd_setup_file_state_unknown_corrupted',
       desc: '',
       args: [],

@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mset9_installer/root_check.dart';
+import 'package:provider/provider.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:window_manager/window_manager.dart';
@@ -16,14 +17,58 @@ import 'hax_installer.dart';
 import 'io.dart';
 import 'talker.dart';
 
-enum Menu { credit, advance, extra, looseRootCheck, legacyCode, log }
+enum Menu { credit, toggleTheme, advance, extra, looseRootCheck, legacyCode, log }
 
 void main() async {
   if (isDesktop) {
     WidgetsFlutterBinding.ensureInitialized();
     await windowManager.ensureInitialized();
   }
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(providers: [
+      ChangeNotifierProvider(
+        create: (_) => ThemeProvider(),
+      ),
+    ], child: const MyApp()),
+  );
+}
+
+class ThemeProvider with ChangeNotifier, WidgetsBindingObserver {
+  bool _darkMode = true;
+  bool _forced = false;
+
+  bool get darkMode => _darkMode;
+  ThemeMode get themeMode => _darkMode ? ThemeMode.dark : ThemeMode.light;
+
+  ThemeProvider() {
+    updateModeFromSystem();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    super.didChangePlatformBrightness();
+    updateModeFromSystem();
+  }
+
+  void updateModeFromSystem() => toggleTheme(true);
+
+  void toggleTheme([bool systemBrightness = false]) {
+    if (systemBrightness) {
+      if (_forced) {
+        return;
+      }
+      final systemDarkMode = PlatformDispatcher.instance.platformBrightness == Brightness.dark;
+      if (_darkMode == systemDarkMode) {
+        return;
+      }
+      _darkMode = systemDarkMode;
+    } else {
+      _forced = true;
+      _darkMode = !_darkMode;
+    }
+    notifyListeners();
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -34,7 +79,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData.light(useMaterial3: true),
       darkTheme: ThemeData.dark(useMaterial3: true),
-      themeMode: ThemeMode.system,
+      themeMode: Provider.of<ThemeProvider>(context).themeMode,
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -477,6 +522,8 @@ class _InstallerState extends State<Installer> {
 
   @override
   Widget build(BuildContext context) {
+    // we don't need to listen as parent widget (MyApp) will handle all rebuild
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -492,6 +539,8 @@ class _InstallerState extends State<Installer> {
               switch (item) {
                 case Menu.credit:
                   break;
+                case Menu.toggleTheme:
+                  themeProvider.toggleTheme();
                 case Menu.advance:
                 case Menu.extra:
                 case Menu.looseRootCheck:
@@ -515,6 +564,16 @@ class _InstallerState extends State<Installer> {
               ),
               const PopupMenuDivider(),
               PopupMenuItem<Menu>(
+                value: Menu.toggleTheme,
+                child: themeProvider.darkMode ? ListTile(
+                  leading: const Icon(Icons.light_mode),
+                  title: Text(_s().menu_force_light_mode),
+                ) : ListTile(
+                  leading: const Icon(Icons.dark_mode),
+                  title: Text(_s().menu_force_dark_mode),
+                ),
+              ),
+              PopupMenuItem<Menu>(
                 value: Menu.advance,
                 child: CheckboxListTile(
                   title: Text(_s().menu_advance),
@@ -526,6 +585,7 @@ class _InstallerState extends State<Installer> {
                 ),
               ),
               ...(_advance ? [
+                const PopupMenuDivider(),
                 PopupMenuItem<Menu>(
                   value: Menu.extra,
                   child: StatefulBuilder(

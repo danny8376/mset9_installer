@@ -43,6 +43,14 @@
   "@menu_credit": {
     "description": ""
   },
+  "menu_force_light_mode": "Force Light Mode",
+  "@menu_force_light_mode": {
+    "description": ""
+  },
+  "menu_force_dark_mode": "Force Dark Mode",
+  "@menu_force_dark_mode": {
+    "description": ""
+  },
   "menu_advance": "Advance Options",
   "@menu_advance": {
     "description": ""
@@ -195,7 +203,7 @@
   "@setup_alert_sd_setup_file_state_outdated": {
     "description": ""
   },
-  "setup_alert_sd_setup_file_state_unknown_corrupted": "Corrupted/Unknown",
+  "setup_alert_sd_setup_file_state_unknown_corrupted": "Corrupted/~Unknown",
   "@setup_alert_sd_setup_file_state_unknown_corrupted": {
     "description": ""
   },

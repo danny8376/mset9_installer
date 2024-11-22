@@ -58,6 +58,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "menu_advance": MessageLookupByLibrary.simpleMessage("Advance Options"),
         "menu_credit": MessageLookupByLibrary.simpleMessage("Credit"),
         "menu_extra": MessageLookupByLibrary.simpleMessage("Extra Versions"),
+        "menu_force_dark_mode":
+            MessageLookupByLibrary.simpleMessage("Force Dark Mode"),
+        "menu_force_light_mode":
+            MessageLookupByLibrary.simpleMessage("Force Light Mode"),
         "menu_legacy": MessageLookupByLibrary.simpleMessage("Legacy Hax ID1"),
         "menu_log": MessageLookupByLibrary.simpleMessage("Logs"),
         "menu_loose_root_check":
@@ -151,7 +155,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "setup_alert_sd_setup_file_state_required":
             MessageLookupByLibrary.simpleMessage("Required"),
         "setup_alert_sd_setup_file_state_unknown_corrupted":
-            MessageLookupByLibrary.simpleMessage("Corrupted/Unknown"),
+            MessageLookupByLibrary.simpleMessage("Corrupted/~Unknown"),
         "setup_alert_sd_setup_optional_prompt":
             MessageLookupByLibrary.simpleMessage(
                 "Do you want to automatically download corrupted/unknown/non-critical files?"),
