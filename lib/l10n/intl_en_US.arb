@@ -151,6 +151,10 @@
   "@variant_selector_version": {
     "description": ""
   },
+  "check_loading": "Checking ...",
+  "@check_loading": {
+    "description": ""
+  },
   "setup_loading": "Setting up MSET9 ...",
   "@setup_loading": {
     "description": ""

@@ -430,6 +430,16 @@ class S {
     );
   }
 
+  /// `Checking ...`
+  String get check_loading {
+    return Intl.message(
+      'Checking ...',
+      name: 'check_loading',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Setting up MSET9 ...`
   String get setup_loading {
     return Intl.message(

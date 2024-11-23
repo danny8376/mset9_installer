@@ -109,6 +109,8 @@ class Installer extends StatefulWidget {
 class _InstallerState extends State<Installer> {
   bool _advance = false;
 
+  //bool _showingLoading = false;
+  //Timer? _preLoadingTimer;
   bool _disclaimerShown = false;
 
   late final HaxInstaller installer;
@@ -179,12 +181,20 @@ class _InstallerState extends State<Installer> {
     );
   }
 
-  Future<void> _showLoading(BuildContext? context, String text) {
+  Future<void> _showLoading(BuildContext? context, String text) async {
+    /*
+    if (_showingLoading) {
+      return;
+    }
+    _preLoadingTimer?.cancel();
+    _preLoadingTimer = null;
+     */
     context ??= this.context;
     if (!context.mounted) {
       throw Exception("_showLoading called outside of context!");
     }
-    return showDialog<void>(
+    //_showingLoading = true;
+    return await showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
@@ -223,6 +233,20 @@ class _InstallerState extends State<Installer> {
         );
       },
     );
+  }
+
+  Future<void> _dismissLoading([BuildContext? context]) async {
+    /*
+    if (!_showingLoading) {
+      return;
+    }
+     */
+    context ??= this.context;
+    if (!context.mounted) {
+      throw Exception("_dismissLoading called outside of context!");
+    }
+    Navigator.of(context).pop();
+    //_showingLoading = false;
   }
 
   void _pickFolder() async {
@@ -372,7 +396,7 @@ class _InstallerState extends State<Installer> {
       talker.handle(e, st);
     }
     if (showLoading && context.mounted) {
-      Navigator.of(context).pop();
+      _dismissLoading();
     }
     if (done != null) {
       await done(result);
@@ -415,10 +439,22 @@ class _InstallerState extends State<Installer> {
   }
 
   void _stageUpdate(HaxStage stage) async {
+    //_preLoadingTimer?.cancel();
+    //_preLoadingTimer = null;
     talker.debug("Installer: stage updated to $stage");
     await Future.delayed(Duration.zero);
     setState(() {
     });
+    /*
+    if (stage == HaxStage.doingWork && !_showingLoading) {
+      _preLoadingTimer = Timer(const Duration(milliseconds: 250), () {
+        _showLoading(null, installer.workIsCheck ? _s().check_loading : _s().setup_loading);
+      });
+    }
+    if (stage != HaxStage.doingWork && _showingLoading) {
+      _dismissLoading();
+    }
+     */
   }
 
   void _handleConfirmation(HaxConfirmationType confirmationType, Future<bool> Function(bool) confirm, [dynamic extraData]) async {

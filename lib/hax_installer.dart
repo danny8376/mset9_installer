@@ -32,6 +32,8 @@ enum HaxAlertType {
 
 class HaxInstaller {
   HaxStage _stage = HaxStage.pickFolder;
+  bool _workIsCheck = false;
+  bool get workIsCheck => _workIsCheck;
 
   bool extraVersions = false;
   bool looseRootCheck = false;
@@ -68,8 +70,12 @@ class HaxInstaller {
 
   Variant? get variant => _variant;
 
-  Future<void> checkState({bool silent = false, bool skipSdRoot = false, bool sdFailed = false}) async {
-    try {
+  Future<void> checkState({bool silent = false, bool skipSdRoot = false, bool sdFailed = false}) => _exceptionGuard(
+    faultResult: null,
+    isChecking: true,
+    switchStageToDoingWork: true,
+    pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
+    work: () async {
       talker.debug("Common: Checking state");
       if (id0Folder == null) {
         stageUpdateCallback(_stage = HaxStage.pickFolder);
@@ -94,13 +100,15 @@ class HaxInstaller {
       } else {
         stageUpdateCallback(_stage = HaxStage.folderPicked);
       }
-    } catch (e, st) {
-      talker.handle(e, st);
-    }
-  }
+    },
+  );
 
-  Future<void> checkInjectState({bool silent = false, bool skipSdRoot = false, bool sdFailed = false}) async {
-    try {
+  Future<void> checkInjectState({bool silent = false, bool skipSdRoot = false, bool sdFailed = false}) => _exceptionGuard(
+    faultResult: null,
+    isChecking: true,
+    switchStageToDoingWork: true,
+    pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
+    work: () async {
       talker.debug("Common: Checking inject state");
       if (id1HaxFolder == null) {
         return;
@@ -162,10 +170,8 @@ class HaxInstaller {
       } else {
         stageUpdateCallback(_stage = HaxStage.doExploit);
       }
-    } catch (e, st) {
-      talker.handle(e, st);
     }
-  }
+  );
 
   Future<void> _handleFolderAndDriveUpdate(List<String>? updates) async {
     if (_folderAndDriveUpdateWatchRoot == null) {
@@ -481,11 +487,13 @@ class HaxInstaller {
 
   Future<T> _exceptionGuard<T>({
     required T faultResult,
+    bool isChecking = false,
     bool switchStageToDoingWork = false,
     bool pauseFolderAndDriveUpdateWatcherWhenDoingWork = false,
     required Future<T> Function() work,
     Future<void> Function(T result)? done,
   }) async {
+    _workIsCheck = isChecking;
     if (switchStageToDoingWork) {
       stageUpdateCallback(_stage = HaxStage.doingWork);
     }
@@ -503,6 +511,7 @@ class HaxInstaller {
     if (pauseFolderAndDriveUpdateWatcherWhenDoingWork && !watcherState) {
       _pauseFolderAndDriveUpdateWatcher = false;
     }
+    _workIsCheck = false;
     if (done != null) {
       await done(result);
     }
@@ -730,6 +739,7 @@ class HaxInstaller {
 
   Future<bool> checkIfCfwInstalled() => _exceptionGuard(
     faultResult: false,
+    isChecking: true,
     work: () async {
       if (sdRoot == null) {
         return true; // can't check, return true and hope user knows stuff

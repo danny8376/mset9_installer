@@ -37,6 +37,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Your browser is not supported, please use different browser or different version of installer."),
         "alert_not_supported_title":
             MessageLookupByLibrary.simpleMessage("Not Supported"),
+        "check_loading": MessageLookupByLibrary.simpleMessage("Checking ..."),
         "inject_missing_hax_extdata": MessageLookupByLibrary.simpleMessage(
             "Broken mset9 setup, extdata is missing"),
         "installer_button_check":
