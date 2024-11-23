@@ -2,10 +2,11 @@
 
 ### Todo
 
-- [ ] Proper credits
 - [ ] Show current status clearly in app
 - [ ] Auto SD card detection for desktop (with disks_desktop)
 - [ ] SD card monitoring for auto checking status
+  - [x] Android implemented
+  - [ ] Desktops - partially
 - [ ] Check if drive is mounted with utf8 option for Linux and prompt for remount automatically
 - [ ] SD read-only check after folder picked
 - [ ] Eject/umount SD card after setup/inject
@@ -26,3 +27,4 @@
 ### Done ✓
 
 - [x] Auto release with GitHub Actions
+- [x] Proper credits
