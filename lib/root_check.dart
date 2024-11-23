@@ -213,7 +213,7 @@ Future<void> downloadSdRootFiles(Directory sdRoot, {List<String>? fileList, Map<
               throw const FormatException("archiveFile content is unknown type");
             }
             final remoteHash = await Hash.sha256.digestBytes(content);
-            if (!typedDataEquals(remoteHash, check.hash.first)) {
+            if (!typedDataEquals(remoteHash, check.hash.firstOrNull)) {
               check.remoteHash = remoteHash;
             }
             await file?.writeAsBytes(content);
