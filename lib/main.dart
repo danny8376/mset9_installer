@@ -4,8 +4,11 @@ import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:mset9_installer/root_check.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:fwfh_url_launcher/fwfh_url_launcher.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -15,6 +18,7 @@ import 'generated/l10n.dart';
 import 'console.dart';
 import 'hax_installer.dart';
 import 'io.dart';
+import 'root_check.dart';
 import 'talker.dart';
 
 enum Menu { credit, toggleTheme, advance, extra, looseRootCheck, legacyCode, log }
@@ -230,6 +234,38 @@ class _InstallerState extends State<Installer> {
               ),
             ),
           ),
+        );
+      },
+    );
+  }
+
+  Future<void> _showCredit([BuildContext? context]) async {
+    final htmlTpl = await rootBundle.loadString("assets/credit/en.html");
+    final info = await PackageInfo.fromPlatform();
+    final html = htmlTpl.replaceAllMapped(RegExp(r'{{(?<varName>[^}]+)}}'), (match) {
+      if (match is! RegExpMatch) {
+        return match.toString();
+      }
+      final varName = match.namedGroup('varName');
+      return switch (varName) {
+        "APP_NAME" => _s().title_installer,
+        "APP_VER" => info.version,
+        _ => "{{$varName}}",
+      };
+    });
+    context ??= this.context;
+    if (!context.mounted) {
+      throw Exception("context somehow get unmounted!");
+    }
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(_s().menu_credit),
+          content: HtmlWidget(html, factoryBuilder: () => HtmlWidgetWithUrlLauncherFactory()),
+          actions: <Widget>[
+            _buildAlertButton(dialogContext, _s().alert_neutral, null),
+          ],
         );
       },
     );
@@ -574,7 +610,7 @@ class _InstallerState extends State<Installer> {
             onSelected: (Menu item) {
               switch (item) {
                 case Menu.credit:
-                  break;
+                  _showCredit(context);
                 case Menu.toggleTheme:
                   themeProvider.toggleTheme();
                 case Menu.advance:
@@ -933,4 +969,7 @@ class _VariantSelectorState extends State<VariantSelector> {
       ),
     );
   }
+}
+
+class HtmlWidgetWithUrlLauncherFactory extends WidgetFactory with UrlLauncherFactory {
 }

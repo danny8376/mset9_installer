@@ -69,6 +69,9 @@ dependencies:
   crypto: ^3.0.3
   provider: ^6.1.2
   watcher: ^1.1.0
+  flutter_widget_from_html_core: ^0.15.2
+  fwfh_url_launcher: ^0.9.1
+  package_info_plus: ^5.0.1
 
 dependency_overrides:
 # this is heavily broken, trash wasm support for now
@@ -110,6 +113,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/credit/
     - assets/images/
     - assets/mset9-files/
 
