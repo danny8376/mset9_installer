@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+import 'package:path/path.dart' as p;
+
 import 'console.dart';
 import 'consts.dart';
 import 'hax.dart';
@@ -9,7 +12,7 @@ import 'root_check.dart';
 import 'string_utils.dart';
 import 'talker.dart';
 
-enum HaxStage { pickFolder, folderPicked, /*pickVariant,*/ postSetup, readyToInject, doExploit, broken, doingWork }
+enum HaxStage { pickFolder, folderPicked, cardRemoved, /*pickVariant,*/ postSetup, readyToInject, doExploit, broken, doingWork }
 
 enum FolderAssignmentExceptionType { noN3DS, noId0, multipleId0, id1Picked, unknown }
 enum HaxConfirmationType { autoSdRootSetup, sdRootSetupIncludeCorruptedUnknownOptional }
@@ -43,6 +46,12 @@ class HaxInstaller {
   Directory? id1HaxFolder;
   Directory? id1HaxExtdataFolder;
 
+  Map<String, CheckState>? _sdRootMissing;
+  Map<String, CheckState>? get _sdRootMissingClone => _sdRootMissing == null ? null : {..._sdRootMissing!};
+  dynamic _folderAndDriveUpdateWatcherHandle;
+  Directory? _folderAndDriveUpdateWatchRoot;
+  bool _pauseFolderAndDriveUpdateWatcher = false;
+
   void Function(HaxStage) stageUpdateCallback;
   void Function(HaxAlertType) alertCallback;
   void Function(HaxConfirmationType, Future<bool> Function(bool), [dynamic]) confirmationCallback;
@@ -51,27 +60,30 @@ class HaxInstaller {
     required this.stageUpdateCallback,
     required this.alertCallback,
     required this.confirmationCallback,
-  });
+  }) {
+    initWatcher();
+  }
 
   HaxStage get stage => _stage;
 
   Variant? get variant => _variant;
-  set variant(Variant? variant) {
 
-  }
-
-  Future<void> checkState({bool silent = false, bool skipSdRoot = false}) async {
+  Future<void> checkState({bool silent = false, bool skipSdRoot = false, bool sdFailed = false}) async {
     try {
       talker.debug("Common: Checking state");
       if (id0Folder == null) {
         stageUpdateCallback(_stage = HaxStage.pickFolder);
         return;
       }
+      if (await id0Folder?.exists() != true) {
+        stageUpdateCallback(_stage = HaxStage.cardRemoved);
+        return;
+      }
       final matching = await _findHaxId1();
       if (matching != null) {
         id1HaxFolder = matching.folder;
         _variant = matching.hax.dummyVariant;
-        checkInjectState(silent: silent, skipSdRoot: skipSdRoot);
+        checkInjectState(silent: silent, skipSdRoot: skipSdRoot, sdFailed: sdFailed);
       } else if ((await _findId1(any: true) != null && await _findBackupId1(any: true) != null) ||
           (await _findId1(any: true) != null && await _findHaxId1(any: true) != null)) {
         stageUpdateCallback(_stage = HaxStage.broken);
@@ -87,13 +99,17 @@ class HaxInstaller {
     }
   }
 
-  Future<void> checkInjectState({bool silent = false, bool skipSdRoot = false}) async {
+  Future<void> checkInjectState({bool silent = false, bool skipSdRoot = false, bool sdFailed = false}) async {
     try {
       talker.debug("Common: Checking inject state");
       if (id1HaxFolder == null) {
         return;
       }
-      if (!skipSdRoot && await checkSDRootMissing(silent: silent, ignoreOptional: true) != null) {
+      if (await id1HaxFolder?.exists() != true) {
+        stageUpdateCallback(_stage = HaxStage.cardRemoved);
+        return;
+      }
+      if (sdFailed || (!skipSdRoot && await checkSDRootMissing(silent: silent, ignoreOptional: true) != null)) {
         stageUpdateCallback(_stage = HaxStage.postSetup);
         return;
       }
@@ -151,7 +167,87 @@ class HaxInstaller {
     }
   }
 
+  Future<void> _handleFolderAndDriveUpdate(List<String>? updates) async {
+    if (_folderAndDriveUpdateWatchRoot == null) {
+      return; // something is very wrong
+    }
+    if (_pauseFolderAndDriveUpdateWatcher) {
+      // let's hope user know that they shouldn't mess with files when
+      // the setup process is running... I guess... hope so
+      // we can't easily distinguish events between user and app anyway
+      return;
+    }
+    if (updates == null) {
+      try {
+        if (await _folderAndDriveUpdateWatchRoot?.exists() == true) {
+          return checkState(silent: true);
+        }
+      } on FileSystemException { // ignore
+      }
+      return stageUpdateCallback(_stage = HaxStage.cardRemoved);
+    }
+    if (updates.isEmpty) {
+      return checkState(silent: true);
+    }
+    bool id0Altered = false;
+    if (_folderAndDriveUpdateWatchRoot == id0Folder) {
+      id0Altered = true;
+    } else {
+      final id0 = id0Folder!.name;
+      final checkList = await RootCheckList.load();
+      updates.removeWhere((path) {
+        final pathSeg = p.split(path);
+        if (_folderAndDriveUpdateWatchRoot == n3dsFolder) {
+          id0Altered = pathSeg.firstOrNull?.equalsIgnoreAsciiCase(id0) == true;
+          return true;
+        }
+        if (pathSeg.firstOrNull?.equalsIgnoreAsciiCase(kN3dsFolder) != true) {
+          return !checkList.pathList.any((e) => path.equalsIgnoreAsciiCase(e));
+        }
+        if (pathSeg.elementAtOrNull(1)?.equalsIgnoreAsciiCase(id0) == true) {
+          id0Altered = true;
+        }
+        return true;
+      });
+    }
+    if (id0Altered && _sdRootMissing == null && updates.isEmpty) {
+      checkInjectState(silent: true, skipSdRoot: true);
+    }
+    if (sdRoot == null) {
+      return;
+    }
+    final missing = await sdRootCheck(sdRoot!, fileList: updates, loose: looseRootCheck);
+    if (_sdRootMissing == null) {
+      _sdRootMissing = missing;
+      if (missing?.values.where((v) => !v.optional).isEmpty == false) {
+        stageUpdateCallback(_stage = HaxStage.postSetup);
+      }
+      return;
+    }
+    for (final path in updates) {
+      if (missing?.containsKey(path) != true) {
+        _sdRootMissing?.remove(path);
+      } else if (missing != null) {
+        _sdRootMissing?[path] = missing[path]!;
+      }
+    }
+    if (_sdRootMissing?.isEmpty == true) {
+      _sdRootMissing = null;
+      checkState(silent: true, skipSdRoot: true);
+    }
+  }
+
+  Future<void> _watchFolderAndDriveUpdate() async {
+    // always unwatch, the implementation is supposed to handle null
+    // (or the implementation actually don't need to unwatch, still pass null)
+    unwatchFolderAndDriveUpdate(_folderAndDriveUpdateWatcherHandle);
+    _folderAndDriveUpdateWatchRoot = sdRoot ?? n3dsFolder ?? id0Folder;
+    _folderAndDriveUpdateWatcherHandle = await watchFolderAndDriveUpdate(_folderAndDriveUpdateWatchRoot!, _handleFolderAndDriveUpdate);
+    _pauseFolderAndDriveUpdateWatcher = false;
+  }
+
   Future<void> checkAndAssignFolders(Directory dir) async {
+    final (root, n3ds, id0, missing) = (sdRoot, n3dsFolder, id0Folder, _sdRootMissing);
     try {
       var result = await _checkAndAssignFolders(dir);
       if (canAccessParentOfPicked) {
@@ -164,10 +260,19 @@ class HaxInstaller {
         talker.error("FolderPicking: Check: Unknown Folder Picked");
         throw const FolderAssignmentException(FolderAssignmentExceptionType.unknown);
       }
+      _watchFolderAndDriveUpdate();
       checkState();
     } on FolderAssignmentException {
+      sdRoot = root;
+      n3dsFolder = n3ds;
+      id0Folder = id0;
+      _sdRootMissing = missing;
       rethrow;
     } catch (e, st) {
+      sdRoot = root;
+      n3dsFolder = n3ds;
+      id0Folder = id0;
+      _sdRootMissing = missing;
       talker.handle(e, st);
     }
   }
@@ -179,6 +284,9 @@ class HaxInstaller {
       n3dsFolder = dir;
       if (canAccessParentOfPicked) {
         sdRoot = n3dsFolder!.parent;
+      } else {
+        sdRoot = null;
+        _sdRootMissing = null;
       }
       return await _pickId0FromN3DS();
     } else if (await _checkIfId0(dir)) {
@@ -187,6 +295,9 @@ class HaxInstaller {
       if (canAccessParentOfPicked) {
         n3dsFolder = id0Folder!.parent;
         sdRoot = n3dsFolder!.parent;
+      } else {
+        sdRoot = n3dsFolder = null;
+        _sdRootMissing = null;
       }
       return true;
     } else if (await _checkIfId1(dir)) {
@@ -371,6 +482,7 @@ class HaxInstaller {
   Future<T> _exceptionGuard<T>({
     required T faultResult,
     bool switchStageToDoingWork = false,
+    bool pauseFolderAndDriveUpdateWatcherWhenDoingWork = false,
     required Future<T> Function() work,
     Future<void> Function(T result)? done,
   }) async {
@@ -378,10 +490,18 @@ class HaxInstaller {
       stageUpdateCallback(_stage = HaxStage.doingWork);
     }
     T result = faultResult;
+    final watcherState = _pauseFolderAndDriveUpdateWatcher;
+    if (pauseFolderAndDriveUpdateWatcherWhenDoingWork) {
+      _pauseFolderAndDriveUpdateWatcher = true;
+    }
     try {
       result = await work();
     } catch (e, st) {
       talker.handle(e, st);
+    }
+    // if the work is already pause, don't resume it from us
+    if (pauseFolderAndDriveUpdateWatcherWhenDoingWork && !watcherState) {
+      _pauseFolderAndDriveUpdateWatcher = false;
     }
     if (done != null) {
       await done(result);
@@ -393,11 +513,15 @@ class HaxInstaller {
     if (sdRoot == null) { // always pass when unable to check
       return null;
     }
+    if (await sdRoot?.exists() != true) {
+      stageUpdateCallback(_stage = HaxStage.cardRemoved);
+      return null;
+    }
 
     talker.debug("Setup: Checking SD root files...");
-    var missing = await sdRootCheck(sdRoot!, loose: looseRootCheck);
+    _sdRootMissing = await sdRootCheck(sdRoot!, loose: looseRootCheck);
     //talker.debug(missing);
-    if (!silent && missing != null) {
+    if (!silent && _sdRootMissing != null) {
       final completer = Completer();
       confirmationCallback(
           HaxConfirmationType.autoSdRootSetup,
@@ -410,12 +534,13 @@ class HaxInstaller {
             completer.complete(result);
             return result;
           },
-          missing
+          _sdRootMissingClone
       );
       if (await completer.future) {
-        missing = await sdRootCheck(sdRoot!, loose: looseRootCheck);
+        _sdRootMissing = await sdRootCheck(sdRoot!, loose: looseRootCheck);
       }
     }
+    final missing = _sdRootMissingClone;
     if (ignoreOptional) {
       missing?.removeWhere((k, v) => v.optional);
     }
@@ -426,6 +551,7 @@ class HaxInstaller {
     switch (_stage) {
       case HaxStage.pickFolder:
       //case HaxStage.folderPicked:
+      case HaxStage.cardRemoved:
       case HaxStage.broken:
       case HaxStage.doingWork:
         talker.error("HaxInstaller: Shouldn't set variant at this stage");
@@ -461,6 +587,7 @@ class HaxInstaller {
 
   Future<bool> setupHaxId1() => _exceptionGuard(
     faultResult: false,
+    pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
     work: () async {
       talker.debug("Setup: Setup - ${_variant?.model.name} ${_variant?.version.major}.${_variant?.version.minor}");
       if (_variant == null) {
@@ -470,6 +597,10 @@ class HaxInstaller {
       final hax = Hax.find(_variant!);
       if (hax == null) {
         talker.error("Setup: No available hax");
+        return false;
+      }
+      if (await id0Folder?.exists() != true) {
+        stageUpdateCallback(_stage = HaxStage.cardRemoved);
         return false;
       }
 
@@ -513,11 +644,16 @@ class HaxInstaller {
   Future<bool> setupSDRoot() => _exceptionGuard(
     faultResult: false,
     switchStageToDoingWork: true,
+    pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
     work: () async {
       if (sdRoot == null) {
         return true;
       }
-      final missing = await checkSDRootMissing(silent: true);
+      if (await sdRoot?.exists() != true) {
+        stageUpdateCallback(_stage = HaxStage.cardRemoved);
+        return false;
+      }
+      final missing = _sdRootMissing = await checkSDRootMissing(silent: true);
       if (missing == null) {
         talker.debug("Setup - SD root: no missing");
         return true;
@@ -541,8 +677,8 @@ class HaxInstaller {
           (e.value.state == CheckStateState.missing && !e.value.optional)
       ).map((e) => e.key);
       //talker.debug(fileList);
-      await downloadSdRootFiles(sdRoot!, fileList: fileList.toList(growable: false));
-      final verify = await checkSDRootMissing(silent: true);
+      await downloadSdRootFiles(sdRoot!, fileList: List.unmodifiable(fileList));
+      final verify = _sdRootMissing = await checkSDRootMissing(silent: true);
       //talker.debug(verify);
       if (verify != null && verify.keys.any((e) => fileList.contains(e))) {
         talker.debug("Setup - SD root: Failed to get all files!");
@@ -557,6 +693,7 @@ class HaxInstaller {
   Future<bool> injectTrigger() => _exceptionGuard(
     faultResult: false,
     switchStageToDoingWork: false,
+    pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
     work: () async =>
         await (await id1HaxExtdataFolder?.file(kTriggerFile, create: true))?.writeAsBytes([], flush: true) != null,
     done: (result) async {
@@ -567,6 +704,7 @@ class HaxInstaller {
   Future<bool> removeTrigger() => _exceptionGuard(
     faultResult: false,
     switchStageToDoingWork: false,
+    pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
     work: () async => await (await id1HaxExtdataFolder?.file(kTriggerFile))?.delete() != null,
     done: (result) async {
       checkInjectState(skipSdRoot: true);
@@ -576,6 +714,7 @@ class HaxInstaller {
   Future<bool> removeHaxId1() => _exceptionGuard(
     faultResult: false,
     switchStageToDoingWork: true,
+    pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
     work: () async {
       talker.debug("Setup: Remove - ${_variant?.model} ${_variant?.version.major}.${_variant?.version.minor}");
       await (await _findHaxFolder())?.delete(recursive: true);

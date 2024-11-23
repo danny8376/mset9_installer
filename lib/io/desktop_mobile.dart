@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -9,8 +10,10 @@ import 'package:cupertino_http/cupertino_http.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:http/io_client.dart';
 import 'package:path/path.dart' as p;
+import 'package:watcher/watcher.dart';
 
 import '../string_utils.dart';
+import '../talker.dart';
 import 'extended_io.dart';
 import 'android.dart';
 
@@ -27,14 +30,39 @@ bool get isLegacyCodeCompatible => !Platform.isMacOS && !Platform.isIOS;
 bool get canAccessParentOfPicked => isDesktop;
 bool get showPickN3DS => Platform.isAndroid;
 
-Future<Directory?> pickFolder() {
-  return switch (Platform.operatingSystem) {
-    "windows" || "macos" || "linux" => pickFolderDesktop(),
-    "android" => pickFolderAndroid(),
-    "ios" => throw UnimplementedError('Unsupported'),
-    _ => throw UnimplementedError('Unsupported'),
-  };
-}
+Future<Directory?> pickFolder() => switch (Platform.operatingSystem) {
+  "windows" || "macos" || "linux" => pickFolderDesktop,
+  "android" => pickFolderAndroid,
+  "ios" => throw UnimplementedError('Unsupported'),
+  _ => throw UnimplementedError('Unsupported'),
+}();
+
+// some platform might need init (mainly for MethodChannel?)
+Future<void> initWatcher() => switch (Platform.operatingSystem) {
+  "windows" || "macos" || "linux" => () async {},
+  "android" => initWatcherAndroid,
+  "ios" => throw UnimplementedError('Unsupported'),
+  _ => throw UnimplementedError('Unsupported'),
+}();
+
+// The return value is some internal handle for unwatch,
+// the actual implementation should handle the check.
+// watcher function get called with a list of changed files/folder path,
+// null/empty list means the whole disk/volume is removed/reattached.
+// empty should be reattached, but no guarantee for null, need to check.
+Future<dynamic> watchFolderAndDriveUpdate(Directory dir, Future<void> Function(List<String>?) watcher) => switch (Platform.operatingSystem) {
+  "windows" || "macos" || "linux" => watchFolderAndDriveUpdateDesktop,
+  "android" => watchFolderAndDriveUpdateAndroid,
+  "ios" => throw UnimplementedError('Unsupported'),
+  _ => throw UnimplementedError('Unsupported'),
+}(dir, watcher);
+
+Future<void> unwatchFolderAndDriveUpdate(dynamic watcherHandle) => switch (Platform.operatingSystem) {
+  "windows" || "macos" || "linux" => unwatchFolderAndDriveUpdateDesktop,
+  "android" => unwatchFolderAndDriveUpdateAndroid,
+  "ios" => throw UnimplementedError('Unsupported'),
+  _ => throw UnimplementedError('Unsupported'),
+}(watcherHandle);
 
 Future<Directory?> pickFolderDesktop() async {
   final picked = await FilePicker.platform.getDirectoryPath();
@@ -44,6 +72,33 @@ Future<Directory?> pickFolderDesktop() async {
   }
 
   return Directory(picked);
+}
+
+typedef DesktopWatcherHandle = ({StreamSubscription<WatchEvent> dirSubscription});
+
+Future<dynamic> watchFolderAndDriveUpdateDesktop(Directory dir, Future<void> Function(List<String>?) watcher) async {
+  // TODO: add disk/volume watcher
+  // Windows need to re-add directory watcher after disk reattach
+  // probably the same for Linux/macOS
+  final dirWatcher = DirectoryWatcher(dir.path);
+  final subscription = dirWatcher.events.listen((event) {
+    // TODO: maybe chunk events for better performance?
+    watcher([p.relative(event.path, from: dir.path)]);
+  });
+  talker.debug("Watching ${dir.path}");
+  // for type checking
+  final DesktopWatcherHandle handle = (dirSubscription: subscription);
+  return handle;
+}
+
+Future<void> unwatchFolderAndDriveUpdateDesktop(dynamic watcherHandle) async {
+  // TODO: add disk/volume watcher
+  if (watcherHandle is! DesktopWatcherHandle) {
+    return;
+  }
+  talker.debug("Unwatched");
+  final handle = watcherHandle;//final handle = watcherHandle as DesktopWatcherHandle;
+  handle.dirSubscription.cancel();
 }
 
 Client? _client;

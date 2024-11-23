@@ -41,7 +41,7 @@ Map<int, int> _ensureVariantSelections(Map<int, int>? variantSelections) {
   return variantSelections;
 }
 
-Future<Map<String, CheckState>?> sdRootCheck(Directory sdRoot, {Map<int, int>? variantSelections, bool loose = false}) async {
+Future<Map<String, CheckState>?> sdRootCheck(Directory sdRoot, {Map<int, int>? variantSelections, List<String>? fileList, bool loose = false}) async {
   variantSelections = _ensureVariantSelections(variantSelections);
   final checkList = await RootCheckList.load();
   final missing = <String, CheckState>{};
@@ -53,9 +53,9 @@ Future<Map<String, CheckState>?> sdRootCheck(Directory sdRoot, {Map<int, int>? v
       if (variant == null) {
         throw InvalidVariantSelectionException("invalid variantSelections, variant $variantSelection doesn't exist in group $group");
       }
-      variantMissing = await _checkVariant(sdRoot, variant, loose: loose);
+      variantMissing = await _checkVariant(sdRoot, variant, fileList: fileList, loose: loose);
     } else {
-      variantMissing = await _checkAllVariants(sdRoot, variantList, loose: loose);
+      variantMissing = await _checkAllVariants(sdRoot, variantList, fileList: fileList, loose: loose);
     }
     if (variantMissing != null) {
       missing.addAll(variantMissing);
@@ -64,11 +64,11 @@ Future<Map<String, CheckState>?> sdRootCheck(Directory sdRoot, {Map<int, int>? v
   return missing.isEmpty ? null : missing;
 }
 
-Future<Map<String, CheckState>?> _checkAllVariants(Directory sdRoot, Map<int, Map<String, SDRootFile>> variantList, {bool loose = false}) async {
+Future<Map<String, CheckState>?> _checkAllVariants(Directory sdRoot, Map<int, Map<String, SDRootFile>> variantList, {List<String>? fileList, bool loose = false}) async {
   final keys = variantList.keys.sorted((a, b) => a.compareTo(b));
   Map<String, CheckState>? firstMissing;
   for (final group in keys) {
-    final variantMissing = await _checkVariant(sdRoot, variantList[group]!, loose: loose);
+    final variantMissing = await _checkVariant(sdRoot, variantList[group]!, fileList: fileList, loose: loose);
     if (variantMissing == null) {
       return null;
     }
@@ -77,9 +77,13 @@ Future<Map<String, CheckState>?> _checkAllVariants(Directory sdRoot, Map<int, Ma
   return firstMissing;
 }
 
-Future<Map<String, CheckState>?> _checkVariant(Directory sdRoot, Map<String, SDRootFile> checks, {bool loose = false}) async {
+Future<Map<String, CheckState>?> _checkVariant(Directory sdRoot, Map<String, SDRootFile> checks, {List<String>? fileList, bool loose = false}) async {
   final missing = <String, CheckState>{};
   for (final MapEntry(key: path, value: check) in checks.entries) {
+    // not the most efficient way... but way cheaper than hashing files
+    if (fileList?.contains(path) == false) {
+      continue;
+    }
     if (check.type == SDRootFileType.archive) {
       continue;
     }
@@ -155,7 +159,7 @@ Future<void> downloadSdRootFiles(Directory sdRoot, {List<String>? fileList, Map<
       }
     }
   }
-  downloadOrder = downloadOrder.distinct().toList(growable: false);
+  downloadOrder = List.unmodifiable(downloadOrder.distinct());
   //talker.debug(downloadOrder);
   //talker.debug(downloadList);
   for (final downloadIndex in downloadOrder) {
@@ -208,7 +212,10 @@ Future<void> downloadSdRootFiles(Directory sdRoot, {List<String>? fileList, Map<
             if (content is! Uint8List) {
               throw const FormatException("archiveFile content is unknown type");
             }
-            check.remoteHash = await Hash.sha256.digestBytes(content);
+            final remoteHash = await Hash.sha256.digestBytes(content);
+            if (!typedDataEquals(remoteHash, check.hash.first)) {
+              check.remoteHash = remoteHash;
+            }
             await file?.writeAsBytes(content);
             extractToDownloadEntry.done = true;
             talker.debug("RootCheck: $fileName : ${archiveFile.name} => $extractTo");
@@ -305,6 +312,9 @@ class RootCheckList {
   @JsonKey(includeFromJson: false, includeToJson: false)
   late Map<int, Map<int, Map<String, SDRootFile>>> groupList;
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  late List<String> pathList;
+
   static RootCheckList? _cache;
   static int _cacheTimeline = -1;
 
@@ -346,19 +356,21 @@ class RootCheckList {
 
   void checkAndUpdateValues([Map<String, SDRootFile>? existingChecks]) {
     groupList = {};
+    pathList = [];
     for (final MapEntry(:key, value: oriCheck) in checks.entries) {
       final [fileName, ...splitRest] = key.split("#");
       final check = resolveLink(oriCheck);
       // it seems we don't have direct nullable pattern?
       final groupKey = splitRest.firstOrNull;
       final localOnly = existingChecks?[fileName]?.localOnly ?? check.localOnly;
-      // groupList
+      // groupList && pathList
       if (groupKey != "virtual" && check.type != SDRootFileType.archive) {
         final groupPair = groupKey?.split(",").map((s) => int.parse(s));
         final [group, variant] = (groupPair?.toList(growable: false) ?? const [0, 0]);
         final variantList = (groupList[group] ??= {});
         final checkMap = (variantList[variant] ??= {});
         checkMap[fileName] = check;
+        pathList.add(fileName);
       }
       // check.extractMap && localOnly
       for (final uri in check.src) {
@@ -377,6 +389,7 @@ class RootCheckList {
         //talker.debug("updateVal: ${uri.host} : ${uri.fragment} => $fileName");
       }
     }
+    pathList = List.unmodifiable(pathList.distinct());
   }
 
   // get first available (and valid), drop all remaining even they're newer
@@ -403,6 +416,7 @@ class RootCheckList {
     src = newData.src;
     checks = newData.checks;
     groupList = newData.groupList;
+    pathList = newData.pathList;
   }
 
   static Future<RootCheckList> load() async {
@@ -483,7 +497,7 @@ class _HexConverter implements JsonConverter<Uint8List, String> {
   Uint8List fromJson(String json) => Uint8List.fromList(hex.decode(json));
 
   @override
-  String toJson(Uint8List value) => hex.encode(value.toList(growable: false));
+  String toJson(Uint8List value) => hex.encode(List.unmodifiable(value));
 }
 
 class _UriConverter implements JsonConverter<Uri, String> {

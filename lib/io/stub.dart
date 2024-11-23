@@ -7,6 +7,15 @@ bool get canAccessParentOfPicked => throw UnimplementedError('Unsupported');
 bool get showPickN3DS => throw UnimplementedError('Unsupported');
 
 Future<Directory?> pickFolder() => throw UnimplementedError('Unsupported');
+// some platform might need init (mainly for MethodChannel?)
+Future<void> initWatcher() => throw UnimplementedError('Unsupported');
+// The return value is some internal handle for unwatch,
+// the actual implementation should handle the check.
+// watcher function get called with a list of changed files/folder path,
+// null/empty list means the whole disk/volume is removed/reattached.
+// empty should be reattached, but no guarantee for null, need to check.
+Future<dynamic> watchFolderAndDriveUpdate(Directory dir, Future<void> Function(List<String>?) watcher) => throw UnimplementedError('Unsupported');
+Future<void> unwatchFolderAndDriveUpdate(dynamic watcherHandle) => throw UnimplementedError('Unsupported');
 Client httpClient() => throw UnimplementedError('Unsupported');
 
 class FileSystemUtils {
@@ -21,6 +30,7 @@ abstract class FileSystemEntity {
   String get name => throw UnimplementedError('Unsupported');
 
   Future<FileSystemEntity> delete({bool recursive = false}) => throw UnimplementedError('Unsupported');
+  Future<bool> exists() => throw UnimplementedError('Unsupported');
 }
 abstract interface class Directory implements FileSystemEntity {
   Directory(String path);

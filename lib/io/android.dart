@@ -1,17 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
+import 'package:flutter/services.dart';
 import 'package:saf_util/saf_util.dart';
 import 'package:saf_util/saf_util_platform_interface.dart' show SafDocumentFile;
 import 'package:saf_stream/saf_stream.dart';
-import 'package:path/path.dart' as p;
 
 import 'extended_io.dart';
 import '../string_utils.dart';
+import '../talker.dart';
 
 final _safUtil = SafUtil();
 final _safStream = SafStream();
+const _watcher = MethodChannel('moe.saru.homebrew.console3ds.mset9_installer/watcher');
+bool _watcherInitialized = false;
 
 Future<Directory?> pickFolderAndroid() async {
   final picked = await _safUtil.openDirectory(writePermission: true);
@@ -27,13 +29,69 @@ Future<Directory?> pickFolderAndroid() async {
   return _Directory(doc);
 }
 
+typedef AndroidWatcherHandle = String;
+typedef Watcher = Future<void> Function(List<String>?);
+
+final Map<AndroidWatcherHandle, Watcher> _watcherList = {};
+
+Future<void> initWatcherAndroid() async {
+  if (_watcherInitialized) {
+    return;
+  }
+  _watcherInitialized = true;
+  _watcher.setMethodCallHandler((call) async {
+    switch (call.method) {
+      case "watcher":
+        if (call.arguments is! Map) {
+          talker.error("invalid arguments for watcher, got ${call.arguments.runtimeType}");
+          return;
+        }
+        final of = call.arguments["of"];
+        final updates = call.arguments["updates"];
+        if (of is! String || updates is! List<String>?) {
+          talker.error("invalid arguments for watcher, got of:${of.runtimeType}, updates:${updates.runtimeType}");
+          return;
+        }
+        final watcher = _watcherList[of];
+        if (watcher != null) {
+          watcher(updates);
+        }
+        final ori = call.arguments["originalUri"];
+        talker.debug(updates);
+        talker.debug(ori);
+        return;
+      default:
+        throw UnimplementedError('Unsupported');
+    }
+  });
+}
+
+Future<dynamic> watchFolderAndDriveUpdateAndroid(Directory dir, Watcher watcher) async {
+  talker.debug("watch ${dir.path}");
+  final uriString = dir.path;
+  _watcherList[uriString] = watcher;
+  await _watcher.invokeMethod<Map<String, List<String>?>>("watch", { "uri": uriString });
+  // for type checking
+  final AndroidWatcherHandle handle = uriString;
+  return handle;
+}
+
+Future<void> unwatchFolderAndDriveUpdateAndroid(dynamic watcherHandle) async {
+  if (watcherHandle is! AndroidWatcherHandle) {
+    return;
+  }
+  talker.debug("unwatch $watcherHandle");
+  await _watcher.invokeMethod<Map<String, List<String>?>>("unwatch", { "uri": watcherHandle });
+  _watcherList.remove(watcherHandle);
+}
+
 abstract class _FileSystemEntity extends FileSystemEntity implements ExtendedFileSystemEntity {
   @override
   Future<bool> exists() => throw UnimplementedError();
 
   @override
   bool existsSync() => throw UnimplementedError();
-  
+
   @override
   Future<FileSystemEntity> delete({bool recursive = false}) async {
     await _safUtil.delete(path, await isDirectoryImpl);
@@ -85,6 +143,9 @@ class _Directory extends _FileSystemEntity implements Directory, ExtendedDirecto
 
   @override
   Directory createTempSync([String? prefix]) => throw UnimplementedError();
+
+  @override
+  Future<bool> exists() => _safUtil.exists(path, true);
 
   @override
   Stream<_FileSystemEntity> list({bool recursive = false, bool followLinks = true}) async* {
@@ -224,6 +285,9 @@ class _File extends _FileSystemEntity implements File, ExtendedFile {
 
   @override
   void createSync({bool recursive = false, bool exclusive = false}) => throw UnimplementedError();
+
+  @override
+  Future<bool> exists() => _safUtil.exists(path, false);
 
   @override
   Future<DateTime> lastAccessed() => throw UnimplementedError();

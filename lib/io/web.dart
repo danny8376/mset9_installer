@@ -30,6 +30,20 @@ Future<Directory?> pickFolder() async {
   }
 }
 
+// some platform might need init (mainly for MethodChannel?)
+Future<void> initWatcher() async {}
+
+// > Currently no observer for web, so this is just dummy functions.
+// > However, Chrome do have it as optional experimental feature,
+// > so might consider implement it in the future.
+// The return value is some internal handle for unwatch,
+// the actual implementation should handle the check.
+// watcher function get called with a list of changed files/folder path,
+// null/empty list means the whole disk/volume is removed/reattached.
+// empty should be reattached, but no guarantee for null, need to check.
+Future<dynamic> watchFolderAndDriveUpdate(Directory dir, Future<void> Function(List<String>?) watcher) async => null;
+Future<void> unwatchFolderAndDriveUpdate(dynamic watcherHandle) async {}
+
 Client? _client;
 
 Client httpClient() {
@@ -56,7 +70,12 @@ class FileSystemEntity {
   String get name => handle.name;
   String get path => p.join(parentHandle == null ? "" : parent.path, name);
 
-  delete({bool recursive = false}) => handle.remove(recursive: recursive);
+  Future<FileSystemEntity> delete({bool recursive = false}) async {
+    await handle.remove(recursive: recursive);
+    return this;
+  }
+  // TODO: maybe? implement exists for web properly
+  Future<bool> exists() async => true;
 }
 
 class Directory extends FileSystemEntity {

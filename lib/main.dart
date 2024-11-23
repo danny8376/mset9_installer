@@ -649,14 +649,14 @@ class _InstallerState extends State<Installer> {
         children: <Widget>[
           _genButton(
             context,
-            const [HaxStage.pickFolder, HaxStage.folderPicked, HaxStage.postSetup, HaxStage.readyToInject, HaxStage.doExploit, HaxStage.broken],
+            const [HaxStage.pickFolder, HaxStage.folderPicked, HaxStage.cardRemoved, HaxStage.postSetup, HaxStage.readyToInject, HaxStage.doExploit, HaxStage.broken],
             _pickFolder,
             showPickN3DS ? S.of(context).installer_button_pick_3ds : S.of(context).installer_button_pick_sd,
           ),
           switch (installer.stage) {
             HaxStage.doingWork =>
                 _genButton(context, null, null, _s().installer_button_dummy_checking),
-            HaxStage.postSetup || HaxStage.readyToInject || HaxStage.doExploit || HaxStage.broken =>
+            HaxStage.cardRemoved || HaxStage.postSetup || HaxStage.readyToInject || HaxStage.doExploit || HaxStage.broken =>
                 _genButton(
                   context,
                   const [],
