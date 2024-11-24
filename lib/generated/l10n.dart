@@ -50,6 +50,17 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `If you want to contribute to translations (non en/en_US), please go https://crowdin.com/project/mset9_installer`
+  String get about_translation_contribution {
+    return Intl.message(
+      'If you want to contribute to translations (non en/en_US), please go https://crowdin.com/project/mset9_installer',
+      name: 'about_translation_contribution',
+      desc:
+          'Not used in app, this is information for people who want to contribute to translations',
+      args: [],
+    );
+  }
+
   /// `MSET9 Installer`
   String get app_name {
     return Intl.message(
