@@ -37,9 +37,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Your browser is not supported, please use different browser or different version of installer."),
         "alert_not_supported_title":
             MessageLookupByLibrary.simpleMessage("Not Supported"),
+        "app_name": MessageLookupByLibrary.simpleMessage("MSET9 Installer"),
         "check_loading": MessageLookupByLibrary.simpleMessage("Checking ..."),
-        "inject_missing_hax_extdata": MessageLookupByLibrary.simpleMessage(
-            "Broken mset9 setup, extdata is missing"),
         "installer_button_check":
             MessageLookupByLibrary.simpleMessage("Check MSET9 status"),
         "installer_button_dummy_checking":
@@ -91,6 +90,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Remove - Confirm"),
         "remove_loading":
             MessageLookupByLibrary.simpleMessage("Removing MSET9 ..."),
+        "sd_setup_loading":
+            MessageLookupByLibrary.simpleMessage("Setting up SD ..."),
         "setup_alert_confirm_title":
             MessageLookupByLibrary.simpleMessage("Setup - Confirm"),
         "setup_alert_disclaimer": MessageLookupByLibrary.simpleMessage(
@@ -159,13 +160,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Corrupted/~Unknown"),
         "setup_alert_sd_setup_optional_prompt":
             MessageLookupByLibrary.simpleMessage(
-                "Do you want to automatically download corrupted/unknown/non-critical files?"),
+                "Do you want to automatically download corrupted/unknown/non-critical files? (This will overwrite all related files automatically)"),
         "setup_alert_warning_title":
             MessageLookupByLibrary.simpleMessage("Setup - Warning"),
         "setup_loading":
             MessageLookupByLibrary.simpleMessage("Setting up MSET9 ..."),
-        "title_installer":
-            MessageLookupByLibrary.simpleMessage("MSET9 Installer"),
         "title_variant_selector":
             MessageLookupByLibrary.simpleMessage("Select Model & Version"),
         "variant_selector_model_new":

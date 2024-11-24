@@ -51,11 +51,11 @@ class S {
   }
 
   /// `MSET9 Installer`
-  String get title_installer {
+  String get app_name {
     return Intl.message(
       'MSET9 Installer',
-      name: 'title_installer',
-      desc: '',
+      name: 'app_name',
+      desc: 'Translated name of this app',
       args: [],
     );
   }
@@ -65,7 +65,7 @@ class S {
     return Intl.message(
       'OK',
       name: 'alert_neutral',
-      desc: '',
+      desc: 'Neutral action button for prompts without options',
       args: [],
     );
   }
@@ -75,7 +75,7 @@ class S {
     return Intl.message(
       'Yes',
       name: 'alert_general_yes',
-      desc: '',
+      desc: 'Positive action button for yes-no prompts',
       args: [],
     );
   }
@@ -85,7 +85,7 @@ class S {
     return Intl.message(
       'No',
       name: 'alert_general_no',
-      desc: '',
+      desc: 'Negative action button for yes-no prompts',
       args: [],
     );
   }
@@ -95,7 +95,7 @@ class S {
     return Intl.message(
       'Confirm',
       name: 'alert_general_confirm',
-      desc: '',
+      desc: 'Positive action button for confirm-cancel prompts',
       args: [],
     );
   }
@@ -105,7 +105,7 @@ class S {
     return Intl.message(
       'Cancel',
       name: 'alert_general_cancel',
-      desc: '',
+      desc: 'Negative action button for confirm-cancel prompts',
       args: [],
     );
   }
@@ -115,7 +115,7 @@ class S {
     return Intl.message(
       'Troubleshooting',
       name: 'alert_action_troubleshooting',
-      desc: '',
+      desc: 'Button for opening troubleshooting page in error prompts',
       args: [],
     );
   }
@@ -125,7 +125,8 @@ class S {
     return Intl.message(
       'https://3ds.hacks.guide/troubleshooting-mset9.html',
       name: 'alert_general_troubleshooting_url',
-      desc: '',
+      desc:
+          'Link to troubleshooting page of mset9 on 3ds.hacks.guide, should link to translated page when available',
       args: [],
     );
   }
@@ -135,7 +136,7 @@ class S {
     return Intl.message(
       'Not Supported',
       name: 'alert_not_supported_title',
-      desc: '',
+      desc: 'Title of not supported prompt used for web version',
       args: [],
     );
   }
@@ -145,7 +146,7 @@ class S {
     return Intl.message(
       'Your browser is not supported, please use different browser or different version of installer.',
       name: 'alert_not_supported',
-      desc: '',
+      desc: 'Message body of not supported prompt used for web version',
       args: [],
     );
   }
@@ -155,7 +156,7 @@ class S {
     return Intl.message(
       'Credit',
       name: 'menu_credit',
-      desc: '',
+      desc: 'Button in app menu for showing credit',
       args: [],
     );
   }
@@ -165,7 +166,7 @@ class S {
     return Intl.message(
       'Force Light Mode',
       name: 'menu_force_light_mode',
-      desc: '',
+      desc: 'Button in app menu for forcing use of light mode theme',
       args: [],
     );
   }
@@ -175,7 +176,7 @@ class S {
     return Intl.message(
       'Force Dark Mode',
       name: 'menu_force_dark_mode',
-      desc: '',
+      desc: 'Button in app menu for forcing use of dark mode theme',
       args: [],
     );
   }
@@ -185,7 +186,8 @@ class S {
     return Intl.message(
       'Advance Options',
       name: 'menu_advance',
-      desc: '',
+      desc:
+          'Button in app menu for enabling hidden options that\'s only intended for advance users',
       args: [],
     );
   }
@@ -195,7 +197,8 @@ class S {
     return Intl.message(
       'Extra Versions',
       name: 'menu_extra',
-      desc: '',
+      desc:
+          'Button in advance only menu for enabling support of system version that covered by shoundhax',
       args: [],
     );
   }
@@ -205,7 +208,8 @@ class S {
     return Intl.message(
       'Loose Root Check',
       name: 'menu_loose_root_check',
-      desc: '',
+      desc:
+          'Button in advance only menu for allowing missing/unknown SD root files that\'s not critical for mset9 itself',
       args: [],
     );
   }
@@ -215,7 +219,8 @@ class S {
     return Intl.message(
       'Legacy Hax ID1',
       name: 'menu_legacy',
-      desc: '',
+      desc:
+          'Button in advance only menu for using original mset9 hax ID1 instead of the new ID1',
       args: [],
     );
   }
@@ -225,17 +230,7 @@ class S {
     return Intl.message(
       'Logs',
       name: 'menu_log',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Select Model & Version`
-  String get title_variant_selector {
-    return Intl.message(
-      'Select Model & Version',
-      name: 'title_variant_selector',
-      desc: '',
+      desc: 'Button in app menu for showing app logs',
       args: [],
     );
   }
@@ -245,7 +240,7 @@ class S {
     return Intl.message(
       'Select Your SD Card',
       name: 'installer_button_pick_sd',
-      desc: '',
+      desc: 'Button in main app screen for picking SD card',
       args: [],
     );
   }
@@ -255,7 +250,8 @@ class S {
     return Intl.message(
       'Select "Nintendo 3DS"',
       name: 'installer_button_pick_3ds',
-      desc: '',
+      desc:
+          'Button in main app screen for picking Nintendo 3DS folder, only shown on Android',
       args: [],
     );
   }
@@ -265,7 +261,8 @@ class S {
     return Intl.message(
       'Checking...',
       name: 'installer_button_dummy_checking',
-      desc: '',
+      desc:
+          'Dummy non-clickable button in main app screen shown when the app is doing work (only really noticeable when doing check)',
       args: [],
     );
   }
@@ -275,7 +272,7 @@ class S {
     return Intl.message(
       'Check MSET9 status',
       name: 'installer_button_check',
-      desc: '',
+      desc: 'Button in main app screen for (re)checking setup status',
       args: [],
     );
   }
@@ -285,7 +282,7 @@ class S {
     return Intl.message(
       'Setup MSET9',
       name: 'installer_button_setup',
-      desc: '',
+      desc: 'Button in main app screen for setting up MSET9',
       args: [],
     );
   }
@@ -295,7 +292,7 @@ class S {
     return Intl.message(
       'Inject trigger file',
       name: 'installer_button_inject_trigger',
-      desc: '',
+      desc: 'Button in main app screen for injecting trigger file',
       args: [],
     );
   }
@@ -305,7 +302,7 @@ class S {
     return Intl.message(
       'Remove trigger file',
       name: 'installer_button_remove_trigger',
-      desc: '',
+      desc: 'Button in main app screen for removing trigger file',
       args: [],
     );
   }
@@ -315,7 +312,7 @@ class S {
     return Intl.message(
       'Remove MSET9',
       name: 'installer_button_remove',
-      desc: '',
+      desc: 'Button in main app screen for removing MSET9',
       args: [],
     );
   }
@@ -325,7 +322,7 @@ class S {
     return Intl.message(
       'Folder Picking - Error',
       name: 'pick_alert_title',
-      desc: '',
+      desc: 'Title of prompt for folder/SD card picking related error',
       args: [],
     );
   }
@@ -335,7 +332,8 @@ class S {
     return Intl.message(
       'There\'s no Nintendo 3DS folder.',
       name: 'pick_no_n3ds',
-      desc: '',
+      desc:
+          'Message body of prompt when the folder they pick don\'t have Nintendo 3DS folder, will append pick_common_n3ds_info at the end (with empty line)',
       args: [],
     );
   }
@@ -345,7 +343,8 @@ class S {
     return Intl.message(
       'There\'s no ID0 folder.',
       name: 'pick_no_id0',
-      desc: '',
+      desc:
+          'Message body of prompt when the folder they pick have no ID0 folder inside Nintendo 3DS folder, will append pick_common_n3ds_info at the end (with empty line)',
       args: [],
     );
   }
@@ -355,7 +354,8 @@ class S {
     return Intl.message(
       'Ensure that you put SD card in the console and boot normally first.\nDon\'t try to create Nintendo 3DS folder yourself.',
       name: 'pick_common_n3ds_info',
-      desc: '',
+      desc:
+          'Additional message about Nintendo 3DS folder generation that get appended after pick_no_n3ds and pick_no_id0',
       args: [],
     );
   }
@@ -365,7 +365,8 @@ class S {
     return Intl.message(
       'There\'s more than one ID0 folder, please check.',
       name: 'pick_multiple_id0',
-      desc: '',
+      desc:
+          'Message body of prompt when the folder they pick have multiple ID0 folders inside Nintendo 3DS folder',
       args: [],
     );
   }
@@ -375,7 +376,8 @@ class S {
     return Intl.message(
       'ID1 picked, please pick ID0 or Nintendo 3DS folder instead.\n(Pick the upper folder, which contains the folder that you just picked, instead.)',
       name: 'pick_picked_id1',
-      desc: '',
+      desc:
+          'Message body of prompt when the folder they pick is ID1, with hint of where ID0 is',
       args: [],
     );
   }
@@ -385,7 +387,8 @@ class S {
     return Intl.message(
       'Unknown folder picked, please pick the correct folder.',
       name: 'pick_picked_unknown',
-      desc: '',
+      desc:
+          'Message body of prompt when the folder they pick is unrelated (or subfolders inside ID1 or other location)',
       args: [],
     );
   }
@@ -395,7 +398,18 @@ class S {
     return Intl.message(
       'There\'s more than one hax ID1 ???',
       name: 'pick_multi_hax_id1',
-      desc: '',
+      desc:
+          'Not currently used, likely for message body of prompt when the ID0 folder contains multiple hax ID1 folder',
+      args: [],
+    );
+  }
+
+  /// `Select Model & Version`
+  String get title_variant_selector {
+    return Intl.message(
+      'Select Model & Version',
+      name: 'title_variant_selector',
+      desc: 'Title of variant (model and system version) selector',
       args: [],
     );
   }
@@ -405,7 +419,8 @@ class S {
     return Intl.message(
       'Old 3DS/2DS',
       name: 'variant_selector_model_old',
-      desc: '',
+      desc:
+          'Table header for old model Nintendo 3DS/2DS series, prefer to be short if possible',
       args: [],
     );
   }
@@ -415,7 +430,8 @@ class S {
     return Intl.message(
       'New 3DS/2DS',
       name: 'variant_selector_model_new',
-      desc: '',
+      desc:
+          'Table header for New Nintendo 3DS/2DS series, prefer to be short if possible',
       args: [],
     );
   }
@@ -425,7 +441,7 @@ class S {
     return Intl.message(
       'Select System Version:',
       name: 'variant_selector_version',
-      desc: '',
+      desc: 'Help text above version selector in variant selector',
       args: [],
     );
   }
@@ -435,7 +451,7 @@ class S {
     return Intl.message(
       'Checking ...',
       name: 'check_loading',
-      desc: '',
+      desc: 'Not used, text in loading prompt when checking',
       args: [],
     );
   }
@@ -445,7 +461,17 @@ class S {
     return Intl.message(
       'Setting up MSET9 ...',
       name: 'setup_loading',
-      desc: '',
+      desc: 'Text in loading prompt when setting up MSET9 hax ID1',
+      args: [],
+    );
+  }
+
+  /// `Setting up SD ...`
+  String get sd_setup_loading {
+    return Intl.message(
+      'Setting up SD ...',
+      name: 'sd_setup_loading',
+      desc: 'Text in loading prompt when setting up SD root files',
       args: [],
     );
   }
@@ -455,7 +481,7 @@ class S {
     return Intl.message(
       'Setup - Confirm',
       name: 'setup_alert_confirm_title',
-      desc: '',
+      desc: 'Title of prompt for confirmations during setup',
       args: [],
     );
   }
@@ -465,7 +491,7 @@ class S {
     return Intl.message(
       'Setup - Warning',
       name: 'setup_alert_warning_title',
-      desc: '',
+      desc: 'Title of prompt for warnings during setup',
       args: [],
     );
   }
@@ -475,7 +501,7 @@ class S {
     return Intl.message(
       'Setup Error',
       name: 'setup_alert_error_title',
-      desc: '',
+      desc: 'Title of prompt for errors during setup',
       args: [],
     );
   }
@@ -485,7 +511,7 @@ class S {
     return Intl.message(
       'Disclaimer',
       name: 'setup_alert_disclaimer_title',
-      desc: '',
+      desc: 'Title of disclaimer prompt about their console data (on SD card)',
       args: [],
     );
   }
@@ -495,7 +521,8 @@ class S {
     return Intl.message(
       'This process will temporarily reset all your 3DS data.\nMost of your applications and themes will disappear.\nThis is perfectly normal, and if everything goes right, it will re-appear at the end of the process.\n\nIn any case, it is highly recommended to make a backup of your SD card\'s contents to a folder on your PC/Device.\n(Especially the \'Nintendo 3DS\' folder.)',
       name: 'setup_alert_disclaimer',
-      desc: '',
+      desc:
+          'Message body of disclaimer prompt about their console data (on SD card)',
       args: [],
     );
   }
@@ -505,7 +532,7 @@ class S {
     return Intl.message(
       '(On Linux, things like to not go right - please ensure that your SD card is mounted with the \'utf8\' option.)',
       name: 'setup_alert_disclaimer_linux_addition',
-      desc: '',
+      desc: 'Additional message of disclaimer prompt about Linux',
       args: [],
     );
   }
@@ -515,7 +542,7 @@ class S {
     return Intl.message(
       '(Due to web api limitation, this implementation have slightly higher risk of data corruption, thus backup is even more recommended.)',
       name: 'setup_alert_disclaimer_web_addition',
-      desc: '',
+      desc: 'Additional message of disclaimer prompt about web version',
       args: [],
     );
   }
@@ -525,17 +552,19 @@ class S {
     return Intl.message(
       'Press confirm to continue.',
       name: 'setup_alert_disclaimer_confirm_to_continue',
-      desc: '',
+      desc:
+          'Additional message at the end of disclaimer prompt tell them to confirm',
       args: [],
     );
   }
 
-  /// `Do you want to automatically download corrupted/unknown/non-critical files?`
+  /// `Do you want to automatically download corrupted/unknown/non-critical files? (This will overwrite all related files automatically)`
   String get setup_alert_sd_setup_optional_prompt {
     return Intl.message(
-      'Do you want to automatically download corrupted/unknown/non-critical files?',
+      'Do you want to automatically download corrupted/unknown/non-critical files? (This will overwrite all related files automatically)',
       name: 'setup_alert_sd_setup_optional_prompt',
-      desc: '',
+      desc:
+          'Message body of yes-no prompt that only shown when loose SD root check enabled and have some missing/unknown files, ask if they want to auto download and replace them',
       args: [],
     );
   }
@@ -545,7 +574,7 @@ class S {
     return Intl.message(
       'Failed to setup SD root automatically!',
       name: 'setup_alert_sd_setup_failed',
-      desc: '',
+      desc: 'Message body of error prompt when SD root setup failed',
       args: [],
     );
   }
@@ -555,7 +584,8 @@ class S {
     return Intl.message(
       'Missing',
       name: 'setup_alert_sd_setup_file_state_missing',
-      desc: '',
+      desc:
+          'State text of missing file within file list in SD root file missing prompt',
       args: [],
     );
   }
@@ -565,7 +595,8 @@ class S {
     return Intl.message(
       'Outdated',
       name: 'setup_alert_sd_setup_file_state_outdated',
-      desc: '',
+      desc:
+          'State text of outdated file within file list in SD root file missing prompt',
       args: [],
     );
   }
@@ -575,7 +606,8 @@ class S {
     return Intl.message(
       'Corrupted/~Unknown',
       name: 'setup_alert_sd_setup_file_state_unknown_corrupted',
-      desc: '',
+      desc:
+          'State text of unknown/corrupted file within file list in SD root file missing prompt',
       args: [],
     );
   }
@@ -585,7 +617,8 @@ class S {
     return Intl.message(
       'Required',
       name: 'setup_alert_sd_setup_file_state_required',
-      desc: '',
+      desc:
+          'Additional text after file state that indicate it\'s required file, only shown when loose SD root file check enabled',
       args: [],
     );
   }
@@ -595,7 +628,7 @@ class S {
     return Intl.message(
       'Optional',
       name: 'setup_alert_sd_setup_file_state_optional',
-      desc: '',
+      desc: 'Additional text after file state that indicate it\'s optional',
       args: [],
     );
   }
@@ -605,7 +638,7 @@ class S {
     return Intl.message(
       'The following files on your SD root are missing/corrupted/unknown:',
       name: 'setup_alert_sd_setup_file_missing',
-      desc: '',
+      desc: 'Leading text before file list in SD root file missing prompt',
       args: [],
     );
   }
@@ -615,7 +648,7 @@ class S {
     return Intl.message(
       'Do SD Setup',
       name: 'setup_alert_sd_setup_action_setup',
-      desc: '',
+      desc: 'Action button for doing auto SD root setup in file missing prompt',
       args: [],
     );
   }
@@ -625,7 +658,8 @@ class S {
     return Intl.message(
       'There\'s no ID1 folder or multiple ID1 folders!',
       name: 'setup_alert_no_or_more_id1',
-      desc: '',
+      desc:
+          'Message body of error prompt when there\'s no or multiple ID1 folder',
       args: [],
     );
   }
@@ -635,7 +669,7 @@ class S {
     return Intl.message(
       'Setup Error - Extra Data',
       name: 'setup_alert_extdata_title',
-      desc: '',
+      desc: 'Title of prompt for ext data related errors during setup',
       args: [],
     );
   }
@@ -645,7 +679,7 @@ class S {
     return Intl.message(
       'There\'s no Extra Data',
       name: 'setup_alert_extdata_missing',
-      desc: '',
+      desc: 'Message body of error prompt when there\'s no extdata folder',
       args: [],
     );
   }
@@ -655,7 +689,8 @@ class S {
     return Intl.message(
       'There\'s no Home Menu Data',
       name: 'setup_alert_extdata_home_menu',
-      desc: '',
+      desc:
+          'Message body of error prompt when there\'s no home menu extra data',
       args: [],
     );
   }
@@ -665,7 +700,8 @@ class S {
     return Intl.message(
       'There\'s no Mii Maker Data',
       name: 'setup_alert_extdata_mii_maker',
-      desc: '',
+      desc:
+          'Message body of error prompt when there\'s no Mii Maker extra data',
       args: [],
     );
   }
@@ -675,7 +711,7 @@ class S {
     return Intl.message(
       'Setup Error - Dummy Title Database',
       name: 'setup_alert_dummy_db_title',
-      desc: '',
+      desc: 'Title of prompt for dummy title database',
       args: [],
     );
   }
@@ -685,27 +721,8 @@ class S {
     return Intl.message(
       'Are you sure you want to pick different model/version?',
       name: 'setup_alert_repick_variant_prompt',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Setup - Hax ID1 Created`
-  String get setup_alert_hax_id1_created_title {
-    return Intl.message(
-      'Setup - Hax ID1 Created',
-      name: 'setup_alert_hax_id1_created_title',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Hax ID1 has been created.`
-  String get setup_alert_hax_id1_created {
-    return Intl.message(
-      'Hax ID1 has been created.',
-      name: 'setup_alert_hax_id1_created',
-      desc: '',
+      desc:
+          'Message body of confirmation prompt for repick variant (model/version)',
       args: [],
     );
   }
@@ -715,7 +732,8 @@ class S {
     return Intl.message(
       'Failed to create dummy title database',
       name: 'setup_alert_dummy_db_failed',
-      desc: '',
+      desc:
+          'Message body of error prompt when failed to create dummy title database',
       args: [],
     );
   }
@@ -725,7 +743,7 @@ class S {
     return Intl.message(
       'Visual Aid',
       name: 'setup_alert_dummy_db_visual_aid',
-      desc: '',
+      desc: 'Action button for opening visual aid for resetting dummy database',
       args: [],
     );
   }
@@ -735,7 +753,8 @@ class S {
     return Intl.message(
       'https://3ds.hacks.guide/images/screenshots/database-reset.jpg',
       name: 'setup_alert_dummy_db_visual_aid_url',
-      desc: '',
+      desc:
+          'Link to visual aid for resetting dummy database, currently no translated version so don\'t change, if you want to offer translated version, please reach https://github.com/hacks-guide/Guide_3DS, also take care of cases of people using non-native region consoles',
       args: [],
     );
   }
@@ -745,7 +764,8 @@ class S {
     return Intl.message(
       'Dummy title database found.',
       name: 'setup_alert_dummy_db_found',
-      desc: '',
+      desc:
+          'Title of error prompt when there\'s dummy title database, setup_alert_dummy_db_reset will be appended after, after extra empty line',
       args: [],
     );
   }
@@ -755,7 +775,8 @@ class S {
     return Intl.message(
       'Title database is likely corrupted.',
       name: 'setup_alert_dummy_db_corrupted',
-      desc: '',
+      desc:
+          'Title of error prompt when the title database is likely corrupted, setup_alert_dummy_db_reset will be appended after, after extra empty line',
       args: [],
     );
   }
@@ -765,7 +786,29 @@ class S {
     return Intl.message(
       'Put SD card back to your 3ds, power it on, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.',
       name: 'setup_alert_dummy_db_reset',
-      desc: '',
+      desc:
+          'Common text for instruction of resetting dummy/corrupted title database, appended after setup_alert_dummy_db_found and setup_alert_dummy_db_corrupted with extra empty line',
+      args: [],
+    );
+  }
+
+  /// `Setup - Hax ID1 Created`
+  String get setup_alert_hax_id1_created_title {
+    return Intl.message(
+      'Setup - Hax ID1 Created',
+      name: 'setup_alert_hax_id1_created_title',
+      desc: 'Title of prompt after MSET9 set up',
+      args: [],
+    );
+  }
+
+  /// `Hax ID1 has been created.`
+  String get setup_alert_hax_id1_created {
+    return Intl.message(
+      'Hax ID1 has been created.',
+      name: 'setup_alert_hax_id1_created',
+      desc:
+          'Message body of prompt after MSET9 set up, setup_alert_dummy_mii_maker_and_db_reset will be appended after extra empty line',
       args: [],
     );
   }
@@ -775,17 +818,8 @@ class S {
     return Intl.message(
       'Put SD card back to your 3ds, power it on, then open Mii Maker.\nAfter Mii Maker loaded, press HOME, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.',
       name: 'setup_alert_dummy_mii_maker_and_db_reset',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Broken mset9 setup, extdata is missing`
-  String get inject_missing_hax_extdata {
-    return Intl.message(
-      'Broken mset9 setup, extdata is missing',
-      name: 'inject_missing_hax_extdata',
-      desc: '',
+      desc:
+          'Similar to setup_alert_dummy_db_reset, but with mii maker extra data instruction, appended after setup_alert_hax_id1_created with extra empty line',
       args: [],
     );
   }
@@ -795,7 +829,7 @@ class S {
     return Intl.message(
       'Removing MSET9 ...',
       name: 'remove_loading',
-      desc: '',
+      desc: 'Text in loading prompt when removing MSET9',
       args: [],
     );
   }
@@ -805,7 +839,8 @@ class S {
     return Intl.message(
       'Remove - Confirm',
       name: 'remove_alert_confirm_title',
-      desc: '',
+      desc:
+          'Title of confirmation prompt when try to remove mset9 before boot9strap installed',
       args: [],
     );
   }
@@ -815,7 +850,8 @@ class S {
     return Intl.message(
       'It seems that you haven\'t installed boot9strap yet, are you sure you want to remove MSET9?\n\nIf you picked wrong model/version, you can click Repick to pick again.',
       name: 'remove_alert_confirm',
-      desc: '',
+      desc:
+          'Message body of confirmation prompt when try to remove mset9 before boot9strap installed, also tell them they can simply change variant if they picked it wrong',
       args: [],
     );
   }
@@ -825,7 +861,8 @@ class S {
     return Intl.message(
       'Repick',
       name: 'remove_alert_action_repick',
-      desc: '',
+      desc:
+          'Action button for re-picking variant inside removal confirmation prompt',
       args: [],
     );
   }

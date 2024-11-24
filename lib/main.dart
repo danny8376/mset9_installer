@@ -93,7 +93,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: S.delegate.supportedLocales,
       home: const Installer(),
       onGenerateTitle: (context) {
-        final title = S.of(context).title_installer;
+        final title = S.of(context).app_name;
         if (isDesktop) {
           windowManager.setTitle(title);
         }
@@ -248,7 +248,7 @@ class _InstallerState extends State<Installer> {
       }
       final varName = match.namedGroup('varName');
       return switch (varName) {
-        "APP_NAME" => _s().title_installer,
+        "APP_NAME" => _s().app_name,
         "APP_VER" => info.version,
         _ => "{{$varName}}",
       };
@@ -349,6 +349,7 @@ class _InstallerState extends State<Installer> {
     }
     installer.switchVariant(variant);
     _doWorkWrap(
+      loading: _s().setup_loading,
       work: installer.setupHaxId1,
       done: (result) async {
         if (result) {
@@ -370,6 +371,7 @@ class _InstallerState extends State<Installer> {
       return;
     }
     _doWorkWrap(
+      loading: _s().setup_loading,
       work: () => installer.switchVariant(variant),
       done: (result) async {
         installer.checkInjectState(silent: true);
@@ -378,12 +380,12 @@ class _InstallerState extends State<Installer> {
   }
 
   void _doInjectTrigger() => _doWorkWrap(
-    showLoading: false, // this is usually fast enough?
+    loading: null, // this is usually fast enough?
     work: installer.injectTrigger,
   );
 
   void _doRemoveTrigger() => _doWorkWrap(
-    showLoading: false, // this is usually fast enough?
+    loading: null, // this is usually fast enough?
     work: installer.removeTrigger,
   );
 
@@ -413,17 +415,18 @@ class _InstallerState extends State<Installer> {
     }
 
     _doWorkWrap(
+      loading: _s().remove_loading,
       work: installer.removeHaxId1,
     );
   }
 
   Future<bool> _doWorkWrap({
-    bool showLoading = true,
+    String? loading,
     required Future<bool> Function() work,
     Future<void> Function(bool result)? done,
   }) async {
-    if (showLoading) {
-      _showLoading(null, _s().setup_loading);
+    if (loading != null) {
+      _showLoading(null, loading);
     }
     bool result = false;
     try {
@@ -431,7 +434,7 @@ class _InstallerState extends State<Installer> {
     } catch (e, st) {
       talker.handle(e, st);
     }
-    if (showLoading && context.mounted) {
+    if (loading != null && context.mounted) {
       _dismissLoading();
     }
     if (done != null) {
@@ -525,8 +528,9 @@ class _InstallerState extends State<Installer> {
         );
         if (doSDSetup) {
           _doWorkWrap(
-              work: () => confirm(true),
-              done: (result) async {}
+            loading: _s().sd_setup_loading,
+            work: () => confirm(true),
+            done: (result) async {}
           );
         } else {
           confirm(false);
@@ -600,7 +604,7 @@ class _InstallerState extends State<Installer> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(S.of(context).title_installer),
+        title: Text(S.of(context).app_name),
         actions: <Widget>[
           PopupMenuButton<Menu>(
             icon: const Icon(Icons.more_vert),
