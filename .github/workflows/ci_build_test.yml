@@ -1,9 +1,9 @@
-name: Release
+name: CI Build Test
 
 on:
   push:
     branches:
-      - publish
+      - ci_build_test
 
 env:
   FLUTTER_VERSION: '3.16.9'
@@ -70,62 +70,15 @@ jobs:
           apt-arch: amd64
           appimage-arch: x86_64
 
-  publish:
-    name: Publish Release
+  build-for-web:
+    name: Build for web
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    needs: [build-with-windows, build-with-macos, build-with-linux]
-    if: github.ref == 'refs/heads/publish'
 
     steps:
-      - name: Checkout Repository
+      - name: Clone repository
         uses: actions/checkout@v4
 
-      - name: Read pubspec.yaml
-        uses: actions-tools/yaml-outputs@v2
-        id: pubspec
+      - name: Build Steps for web
+        uses: ./.github/actions/build-steps-web
         with:
-          file-path: 'pubspec.yaml'
-          export-env-variables: false
-
-      - name: Extract version from pubspec.yaml
-        run: |
-          version=$(echo "${{ steps.pubspec.outputs.version }}" | cut -d'+' -f1)
-          echo "VERSION=$version" >> $GITHUB_ENV
-
-      - name: Check if Pre-Release
-        run: |
-          if echo "${{ env.VERSION }}" | grep -q '^[0-9]\+\.[0-9]\+\(\.[0-9]\+\)\?-'; then
-            echo "PRE_RELEASE=true" >> $GITHUB_ENV
-          else
-            echo "PRE_RELEASE=false" >> $GITHUB_ENV
-          fi
-
-      - name: Check if Tag Exists
-        run: |
-          if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
-            echo "TAG_EXISTS=true" >> $GITHUB_ENV
-          else
-            echo "TAG_EXISTS=false" >> $GITHUB_ENV
-          fi
-
-      - name: Modify Tag if Already Exists
-        if: env.TAG_EXISTS == 'true'
-        run: |
-          new_version="${{ env.VERSION }}-build-${{ github.run_number }}"
-          echo "VERSION=$new_version" >> $GITHUB_ENV
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-          merge-multiple: true
-
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "artifacts/*"
-          tag: v${{ env.VERSION }}
-          prerelease: ${{ env.PRE_RELEASE }}
-          generateReleaseNotes: true
+          shell: bash

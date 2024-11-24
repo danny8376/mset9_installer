@@ -1,0 +1,48 @@
+name: Build Steps - web
+description: Specific steps to build for web
+
+inputs:
+  shell:
+    required: true
+  flutter-version:
+    #default: '3.22.3'
+    default: '3.16.8'
+  flutter-channel:
+    default: 'stable'
+
+runs:
+  using: "composite"
+  steps:
+#    - name: Dependency Override
+#      uses: fjogeleit/yaml-update-action@main
+#      with:
+#        valueFile: 'pubspec.yaml'
+#        changes: >-
+#          {
+#            "dependency_overrides.web":"^0.5.0",
+#            "dependency_overrides.share_plus":"^8.0.2"
+#          }
+#        commitChange: false
+
+    - name: Common Build Steps for Flutter
+      uses: ./.github/actions/build-steps-flutter-common
+      with:
+        shell: ${{ inputs.shell }}
+        flutter-version: ${{ inputs.flutter-version }}
+        flutter-channel: ${{ inputs.flutter-channel }}
+
+    - name: Prepare
+      shell: ${{ inputs.shell }}
+      run: |
+        #mv web/index_3.22.3.html web/index.html
+        flutter config --enable-web
+
+    - name: Build
+      shell: ${{ inputs.shell }}
+#      run: flutter build web --wasm
+      run: flutter build web
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        path: ./build/web/

@@ -5,11 +5,6 @@ on:
     branches:
       - publish
 
-env:
-  #FLUTTER_VERSION: '3.22.3'
-  FLUTTER_VERSION: '3.16.9'
-  FLUTTER_CHANNEL: 'stable'
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,38 +14,10 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v4
 
-#      - name: Dependency Override
-#        uses: fjogeleit/yaml-update-action@main
-#        with:
-#          valueFile: 'pubspec.yaml'
-#          changes: >-
-#            {
-#              "dependency_overrides.web":"^0.5.0",
-#              "dependency_overrides.share_plus":"^8.0.2"
-#            }
-#          commitChange: false
-
-      - name: Common Build Steps for Flutter
-        uses: ./.github/actions/build-steps-flutter-common
+      - name: Build Steps for web
+        uses: ./.github/actions/build-steps-web
         with:
           shell: bash
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          flutter-channel: ${{ env.FLUTTER_CHANNEL }}
-
-      - name: Prepare
-        run: |
-          #mv web/index_3.22.3.html web/index.html
-          flutter config --enable-web
-
-      - name: Build
-#        run: flutter build web --wasm
-        run: flutter build web
-
-      - name: Upload artifact
-        id: deployment
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./build/web/
 
   deploy:
     if: github.ref == 'refs/heads/publish'
