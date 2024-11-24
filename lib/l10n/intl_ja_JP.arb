@@ -115,7 +115,7 @@
   "@pick_no_n3ds": {
     "description": ""
   },
-  "pick_no_id0": "There's no ID0 folder.",
+  "pick_no_id0": "ID0フォルダがありません。",
   "@pick_no_id0": {
     "description": ""
   },
@@ -123,7 +123,7 @@
   "@pick_common_n3ds_info": {
     "description": ""
   },
-  "pick_multiple_id0": "ID0フォルダがありません。確認してください.",
+  "pick_multiple_id0": "複数のID0フォルダがあります。確認してください。",
   "@pick_multiple_id0": {
     "description": ""
   },
