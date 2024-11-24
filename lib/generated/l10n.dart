@@ -50,13 +50,13 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `If you want to contribute to translations (non en/en_US), please go https://crowdin.com/project/mset9_installer`
+  /// `If you want to contribute to translations [non en/en_US], please go https://crowdin.com/project/mset9_installer`
   String get about_translation_contribution {
     return Intl.message(
-      'If you want to contribute to translations (non en/en_US), please go https://crowdin.com/project/mset9_installer',
+      'If you want to contribute to translations [non en/en_US], please go https://crowdin.com/project/mset9_installer',
       name: 'about_translation_contribution',
       desc:
-          'Not used in app, this is information for people who want to contribute to translations',
+          'Not used in app, this is information for people who want to contribute to translations (Wonder why [] here? so this can be the same as markdown hack one)',
       args: [],
     );
   }
