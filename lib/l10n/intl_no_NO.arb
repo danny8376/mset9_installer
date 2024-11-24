@@ -107,7 +107,7 @@
   "@installer_button_remove": {
     "description": "Button in main app screen for removing MSET9"
   },
-  "pick_alert_title": "Folder Picking - Error",
+  "pick_alert_title": "Folder Picking Error",
   "@pick_alert_title": {
     "description": "Title of prompt for folder/SD card picking related error"
   },
@@ -183,7 +183,7 @@
   "@setup_alert_disclaimer_title": {
     "description": "Title of disclaimer prompt about their console data (on SD card)"
   },
-  "setup_alert_disclaimer": "This process will temporarily reset all your 3DS data.\nMost of your applications and themes will disappear.\nThis is perfectly normal, and if everything goes right, it will re-appear at the end of the process.\n\nIn any case, it is highly recommended to make a backup of your SD card's contents to a folder on your PC/Device.\n(Especially the 'Nintendo 3DS' folder.)",
+  "setup_alert_disclaimer": "This process will temporarily reset most of your 3DS data.\nMost of your applications and themes will disappear.\nThis is perfectly normal, and if everything goes right, it will re-appear at the end of the process.\n\nIn any case, it is highly recommended to make a backup of your SD card's contents to a folder on your PC/Device.\n(Especially the 'Nintendo 3DS' folder.)",
   "@setup_alert_disclaimer": {
     "description": "Message body of disclaimer prompt about their console data (on SD card)"
   },
@@ -215,7 +215,7 @@
   "@setup_alert_sd_setup_file_state_outdated": {
     "description": "State text of outdated file within file list in SD root file missing prompt"
   },
-  "setup_alert_sd_setup_file_state_unknown_corrupted": "Corrupted/~Unknown",
+  "setup_alert_sd_setup_file_state_unknown_corrupted": "Corrupted/Unknown",
   "@setup_alert_sd_setup_file_state_unknown_corrupted": {
     "description": "State text of unknown/corrupted file within file list in SD root file missing prompt"
   },
