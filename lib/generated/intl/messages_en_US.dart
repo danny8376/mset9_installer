@@ -67,7 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "menu_loose_root_check":
             MessageLookupByLibrary.simpleMessage("Loose Root Check"),
         "pick_alert_title":
-            MessageLookupByLibrary.simpleMessage("Folder Picking - Error"),
+            MessageLookupByLibrary.simpleMessage("Folder Picking Error"),
         "pick_common_n3ds_info": MessageLookupByLibrary.simpleMessage(
             "Ensure that you put SD card in the console and boot normally first.\nDon\'t try to create Nintendo 3DS folder yourself."),
         "pick_multi_hax_id1": MessageLookupByLibrary.simpleMessage(
@@ -95,7 +95,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "setup_alert_confirm_title":
             MessageLookupByLibrary.simpleMessage("Setup - Confirm"),
         "setup_alert_disclaimer": MessageLookupByLibrary.simpleMessage(
-            "This process will temporarily reset all your 3DS data.\nMost of your applications and themes will disappear.\nThis is perfectly normal, and if everything goes right, it will re-appear at the end of the process.\n\nIn any case, it is highly recommended to make a backup of your SD card\'s contents to a folder on your PC/Device.\n(Especially the \'Nintendo 3DS\' folder.)"),
+            "This process will temporarily reset most of your 3DS data.\nMost of your applications and themes will disappear.\nThis is perfectly normal, and if everything goes right, it will re-appear at the end of the process.\n\nIn any case, it is highly recommended to make a backup of your SD card\'s contents to a folder on your PC/Device.\n(Especially the \'Nintendo 3DS\' folder.)"),
         "setup_alert_disclaimer_confirm_to_continue":
             MessageLookupByLibrary.simpleMessage("Press confirm to continue."),
         "setup_alert_disclaimer_linux_addition":

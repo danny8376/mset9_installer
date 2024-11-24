@@ -317,10 +317,10 @@ class S {
     );
   }
 
-  /// `Folder Picking - Error`
+  /// `Folder Picking Error`
   String get pick_alert_title {
     return Intl.message(
-      'Folder Picking - Error',
+      'Folder Picking Error',
       name: 'pick_alert_title',
       desc: 'Title of prompt for folder/SD card picking related error',
       args: [],
@@ -516,10 +516,10 @@ class S {
     );
   }
 
-  /// `This process will temporarily reset all your 3DS data.\nMost of your applications and themes will disappear.\nThis is perfectly normal, and if everything goes right, it will re-appear at the end of the process.\n\nIn any case, it is highly recommended to make a backup of your SD card's contents to a folder on your PC/Device.\n(Especially the 'Nintendo 3DS' folder.)`
+  /// `This process will temporarily reset most of your 3DS data.\nMost of your applications and themes will disappear.\nThis is perfectly normal, and if everything goes right, it will re-appear at the end of the process.\n\nIn any case, it is highly recommended to make a backup of your SD card's contents to a folder on your PC/Device.\n(Especially the 'Nintendo 3DS' folder.)`
   String get setup_alert_disclaimer {
     return Intl.message(
-      'This process will temporarily reset all your 3DS data.\nMost of your applications and themes will disappear.\nThis is perfectly normal, and if everything goes right, it will re-appear at the end of the process.\n\nIn any case, it is highly recommended to make a backup of your SD card\'s contents to a folder on your PC/Device.\n(Especially the \'Nintendo 3DS\' folder.)',
+      'This process will temporarily reset most of your 3DS data.\nMost of your applications and themes will disappear.\nThis is perfectly normal, and if everything goes right, it will re-appear at the end of the process.\n\nIn any case, it is highly recommended to make a backup of your SD card\'s contents to a folder on your PC/Device.\n(Especially the \'Nintendo 3DS\' folder.)',
       name: 'setup_alert_disclaimer',
       desc:
           'Message body of disclaimer prompt about their console data (on SD card)',
