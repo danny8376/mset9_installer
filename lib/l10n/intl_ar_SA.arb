@@ -1,0 +1,315 @@
+{
+  "title_installer": "MSET9 Installer",
+  "@title_installer": {
+    "description": ""
+  },
+  "alert_neutral": "OK",
+  "@alert_neutral": {
+    "description": ""
+  },
+  "alert_general_yes": "Yes",
+  "@alert_general_yes": {
+    "description": ""
+  },
+  "alert_general_no": "No",
+  "@alert_general_no": {
+    "description": ""
+  },
+  "alert_general_confirm": "Confirm",
+  "@alert_general_confirm": {
+    "description": ""
+  },
+  "alert_general_cancel": "Cancel",
+  "@alert_general_cancel": {
+    "description": ""
+  },
+  "alert_action_troubleshooting": "Troubleshooting",
+  "@alert_action_troubleshooting": {
+    "description": ""
+  },
+  "alert_general_troubleshooting_url": "https://3ds.hacks.guide/troubleshooting-mset9.html",
+  "@alert_general_troubleshooting_url": {
+    "description": ""
+  },
+  "alert_not_supported_title": "Not Supported",
+  "@alert_not_supported_title": {
+    "description": ""
+  },
+  "alert_not_supported": "Your browser is not supported, please use different browser or different version of installer.",
+  "@alert_not_supported": {
+    "description": ""
+  },
+  "menu_credit": "Credit",
+  "@menu_credit": {
+    "description": ""
+  },
+  "menu_force_light_mode": "Force Light Mode",
+  "@menu_force_light_mode": {
+    "description": ""
+  },
+  "menu_force_dark_mode": "Force Dark Mode",
+  "@menu_force_dark_mode": {
+    "description": ""
+  },
+  "menu_advance": "Advance Options",
+  "@menu_advance": {
+    "description": ""
+  },
+  "menu_extra": "Extra Versions",
+  "@menu_extra": {
+    "description": ""
+  },
+  "menu_loose_root_check": "Loose Root Check",
+  "@menu_loose_root_check": {
+    "description": ""
+  },
+  "menu_legacy": "Legacy Hax ID1",
+  "@menu_legacy": {
+    "description": ""
+  },
+  "menu_log": "Logs",
+  "@menu_log": {
+    "description": ""
+  },
+  "title_variant_selector": "Select Model & Version",
+  "@title_variant_selector": {
+    "description": ""
+  },
+  "installer_button_pick_sd": "Select Your SD Card",
+  "@installer_button_pick_sd": {
+    "description": ""
+  },
+  "installer_button_pick_3ds": "Select \"Nintendo 3DS\"",
+  "@installer_button_pick_3ds": {
+    "description": ""
+  },
+  "installer_button_dummy_checking": "Checking...",
+  "@installer_button_dummy_checking": {
+    "description": ""
+  },
+  "installer_button_check": "Check MSET9 status",
+  "@installer_button_check": {
+    "description": ""
+  },
+  "installer_button_setup": "Setup MSET9",
+  "@installer_button_setup": {
+    "description": ""
+  },
+  "installer_button_inject_trigger": "Inject trigger file",
+  "@installer_button_inject_trigger": {
+    "description": ""
+  },
+  "installer_button_remove_trigger": "Remove trigger file",
+  "@installer_button_remove_trigger": {
+    "description": ""
+  },
+  "installer_button_remove": "Remove MSET9",
+  "@installer_button_remove": {
+    "description": ""
+  },
+  "pick_alert_title": "Folder Picking - Error",
+  "@pick_alert_title": {
+    "description": ""
+  },
+  "pick_no_n3ds": "There's no Nintendo 3DS folder.",
+  "@pick_no_n3ds": {
+    "description": ""
+  },
+  "pick_no_id0": "There's no ID0 folder.",
+  "@pick_no_id0": {
+    "description": ""
+  },
+  "pick_common_n3ds_info": "Ensure that you put SD card in the console and boot normally first.\nDon't try to create Nintendo 3DS folder yourself.",
+  "@pick_common_n3ds_info": {
+    "description": ""
+  },
+  "pick_multiple_id0": "There's more than one ID0 folder, please check.",
+  "@pick_multiple_id0": {
+    "description": ""
+  },
+  "pick_picked_id1": "ID1 picked, please pick ID0 or Nintendo 3DS folder instead.\n(Pick the upper folder, which contains the folder that you just picked, instead.)",
+  "@pick_picked_id1": {
+    "description": ""
+  },
+  "pick_picked_unknown": "Unknown folder picked, please pick the correct folder.",
+  "@pick_picked_unknown": {
+    "description": ""
+  },
+  "pick_multi_hax_id1": "There's more than one hax ID1 ???",
+  "@pick_multi_hax_id1": {
+    "description": ""
+  },
+  "variant_selector_model_old": "Old 3DS/2DS",
+  "@variant_selector_model_old": {
+    "description": ""
+  },
+  "variant_selector_model_new": "New 3DS/2DS",
+  "@variant_selector_model_new": {
+    "description": ""
+  },
+  "variant_selector_version": "Select System Version:",
+  "@variant_selector_version": {
+    "description": ""
+  },
+  "check_loading": "Checking ...",
+  "@check_loading": {
+    "description": ""
+  },
+  "setup_loading": "Setting up MSET9 ...",
+  "@setup_loading": {
+    "description": ""
+  },
+  "setup_alert_confirm_title": "Setup - Confirm",
+  "@setup_alert_confirm_title": {
+    "description": ""
+  },
+  "setup_alert_warning_title": "Setup - Warning",
+  "@setup_alert_warning_title": {
+    "description": ""
+  },
+  "setup_alert_error_title": "Setup Error",
+  "@setup_alert_error_title": {
+    "description": ""
+  },
+  "setup_alert_disclaimer_title": "Disclaimer",
+  "@setup_alert_disclaimer_title": {
+    "description": ""
+  },
+  "setup_alert_disclaimer": "This process will temporarily reset all your 3DS data.\nMost of your applications and themes will disappear.\nThis is perfectly normal, and if everything goes right, it will re-appear at the end of the process.\n\nIn any case, it is highly recommended to make a backup of your SD card's contents to a folder on your PC/Device.\n(Especially the 'Nintendo 3DS' folder.)",
+  "@setup_alert_disclaimer": {
+    "description": ""
+  },
+  "setup_alert_disclaimer_linux_addition": "(On Linux, things like to not go right - please ensure that your SD card is mounted with the 'utf8' option.)",
+  "@setup_alert_disclaimer_linux_addition": {
+    "description": ""
+  },
+  "setup_alert_disclaimer_web_addition": "(Due to web api limitation, this implementation have slightly higher risk of data corruption, thus backup is even more recommended.)",
+  "@setup_alert_disclaimer_web_addition": {
+    "description": ""
+  },
+  "setup_alert_disclaimer_confirm_to_continue": "Press confirm to continue.",
+  "@setup_alert_disclaimer_confirm_to_continue": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_optional_prompt": "Do you want to automatically download corrupted/unknown/non-critical files?",
+  "@setup_alert_sd_setup_optional_prompt": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_failed": "Failed to setup SD root automatically!",
+  "@setup_alert_sd_setup_failed": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_file_state_missing": "Missing",
+  "@setup_alert_sd_setup_file_state_missing": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_file_state_outdated": "Outdated",
+  "@setup_alert_sd_setup_file_state_outdated": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_file_state_unknown_corrupted": "Corrupted/~Unknown",
+  "@setup_alert_sd_setup_file_state_unknown_corrupted": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_file_state_required": "Required",
+  "@setup_alert_sd_setup_file_state_required": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_file_state_optional": "Optional",
+  "@setup_alert_sd_setup_file_state_optional": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_file_missing": "The following files on your SD root are missing/corrupted/unknown:",
+  "@setup_alert_sd_setup_file_missing": {
+    "description": ""
+  },
+  "setup_alert_sd_setup_action_setup": "Do SD Setup",
+  "@setup_alert_sd_setup_action_setup": {
+    "description": ""
+  },
+  "setup_alert_no_or_more_id1": "There's no ID1 folder or multiple ID1 folders!",
+  "@setup_alert_no_or_more_id1": {
+    "description": ""
+  },
+  "setup_alert_extdata_title": "Setup Error - Extra Data",
+  "@setup_alert_extdata_title": {
+    "description": ""
+  },
+  "setup_alert_extdata_missing": "There's no Extra Data",
+  "@setup_alert_extdata_missing": {
+    "description": ""
+  },
+  "setup_alert_extdata_home_menu": "There's no Home Menu Data",
+  "@setup_alert_extdata_home_menu": {
+    "description": ""
+  },
+  "setup_alert_extdata_mii_maker": "There's no Mii Maker Data",
+  "@setup_alert_extdata_mii_maker": {
+    "description": ""
+  },
+  "setup_alert_dummy_db_title": "Setup Error - Dummy Title Database",
+  "@setup_alert_dummy_db_title": {
+    "description": ""
+  },
+  "setup_alert_repick_variant_prompt": "Are you sure you want to pick different model/version?",
+  "@setup_alert_repick_variant_prompt": {
+    "description": ""
+  },
+  "setup_alert_hax_id1_created_title": "Setup - Hax ID1 Created",
+  "@setup_alert_hax_id1_created_title": {
+    "description": ""
+  },
+  "setup_alert_hax_id1_created": "Hax ID1 has been created.",
+  "@setup_alert_hax_id1_created": {
+    "description": ""
+  },
+  "setup_alert_dummy_db_failed": "Failed to create dummy title database",
+  "@setup_alert_dummy_db_failed": {
+    "description": ""
+  },
+  "setup_alert_dummy_db_visual_aid": "Visual Aid",
+  "@setup_alert_dummy_db_visual_aid": {
+    "description": ""
+  },
+  "setup_alert_dummy_db_visual_aid_url": "https://3ds.hacks.guide/images/screenshots/database-reset.jpg",
+  "@setup_alert_dummy_db_visual_aid_url": {
+    "description": ""
+  },
+  "setup_alert_dummy_db_found": "Dummy title database found.",
+  "@setup_alert_dummy_db_found": {
+    "description": ""
+  },
+  "setup_alert_dummy_db_corrupted": "Title database is likely corrupted.",
+  "@setup_alert_dummy_db_corrupted": {
+    "description": ""
+  },
+  "setup_alert_dummy_db_reset": "Put SD card back to your 3ds, power it on, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.",
+  "@setup_alert_dummy_db_reset": {
+    "description": ""
+  },
+  "setup_alert_dummy_mii_maker_and_db_reset": "Put SD card back to your 3ds, power it on, then open Mii Maker.\nAfter Mii Maker loaded, press HOME, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.",
+  "@setup_alert_dummy_mii_maker_and_db_reset": {
+    "description": ""
+  },
+  "inject_missing_hax_extdata": "Broken mset9 setup, extdata is missing",
+  "@inject_missing_hax_extdata": {
+    "description": ""
+  },
+  "remove_loading": "Removing MSET9 ...",
+  "@remove_loading": {
+    "description": ""
+  },
+  "remove_alert_confirm_title": "Remove - Confirm",
+  "@remove_alert_confirm_title": {
+    "description": ""
+  },
+  "remove_alert_confirm": "It seems that you haven't installed boot9strap yet, are you sure you want to remove MSET9?\n\nIf you picked wrong model/version, you can click Repick to pick again.",
+  "@remove_alert_confirm": {
+    "description": ""
+  },
+  "remove_alert_action_repick": "Repick",
+  "@remove_alert_action_repick": {
+    "description": ""
+  },
+  "@@locale": "ar"
+}
