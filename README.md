@@ -3,6 +3,7 @@
 [![Release CI status](https://github.com/danny8376/mset9_installer/workflows/Release/badge.svg)](https://github.com/danny8376/mset9_installer/actions/workflows/release.yml)
 [![Release CI status](https://github.com/danny8376/mset9_installer/workflows/GitHub%20Pages/badge.svg)](https://github.com/danny8376/mset9_installer/actions/workflows/gh-pages.yml)
 [![GitHub release](https://img.shields.io/github/v/release/danny8376/mset9_installer)](https://github.com/danny8376/mset9_installer/releases)
+[![Crowdin](https://badges.crowdin.net/mset9_installer/localized.svg)](https://crowdin.com/project/mset9_installer)
 
 Universal [MSET9](https://github.com/zoogie/MSET9) Installer that target Windows 7+, macOS, Linux, Android 5.0+, iOS 14+ and Web (Chromebook/Chrome).
 
