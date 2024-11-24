@@ -311,5 +311,5 @@
   "@remove_alert_action_repick": {
     "description": "Action button for re-picking variant inside removal confirmation prompt"
   },
-  "@@locale": "en"
+  "@@locale": "en_US"
 }
