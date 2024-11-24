@@ -1,7 +1,7 @@
 {
-  "about_translation_contribution": "If you want to contribute to translations [non en/en_US], please go https://crowdin.com/project/mset9_installer",
+  "about_translation_contribution": "If you want to contribute to translations (non en/en_US), please go https://crowdin.com/project/mset9_installer",
   "@about_translation_contribution": {
-    "description": "Not used in app, this is information for people who want to contribute to translations (Wonder why [] here? so this can be the same as markdown hack one)"
+    "description": "Not used in app, this is information for people who want to contribute to translations"
   },
   "app_name": "MSET9 Installer",
   "@app_name": {
