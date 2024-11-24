@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart';
 //import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 //import 'package:fwfh_url_launcher/fwfh_url_launcher.dart';
 import 'package:markdown_widget/markdown_widget.dart';
@@ -249,7 +250,13 @@ class _InstallerState extends State<Installer> {
   }
 
   Future<void> _showCredit([BuildContext? context]) async {
-    final mdTpl = await rootBundle.loadString("assets/credit/en.md");
+    late final String mdTpl;
+    try {
+      final locale = Intl.getCurrentLocale();
+      mdTpl = await rootBundle.loadString("assets/credit/$locale.md");
+    } catch (_) {
+      mdTpl = await rootBundle.loadString("assets/credit/en.md");
+    }
     final info = await PackageInfo.fromPlatform();
     final md = mdTpl.replaceAllMapped(RegExp(r'{{(?<varName>[^}]+)}}'), (match) {
       if (match is! RegExpMatch) {
