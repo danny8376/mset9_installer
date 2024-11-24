@@ -1,4 +1,8 @@
 {
+  "about_translation_contribution": "If you want to contribute to translations (non en/en_US), please go https://crowdin.com/project/mset9_installer",
+  "@about_translation_contribution": {
+    "description": "Not used in app, this is information for people who want to contribute to translations"
+  },
   "app_name": "MSET9 安裝工具",
   "@app_name": {
     "description": "Translated name of this app"
@@ -103,7 +107,7 @@
   "@installer_button_remove": {
     "description": "Button in main app screen for removing MSET9"
   },
-  "pick_alert_title": "Folder Picking Error",
+  "pick_alert_title": "資料夾選取錯誤",
   "@pick_alert_title": {
     "description": "Title of prompt for folder/SD card picking related error"
   },
@@ -211,59 +215,59 @@
   "@setup_alert_sd_setup_file_state_outdated": {
     "description": "State text of outdated file within file list in SD root file missing prompt"
   },
-  "setup_alert_sd_setup_file_state_unknown_corrupted": "Corrupted/Unknown",
+  "setup_alert_sd_setup_file_state_unknown_corrupted": "損毀/未知",
   "@setup_alert_sd_setup_file_state_unknown_corrupted": {
     "description": "State text of unknown/corrupted file within file list in SD root file missing prompt"
   },
-  "setup_alert_sd_setup_file_state_required": "Required",
+  "setup_alert_sd_setup_file_state_required": "必要",
   "@setup_alert_sd_setup_file_state_required": {
     "description": "Additional text after file state that indicate it's required file, only shown when loose SD root file check enabled"
   },
-  "setup_alert_sd_setup_file_state_optional": "Optional",
+  "setup_alert_sd_setup_file_state_optional": "可選",
   "@setup_alert_sd_setup_file_state_optional": {
     "description": "Additional text after file state that indicate it's optional"
   },
-  "setup_alert_sd_setup_file_missing": "The following files on your SD root are missing/corrupted/unknown:",
+  "setup_alert_sd_setup_file_missing": "以下的 SD 卡的檔案缺少、損毀或遺失：",
   "@setup_alert_sd_setup_file_missing": {
     "description": "Leading text before file list in SD root file missing prompt"
   },
-  "setup_alert_sd_setup_action_setup": "Do SD Setup",
+  "setup_alert_sd_setup_action_setup": "設置 SD 卡",
   "@setup_alert_sd_setup_action_setup": {
     "description": "Action button for doing auto SD root setup in file missing prompt"
   },
-  "setup_alert_no_or_more_id1": "There's no ID1 folder or multiple ID1 folders!",
+  "setup_alert_no_or_more_id1": "沒有 ID1 或者有多個 ID1",
   "@setup_alert_no_or_more_id1": {
     "description": "Message body of error prompt when there's no or multiple ID1 folder"
   },
-  "setup_alert_extdata_title": "Setup Error - Extra Data",
+  "setup_alert_extdata_title": "設置錯誤：新增資料",
   "@setup_alert_extdata_title": {
     "description": "Title of prompt for ext data related errors during setup"
   },
-  "setup_alert_extdata_missing": "There's no Extra Data",
+  "setup_alert_extdata_missing": "找不到新增資料",
   "@setup_alert_extdata_missing": {
     "description": "Message body of error prompt when there's no extdata folder"
   },
-  "setup_alert_extdata_home_menu": "There's no Home Menu Data",
+  "setup_alert_extdata_home_menu": "找不到HOME 選單新增資料",
   "@setup_alert_extdata_home_menu": {
     "description": "Message body of error prompt when there's no home menu extra data"
   },
-  "setup_alert_extdata_mii_maker": "There's no Mii Maker Data",
+  "setup_alert_extdata_mii_maker": "找不到 Mii 工作室新增資料",
   "@setup_alert_extdata_mii_maker": {
     "description": "Message body of error prompt when there's no Mii Maker extra data"
   },
-  "setup_alert_dummy_db_title": "Setup Error - Dummy Title Database",
+  "setup_alert_dummy_db_title": "設置錯誤：假安裝資料庫",
   "@setup_alert_dummy_db_title": {
     "description": "Title of prompt for dummy title database"
   },
-  "setup_alert_repick_variant_prompt": "Are you sure you want to pick different model/version?",
+  "setup_alert_repick_variant_prompt": "確定要選取不同的型號或系統版本嗎？",
   "@setup_alert_repick_variant_prompt": {
     "description": "Message body of confirmation prompt for repick variant (model/version)"
   },
-  "setup_alert_dummy_db_failed": "Failed to create dummy title database",
+  "setup_alert_dummy_db_failed": "無法建立假安裝資料庫",
   "@setup_alert_dummy_db_failed": {
     "description": "Message body of error prompt when failed to create dummy title database"
   },
-  "setup_alert_dummy_db_visual_aid": "Visual Aid",
+  "setup_alert_dummy_db_visual_aid": "參考圖片",
   "@setup_alert_dummy_db_visual_aid": {
     "description": "Action button for opening visual aid for resetting dummy database"
   },
@@ -271,43 +275,43 @@
   "@setup_alert_dummy_db_visual_aid_url": {
     "description": "Link to visual aid for resetting dummy database, currently no translated version so don't change, if you want to offer translated version, please reach https://github.com/hacks-guide/Guide_3DS, also take care of cases of people using non-native region consoles"
   },
-  "setup_alert_dummy_db_found": "Dummy title database found.",
+  "setup_alert_dummy_db_found": "偵測到假安裝資料庫",
   "@setup_alert_dummy_db_found": {
     "description": "Title of error prompt when there's dummy title database, setup_alert_dummy_db_reset will be appended after, after extra empty line"
   },
-  "setup_alert_dummy_db_corrupted": "Title database is likely corrupted.",
+  "setup_alert_dummy_db_corrupted": "安裝資料庫可能已經損毀",
   "@setup_alert_dummy_db_corrupted": {
     "description": "Title of error prompt when the title database is likely corrupted, setup_alert_dummy_db_reset will be appended after, after extra empty line"
   },
-  "setup_alert_dummy_db_reset": "Put SD card back to your 3ds, power it on, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.",
+  "setup_alert_dummy_db_reset": "將 SD 卡放回主機後開機，然後進入主機設定⮕資料管理⮕Nintendo 3DS⮕軟體⮕重設",
   "@setup_alert_dummy_db_reset": {
     "description": "Common text for instruction of resetting dummy/corrupted title database, appended after setup_alert_dummy_db_found and setup_alert_dummy_db_corrupted with extra empty line"
   },
-  "setup_alert_hax_id1_created_title": "Setup - Hax ID1 Created",
+  "setup_alert_hax_id1_created_title": "設置：已建立漏洞 ID1",
   "@setup_alert_hax_id1_created_title": {
     "description": "Title of prompt after MSET9 set up"
   },
-  "setup_alert_hax_id1_created": "Hax ID1 has been created.",
+  "setup_alert_hax_id1_created": "已成功建立漏洞 ID1",
   "@setup_alert_hax_id1_created": {
     "description": "Message body of prompt after MSET9 set up, setup_alert_dummy_mii_maker_and_db_reset will be appended after extra empty line"
   },
-  "setup_alert_dummy_mii_maker_and_db_reset": "Put SD card back to your 3ds, power it on, then open Mii Maker.\nAfter Mii Maker loaded, press HOME, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset.",
+  "setup_alert_dummy_mii_maker_and_db_reset": "將 SD 卡放回主機後開機，開啟 Mii 工作室\nMii 工作室完成載入後，按下 HOME 鍵，然後進入主機設定⮕資料管理⮕Nintendo 3DS⮕軟體⮕重設",
   "@setup_alert_dummy_mii_maker_and_db_reset": {
     "description": "Similar to setup_alert_dummy_db_reset, but with mii maker extra data instruction, appended after setup_alert_hax_id1_created with extra empty line"
   },
-  "remove_loading": "Removing MSET9 ...",
+  "remove_loading": "移除 MSET9 ...",
   "@remove_loading": {
     "description": "Text in loading prompt when removing MSET9"
   },
-  "remove_alert_confirm_title": "Remove - Confirm",
+  "remove_alert_confirm_title": "移除：確認",
   "@remove_alert_confirm_title": {
     "description": "Title of confirmation prompt when try to remove mset9 before boot9strap installed"
   },
-  "remove_alert_confirm": "It seems that you haven't installed boot9strap yet, are you sure you want to remove MSET9?\n\nIf you picked wrong model/version, you can click Repick to pick again.",
+  "remove_alert_confirm": "看起來你還沒成功安裝 boot9strap，確定要移除 MSET9 嗎？\n\n如果你選擇了錯誤的型號或系統版本，可以點選\"重新選擇\"再次選取",
   "@remove_alert_confirm": {
     "description": "Message body of confirmation prompt when try to remove mset9 before boot9strap installed, also tell them they can simply change variant if they picked it wrong"
   },
-  "remove_alert_action_repick": "Repick",
+  "remove_alert_action_repick": "重新選擇",
   "@remove_alert_action_repick": {
     "description": "Action button for re-picking variant inside removal confirmation prompt"
   },
