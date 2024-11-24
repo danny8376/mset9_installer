@@ -6,8 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-import 'package:fwfh_url_launcher/fwfh_url_launcher.dart';
+//import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+//import 'package:fwfh_url_launcher/fwfh_url_launcher.dart';
+import 'package:markdown_widget/markdown_widget.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:talker_flutter/talker_flutter.dart';
@@ -126,6 +127,14 @@ class _InstallerState extends State<Installer> {
     return S.of(context);
   }
 
+  ThemeProvider? _themeProvider;
+  ThemeProvider get themeProvider {
+    if (_themeProvider == null) {
+      throw Exception("Try to access theme provider before build ever run somehow!");
+    }
+    return _themeProvider!;
+  }
+
   Widget _buildAlertButton(BuildContext context, String text, void Function(void Function())? action) {
     pop() {
       Navigator.of(context).pop();
@@ -240,9 +249,9 @@ class _InstallerState extends State<Installer> {
   }
 
   Future<void> _showCredit([BuildContext? context]) async {
-    final htmlTpl = await rootBundle.loadString("assets/credit/en.html");
+    final mdTpl = await rootBundle.loadString("assets/credit/en.md");
     final info = await PackageInfo.fromPlatform();
-    final html = htmlTpl.replaceAllMapped(RegExp(r'{{(?<varName>[^}]+)}}'), (match) {
+    final md = mdTpl.replaceAllMapped(RegExp(r'{{(?<varName>[^}]+)}}'), (match) {
       if (match is! RegExpMatch) {
         return match.toString();
       }
@@ -253,6 +262,29 @@ class _InstallerState extends State<Installer> {
         _ => "{{$varName}}",
       };
     });
+    final mdConfig = themeProvider.darkMode
+      ? MarkdownConfig.darkConfig.copy(
+        configs: [
+          const LinkConfig(
+            style: TextStyle(
+              color: Colors.lightBlueAccent,
+              decoration: TextDecoration.underline,
+              decorationColor: Colors.lightBlueAccent,
+            ),
+          ),
+        ],
+      )
+      : MarkdownConfig.defaultConfig.copy(
+        configs: [
+          const LinkConfig(
+            style: TextStyle(
+              color: Colors.indigo,
+              decoration: TextDecoration.underline,
+              decorationColor: Colors.indigo,
+            ),
+          ),
+        ],
+      );
     context ??= this.context;
     if (!context.mounted) {
       throw Exception("context somehow get unmounted!");
@@ -262,7 +294,13 @@ class _InstallerState extends State<Installer> {
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: Text(_s().menu_credit),
-          content: HtmlWidget(html, factoryBuilder: () => HtmlWidgetWithUrlLauncherFactory()),
+          //content: HtmlWidget(html, factoryBuilder: () => HtmlWidgetWithUrlLauncherFactory()),
+          content: SingleChildScrollView(
+            child: MarkdownBlock(
+              data: md,
+              config: mdConfig,
+            ),
+          ),
           actions: <Widget>[
             _buildAlertButton(dialogContext, _s().alert_neutral, null),
           ],
@@ -600,7 +638,7 @@ class _InstallerState extends State<Installer> {
   @override
   Widget build(BuildContext context) {
     // we don't need to listen as parent widget (MyApp) will handle all rebuild
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    _themeProvider ??= Provider.of<ThemeProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -976,5 +1014,7 @@ class _VariantSelectorState extends State<VariantSelector> {
   }
 }
 
+/*
 class HtmlWidgetWithUrlLauncherFactory extends WidgetFactory with UrlLauncherFactory {
 }
+ */

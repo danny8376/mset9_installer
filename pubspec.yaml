@@ -69,8 +69,9 @@ dependencies:
   crypto: ^3.0.3
   provider: ^6.1.2
   watcher: ^1.1.0
-  flutter_widget_from_html_core: ^0.15.2
-  fwfh_url_launcher: ^0.9.1
+  #flutter_widget_from_html_core: ^0.15.2
+  #fwfh_url_launcher: ^0.9.1
+  markdown_widget: ^2.3.2+6
   package_info_plus: ^5.0.1
 
 dependency_overrides:
