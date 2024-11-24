@@ -258,9 +258,13 @@ class _InstallerState extends State<Installer> {
       mdTpl = await rootBundle.loadString("assets/credit/en.md");
     }
     final info = await PackageInfo.fromPlatform();
-    final md = mdTpl.replaceAllMapped(RegExp(r'{{(?<varName>[^}]+)}}'), (match) {
+    final md = mdTpl.replaceAllMapped(RegExp(r'{{(?<varName>[^}]+)}}|(?<comment><!--) .*? -->|<(?<comment2>translatable-comment)>.*?</translatable-comment>'), (match) {
       if (match is! RegExpMatch) {
         return match.toString();
+      }
+      final comment = match.namedGroup("comment") ?? match.namedGroup("comment2");
+      if (comment != null) {
+        return "";
       }
       final varName = match.namedGroup('varName');
       return switch (varName) {
