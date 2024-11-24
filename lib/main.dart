@@ -553,6 +553,7 @@ class _InstallerState extends State<Installer> {
     switch (exceptionType) {
       case HaxAlertType.noHaxAvailable:
       case HaxAlertType.multipleHaxId1:
+        break;
       case HaxAlertType.noId1:
         _showAlert(null, _s().setup_alert_error_title, _s().setup_alert_no_or_more_id1, _buildAlertTroubleshootingButtonsFunc);
       case HaxAlertType.multipleId1:
