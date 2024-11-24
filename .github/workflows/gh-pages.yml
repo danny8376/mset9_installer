@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - publish
+      - ci_build_test
 
 jobs:
   build:
