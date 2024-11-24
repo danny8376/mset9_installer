@@ -1,7 +1,7 @@
 files:
   - source: /lib/l10n/intl_en_US.arb
     translation: /lib/l10n/intl_%locale_with_underscore%.arb
-  - source: /assets/credit/en.html
-    translation: /assets/credit/%locale_with_underscore%.html
+  - source: /assets/credit/en.md
+    translation: /assets/credit/%locale_with_underscore%.md
   - source: /android/app/src/main/res/values/strings.xml
     translation: /android/app/src/main/res/values-%android_code%/strings.xml
