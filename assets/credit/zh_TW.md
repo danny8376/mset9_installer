@@ -1,10 +1,10 @@
 ##### {{APP_NAME}} v{{APP_VER}}
 
-- [MSET9](https://github.com/zoogie/MSET9) by [zoogie](https://github.com/zoogie)
-- [IconKitchen](https://icon.kitchen) by [romannurik](https://twitter.com/romannurik)
-- [thepikachugamer](https://github.com/Naim2000) for disclaimer text, borrowed and modified from [MSET9](https://github.com/zoogie/MSET9)
+- [MSET9](https://github.com/zoogie/MSET9) 來自 [zoogie](https://github.com/zoogie)
+- [IconKitchen](https://icon.kitchen) 來自 [romannurik](https://twitter.com/romannurik)
+- [thepikachugamer](https://github.com/Naim2000) 英文版免責聲明，修改並取自 [MSET9](https://github.com/zoogie/MSET9)
 
-#### Translations
+#### 翻譯人員
 
-- Japanese
+- 日文
   - [megurine_nimu](https://crowdin.com/profile/megurine_nimu)
