@@ -1,5 +1,5 @@
 {
-  "about_translation_contribution": "如果你想要貢獻翻譯(非 en/en_US )，請前往 https://crowdin.com/project/mset9_installer",
+  "about_translation_contribution": "如果你想要貢獻翻譯(非 en/en_US)，請前往 https://crowdin.com/project/mset9_installer",
   "@about_translation_contribution": {
     "description": "Not used in app, this is information for people who want to contribute to translations"
   },
