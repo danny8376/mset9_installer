@@ -1,6 +1,6 @@
 ##### {{APP_NAME}} v{{APP_VER}}
 
-<!-- If you want to contribute to translations [non en/en_US], please go https://crowdin.com/project/mset9_installer) -->
+<translatable-comment> If you want to contribute to translations [non en/en_US], please go https://crowdin.com/project/mset9_installer) </translatable-comment>
 
 - [MSET9](https://github.com/zoogie/MSET9) 來自 [zoogie](https://github.com/zoogie)
 - [IconKitchen](https://icon.kitchen) 來自 [romannurik](https://twitter.com/romannurik)
