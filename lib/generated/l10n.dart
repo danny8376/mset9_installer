@@ -601,10 +601,10 @@ class S {
     );
   }
 
-  /// `Corrupted/~Unknown`
+  /// `Corrupted/Unknown`
   String get setup_alert_sd_setup_file_state_unknown_corrupted {
     return Intl.message(
-      'Corrupted/~Unknown',
+      'Corrupted/Unknown',
       name: 'setup_alert_sd_setup_file_state_unknown_corrupted',
       desc:
           'State text of unknown/corrupted file within file list in SD root file missing prompt',

@@ -157,7 +157,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "setup_alert_sd_setup_file_state_required":
             MessageLookupByLibrary.simpleMessage("Required"),
         "setup_alert_sd_setup_file_state_unknown_corrupted":
-            MessageLookupByLibrary.simpleMessage("Corrupted/~Unknown"),
+            MessageLookupByLibrary.simpleMessage("Corrupted/Unknown"),
         "setup_alert_sd_setup_optional_prompt":
             MessageLookupByLibrary.simpleMessage(
                 "Do you want to automatically download corrupted/unknown/non-critical files? (This will overwrite all related files automatically)"),
