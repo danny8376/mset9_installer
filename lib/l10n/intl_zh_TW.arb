@@ -1,29 +1,29 @@
 {
-  "title_installer": "MSET9 Installer",
+  "title_installer": "MSET9 安裝工具",
   "@title_installer": {
     "description": ""
   },
-  "alert_neutral": "OK",
+  "alert_neutral": "好",
   "@alert_neutral": {
     "description": ""
   },
-  "alert_general_yes": "Yes",
+  "alert_general_yes": "是",
   "@alert_general_yes": {
     "description": ""
   },
-  "alert_general_no": "No",
+  "alert_general_no": "否",
   "@alert_general_no": {
     "description": ""
   },
-  "alert_general_confirm": "Confirm",
+  "alert_general_confirm": "確認",
   "@alert_general_confirm": {
     "description": ""
   },
-  "alert_general_cancel": "Cancel",
+  "alert_general_cancel": "取消",
   "@alert_general_cancel": {
     "description": ""
   },
-  "alert_action_troubleshooting": "Troubleshooting",
+  "alert_action_troubleshooting": "疑難排解",
   "@alert_action_troubleshooting": {
     "description": ""
   },
@@ -31,15 +31,15 @@
   "@alert_general_troubleshooting_url": {
     "description": ""
   },
-  "alert_not_supported_title": "Not Supported",
+  "alert_not_supported_title": "不相容",
   "@alert_not_supported_title": {
     "description": ""
   },
-  "alert_not_supported": "Your browser is not supported, please use different browser or different version of installer.",
+  "alert_not_supported": "你的瀏覽器不相容，請使用不同的瀏覽器或者其他版本的安裝工具。",
   "@alert_not_supported": {
     "description": ""
   },
-  "menu_credit": "Credit",
+  "menu_credit": "感謝",
   "@menu_credit": {
     "description": ""
   },
