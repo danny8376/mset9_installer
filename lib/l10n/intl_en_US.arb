@@ -311,5 +311,5 @@
   "@remove_alert_action_repick": {
     "description": ""
   },
-  "@@locale": "en_US"
+  "@@locale": "en"
 }
