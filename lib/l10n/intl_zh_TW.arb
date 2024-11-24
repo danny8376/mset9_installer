@@ -1,0 +1,319 @@
+{
+  "about_translation_contribution": "If you want to contribute to translations (non en/en_US), please go https://crowdin.com/project/mset9_installer",
+  "@about_translation_contribution": {
+    "description": "Not used in app, this is information for people who want to contribute to translations"
+  },
+  "app_name": "MSET9 安裝工具",
+  "@app_name": {
+    "description": "Translated name of this app"
+  },
+  "alert_neutral": "好",
+  "@alert_neutral": {
+    "description": "Neutral action button for prompts without options"
+  },
+  "alert_general_yes": "是",
+  "@alert_general_yes": {
+    "description": "Positive action button for yes-no prompts"
+  },
+  "alert_general_no": "否",
+  "@alert_general_no": {
+    "description": "Negative action button for yes-no prompts"
+  },
+  "alert_general_confirm": "確認",
+  "@alert_general_confirm": {
+    "description": "Positive action button for confirm-cancel prompts"
+  },
+  "alert_general_cancel": "取消",
+  "@alert_general_cancel": {
+    "description": "Negative action button for confirm-cancel prompts"
+  },
+  "alert_action_troubleshooting": "疑難排解",
+  "@alert_action_troubleshooting": {
+    "description": "Button for opening troubleshooting page in error prompts"
+  },
+  "alert_general_troubleshooting_url": "https://3ds.hacks.guide/troubleshooting-mset9.html",
+  "@alert_general_troubleshooting_url": {
+    "description": "Link to troubleshooting page of mset9 on 3ds.hacks.guide, should link to translated page when available"
+  },
+  "alert_not_supported_title": "不相容",
+  "@alert_not_supported_title": {
+    "description": "Title of not supported prompt used for web version"
+  },
+  "alert_not_supported": "你的瀏覽器不相容，請使用不同的瀏覽器或者其他版本的安裝工具。",
+  "@alert_not_supported": {
+    "description": "Message body of not supported prompt used for web version"
+  },
+  "menu_credit": "感謝",
+  "@menu_credit": {
+    "description": "Button in app menu for showing credit"
+  },
+  "menu_force_light_mode": "強制淺色模式",
+  "@menu_force_light_mode": {
+    "description": "Button in app menu for forcing use of light mode theme"
+  },
+  "menu_force_dark_mode": "強制深色模式",
+  "@menu_force_dark_mode": {
+    "description": "Button in app menu for forcing use of dark mode theme"
+  },
+  "menu_advance": "進階選項",
+  "@menu_advance": {
+    "description": "Button in app menu for enabling hidden options that's only intended for advance users"
+  },
+  "menu_extra": "延伸版本支援",
+  "@menu_extra": {
+    "description": "Button in advance only menu for enabling support of system version that covered by shoundhax"
+  },
+  "menu_loose_root_check": "寬鬆根目錄檢查",
+  "@menu_loose_root_check": {
+    "description": "Button in advance only menu for allowing missing/unknown SD root files that's not critical for mset9 itself"
+  },
+  "menu_legacy": "使用舊版漏洞ID1",
+  "@menu_legacy": {
+    "description": "Button in advance only menu for using original mset9 hax ID1 instead of the new ID1"
+  },
+  "menu_log": "日誌",
+  "@menu_log": {
+    "description": "Button in app menu for showing app logs"
+  },
+  "installer_button_pick_sd": "選取 SD 卡",
+  "@installer_button_pick_sd": {
+    "description": "Button in main app screen for picking SD card"
+  },
+  "installer_button_pick_3ds": "選取 \"Nintendo 3DS\" 資料夾",
+  "@installer_button_pick_3ds": {
+    "description": "Button in main app screen for picking Nintendo 3DS folder, only shown on Android"
+  },
+  "installer_button_dummy_checking": "檢查中…",
+  "@installer_button_dummy_checking": {
+    "description": "Dummy non-clickable button in main app screen shown when the app is doing work (only really noticeable when doing check)"
+  },
+  "installer_button_check": "確認 MSET9 狀態",
+  "@installer_button_check": {
+    "description": "Button in main app screen for (re)checking setup status"
+  },
+  "installer_button_setup": "設置 MSET9",
+  "@installer_button_setup": {
+    "description": "Button in main app screen for setting up MSET9"
+  },
+  "installer_button_inject_trigger": "注入觸發檔案",
+  "@installer_button_inject_trigger": {
+    "description": "Button in main app screen for injecting trigger file"
+  },
+  "installer_button_remove_trigger": "移除觸發檔案",
+  "@installer_button_remove_trigger": {
+    "description": "Button in main app screen for removing trigger file"
+  },
+  "installer_button_remove": "移除 MSET9",
+  "@installer_button_remove": {
+    "description": "Button in main app screen for removing MSET9"
+  },
+  "pick_alert_title": "資料夾選取錯誤",
+  "@pick_alert_title": {
+    "description": "Title of prompt for folder/SD card picking related error"
+  },
+  "pick_no_n3ds": "Nintendo 3DS 資料夾不存在",
+  "@pick_no_n3ds": {
+    "description": "Message body of prompt when the folder they pick don't have Nintendo 3DS folder, will append pick_common_n3ds_info at the end (with empty line)"
+  },
+  "pick_no_id0": "ID0 資料夾不存在",
+  "@pick_no_id0": {
+    "description": "Message body of prompt when the folder they pick have no ID0 folder inside Nintendo 3DS folder, will append pick_common_n3ds_info at the end (with empty line)"
+  },
+  "pick_common_n3ds_info": "請把 SD 卡放回你的主機並正常開機\n請勿自行建立 Nintendo 3DS 資料夾",
+  "@pick_common_n3ds_info": {
+    "description": "Additional message about Nintendo 3DS folder generation that get appended after pick_no_n3ds and pick_no_id0"
+  },
+  "pick_multiple_id0": "有多個 ID0 存在",
+  "@pick_multiple_id0": {
+    "description": "Message body of prompt when the folder they pick have multiple ID0 folders inside Nintendo 3DS folder"
+  },
+  "pick_picked_id1": "選取了 ID1，請選取 ID0 或者 Nintendo 3DS 資料夾\n(請選取上層資料夾)",
+  "@pick_picked_id1": {
+    "description": "Message body of prompt when the folder they pick is ID1, with hint of where ID0 is"
+  },
+  "pick_picked_unknown": "選取了未知資料夾，請選擇正確的資料夾",
+  "@pick_picked_unknown": {
+    "description": "Message body of prompt when the folder they pick is unrelated (or subfolders inside ID1 or other location)"
+  },
+  "pick_multi_hax_id1": "有多個 MSET ID1 !?",
+  "@pick_multi_hax_id1": {
+    "description": "Not currently used, likely for message body of prompt when the ID0 folder contains multiple hax ID1 folder"
+  },
+  "title_variant_selector": "請選擇型號及主機板本",
+  "@title_variant_selector": {
+    "description": "Title of variant (model and system version) selector"
+  },
+  "variant_selector_model_old": "舊 3DS/2DS",
+  "@variant_selector_model_old": {
+    "description": "Table header for old model Nintendo 3DS/2DS series, prefer to be short if possible"
+  },
+  "variant_selector_model_new": "新 3DS/2DS",
+  "@variant_selector_model_new": {
+    "description": "Table header for New Nintendo 3DS/2DS series, prefer to be short if possible"
+  },
+  "variant_selector_version": "選擇系統版本:",
+  "@variant_selector_version": {
+    "description": "Help text above version selector in variant selector"
+  },
+  "check_loading": "檢查中…",
+  "@check_loading": {
+    "description": "Not used, text in loading prompt when checking"
+  },
+  "setup_loading": "正在設置 MSET9 ...",
+  "@setup_loading": {
+    "description": "Text in loading prompt when setting up MSET9 hax ID1"
+  },
+  "sd_setup_loading": "正在設置 SD ...",
+  "@sd_setup_loading": {
+    "description": "Text in loading prompt when setting up SD root files"
+  },
+  "setup_alert_confirm_title": "設置：確認",
+  "@setup_alert_confirm_title": {
+    "description": "Title of prompt for confirmations during setup"
+  },
+  "setup_alert_warning_title": "設置：警告",
+  "@setup_alert_warning_title": {
+    "description": "Title of prompt for warnings during setup"
+  },
+  "setup_alert_error_title": "設置錯誤",
+  "@setup_alert_error_title": {
+    "description": "Title of prompt for errors during setup"
+  },
+  "setup_alert_disclaimer_title": "免責聲明",
+  "@setup_alert_disclaimer_title": {
+    "description": "Title of disclaimer prompt about their console data (on SD card)"
+  },
+  "setup_alert_disclaimer": "這個過程會暫時初始化你的大部分主機資料\n大部分的遊戲及主題會暫時消失\n這是完全正常的狀況，如果一切運作正常，它們會在結束時復原\n\n不論如何，仍然建議你備份 SD 卡上的資料到你的電腦或裝置上\n(特別是 Nintendo 3DS 資料夾)",
+  "@setup_alert_disclaimer": {
+    "description": "Message body of disclaimer prompt about their console data (on SD card)"
+  },
+  "setup_alert_disclaimer_linux_addition": "(在 Linux 上，較有可能有問題 - 請確保你的 SD 卡使用 utf8 選項掛載)",
+  "@setup_alert_disclaimer_linux_addition": {
+    "description": "Additional message of disclaimer prompt about Linux"
+  },
+  "setup_alert_disclaimer_web_addition": "(因為網頁 API 的限制，此實作有稍高的機率會造成資料損毀，因此更加建議你進行備份)",
+  "@setup_alert_disclaimer_web_addition": {
+    "description": "Additional message of disclaimer prompt about web version"
+  },
+  "setup_alert_disclaimer_confirm_to_continue": "點選確認以繼續",
+  "@setup_alert_disclaimer_confirm_to_continue": {
+    "description": "Additional message at the end of disclaimer prompt tell them to confirm"
+  },
+  "setup_alert_sd_setup_optional_prompt": "要自動下載損毀/未知/非關鍵的檔案嗎?\n(這會自動覆蓋相關檔案)",
+  "@setup_alert_sd_setup_optional_prompt": {
+    "description": "Message body of yes-no prompt that only shown when loose SD root check enabled and have some missing/unknown files, ask if they want to auto download and replace them"
+  },
+  "setup_alert_sd_setup_failed": "無法自動設置 SD 卡！",
+  "@setup_alert_sd_setup_failed": {
+    "description": "Message body of error prompt when SD root setup failed"
+  },
+  "setup_alert_sd_setup_file_state_missing": "缺少",
+  "@setup_alert_sd_setup_file_state_missing": {
+    "description": "State text of missing file within file list in SD root file missing prompt"
+  },
+  "setup_alert_sd_setup_file_state_outdated": "須更新",
+  "@setup_alert_sd_setup_file_state_outdated": {
+    "description": "State text of outdated file within file list in SD root file missing prompt"
+  },
+  "setup_alert_sd_setup_file_state_unknown_corrupted": "損毀/未知",
+  "@setup_alert_sd_setup_file_state_unknown_corrupted": {
+    "description": "State text of unknown/corrupted file within file list in SD root file missing prompt"
+  },
+  "setup_alert_sd_setup_file_state_required": "必要",
+  "@setup_alert_sd_setup_file_state_required": {
+    "description": "Additional text after file state that indicate it's required file, only shown when loose SD root file check enabled"
+  },
+  "setup_alert_sd_setup_file_state_optional": "可選",
+  "@setup_alert_sd_setup_file_state_optional": {
+    "description": "Additional text after file state that indicate it's optional"
+  },
+  "setup_alert_sd_setup_file_missing": "以下的 SD 卡的檔案缺少、損毀或遺失：",
+  "@setup_alert_sd_setup_file_missing": {
+    "description": "Leading text before file list in SD root file missing prompt"
+  },
+  "setup_alert_sd_setup_action_setup": "設置 SD 卡",
+  "@setup_alert_sd_setup_action_setup": {
+    "description": "Action button for doing auto SD root setup in file missing prompt"
+  },
+  "setup_alert_no_or_more_id1": "沒有 ID1 或者有多個 ID1",
+  "@setup_alert_no_or_more_id1": {
+    "description": "Message body of error prompt when there's no or multiple ID1 folder"
+  },
+  "setup_alert_extdata_title": "設置錯誤：新增資料",
+  "@setup_alert_extdata_title": {
+    "description": "Title of prompt for ext data related errors during setup"
+  },
+  "setup_alert_extdata_missing": "找不到新增資料",
+  "@setup_alert_extdata_missing": {
+    "description": "Message body of error prompt when there's no extdata folder"
+  },
+  "setup_alert_extdata_home_menu": "找不到HOME 選單新增資料",
+  "@setup_alert_extdata_home_menu": {
+    "description": "Message body of error prompt when there's no home menu extra data"
+  },
+  "setup_alert_extdata_mii_maker": "找不到 Mii 工作室新增資料",
+  "@setup_alert_extdata_mii_maker": {
+    "description": "Message body of error prompt when there's no Mii Maker extra data"
+  },
+  "setup_alert_dummy_db_title": "設置錯誤：假安裝資料庫",
+  "@setup_alert_dummy_db_title": {
+    "description": "Title of prompt for dummy title database"
+  },
+  "setup_alert_repick_variant_prompt": "確定要選取不同的型號或系統版本嗎？",
+  "@setup_alert_repick_variant_prompt": {
+    "description": "Message body of confirmation prompt for repick variant (model/version)"
+  },
+  "setup_alert_dummy_db_failed": "無法建立假安裝資料庫",
+  "@setup_alert_dummy_db_failed": {
+    "description": "Message body of error prompt when failed to create dummy title database"
+  },
+  "setup_alert_dummy_db_visual_aid": "參考圖片",
+  "@setup_alert_dummy_db_visual_aid": {
+    "description": "Action button for opening visual aid for resetting dummy database"
+  },
+  "setup_alert_dummy_db_visual_aid_url": "https://3ds.hacks.guide/images/screenshots/database-reset.jpg",
+  "@setup_alert_dummy_db_visual_aid_url": {
+    "description": "Link to visual aid for resetting dummy database, currently no translated version so don't change, if you want to offer translated version, please reach https://github.com/hacks-guide/Guide_3DS, also take care of cases of people using non-native region consoles"
+  },
+  "setup_alert_dummy_db_found": "偵測到假安裝資料庫",
+  "@setup_alert_dummy_db_found": {
+    "description": "Title of error prompt when there's dummy title database, setup_alert_dummy_db_reset will be appended after, after extra empty line"
+  },
+  "setup_alert_dummy_db_corrupted": "安裝資料庫可能已經損毀",
+  "@setup_alert_dummy_db_corrupted": {
+    "description": "Title of error prompt when the title database is likely corrupted, setup_alert_dummy_db_reset will be appended after, after extra empty line"
+  },
+  "setup_alert_dummy_db_reset": "將 SD 卡放回主機後開機，然後進入主機設定⮕資料管理⮕Nintendo 3DS⮕軟體⮕重設",
+  "@setup_alert_dummy_db_reset": {
+    "description": "Common text for instruction of resetting dummy/corrupted title database, appended after setup_alert_dummy_db_found and setup_alert_dummy_db_corrupted with extra empty line"
+  },
+  "setup_alert_hax_id1_created_title": "設置：已建立漏洞 ID1",
+  "@setup_alert_hax_id1_created_title": {
+    "description": "Title of prompt after MSET9 set up"
+  },
+  "setup_alert_hax_id1_created": "已成功建立漏洞 ID1",
+  "@setup_alert_hax_id1_created": {
+    "description": "Message body of prompt after MSET9 set up, setup_alert_dummy_mii_maker_and_db_reset will be appended after extra empty line"
+  },
+  "setup_alert_dummy_mii_maker_and_db_reset": "將 SD 卡放回主機後開機，開啟 Mii 工作室\nMii 工作室完成載入後，按下 HOME 鍵，然後進入主機設定⮕資料管理⮕Nintendo 3DS⮕軟體⮕重設",
+  "@setup_alert_dummy_mii_maker_and_db_reset": {
+    "description": "Similar to setup_alert_dummy_db_reset, but with mii maker extra data instruction, appended after setup_alert_hax_id1_created with extra empty line"
+  },
+  "remove_loading": "移除 MSET9 ...",
+  "@remove_loading": {
+    "description": "Text in loading prompt when removing MSET9"
+  },
+  "remove_alert_confirm_title": "移除：確認",
+  "@remove_alert_confirm_title": {
+    "description": "Title of confirmation prompt when try to remove mset9 before boot9strap installed"
+  },
+  "remove_alert_confirm": "看起來你還沒成功安裝 boot9strap，確定要移除 MSET9 嗎？\n\n如果你選擇了錯誤的型號或系統版本，可以點選\"重新選擇\"再次選取",
+  "@remove_alert_confirm": {
+    "description": "Message body of confirmation prompt when try to remove mset9 before boot9strap installed, also tell them they can simply change variant if they picked it wrong"
+  },
+  "remove_alert_action_repick": "重新選擇",
+  "@remove_alert_action_repick": {
+    "description": "Action button for re-picking variant inside removal confirmation prompt"
+  },
+  "@@locale": "zh-TW"
+}
