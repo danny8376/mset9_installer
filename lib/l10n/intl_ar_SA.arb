@@ -211,7 +211,7 @@
   "@setup_alert_sd_setup_file_state_outdated": {
     "description": "State text of outdated file within file list in SD root file missing prompt"
   },
-  "setup_alert_sd_setup_file_state_unknown_corrupted": "Corrupted/~Unknown",
+  "setup_alert_sd_setup_file_state_unknown_corrupted": "Corrupted/Unknown",
   "@setup_alert_sd_setup_file_state_unknown_corrupted": {
     "description": "State text of unknown/corrupted file within file list in SD root file missing prompt"
   },
