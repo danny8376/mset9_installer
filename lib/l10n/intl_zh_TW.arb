@@ -179,39 +179,39 @@
   "@setup_alert_disclaimer_title": {
     "description": "Title of disclaimer prompt about their console data (on SD card)"
   },
-  "setup_alert_disclaimer": "This process will temporarily reset most of your 3DS data.\nMost of your applications and themes will disappear.\nThis is perfectly normal, and if everything goes right, it will re-appear at the end of the process.\n\nIn any case, it is highly recommended to make a backup of your SD card's contents to a folder on your PC/Device.\n(Especially the 'Nintendo 3DS' folder.)",
+  "setup_alert_disclaimer": "這個過程會暫時初始化你的大部分主機資料\n大部分的遊戲及主題會暫時消失\n這是完全正常的狀況，如果一切運作正常，它們會在結束時復原\n\n不論如何，仍然建議你備份 SD 卡上的資料到你的電腦或裝置上\n(特別是 Nintendo 3DS 資料夾)",
   "@setup_alert_disclaimer": {
     "description": "Message body of disclaimer prompt about their console data (on SD card)"
   },
-  "setup_alert_disclaimer_linux_addition": "(On Linux, things like to not go right - please ensure that your SD card is mounted with the 'utf8' option.)",
+  "setup_alert_disclaimer_linux_addition": "(在 Linux 上，較有可能有問題 - 請確保你的 SD 卡使用 utf8 選項掛載)",
   "@setup_alert_disclaimer_linux_addition": {
     "description": "Additional message of disclaimer prompt about Linux"
   },
-  "setup_alert_disclaimer_web_addition": "(Due to web api limitation, this implementation have slightly higher risk of data corruption, thus backup is even more recommended.)",
+  "setup_alert_disclaimer_web_addition": "(因為網頁 API 的限制，此實作有稍高的機率會造成資料損毀，因此更加建議你進行備份)",
   "@setup_alert_disclaimer_web_addition": {
     "description": "Additional message of disclaimer prompt about web version"
   },
-  "setup_alert_disclaimer_confirm_to_continue": "Press confirm to continue.",
+  "setup_alert_disclaimer_confirm_to_continue": "點選確認以繼續",
   "@setup_alert_disclaimer_confirm_to_continue": {
     "description": "Additional message at the end of disclaimer prompt tell them to confirm"
   },
-  "setup_alert_sd_setup_optional_prompt": "Do you want to automatically download corrupted/unknown/non-critical files? (This will overwrite all related files automatically)",
+  "setup_alert_sd_setup_optional_prompt": "要自動下載損毀/未知/非關鍵的檔案嗎?\n(這會自動覆蓋相關檔案)",
   "@setup_alert_sd_setup_optional_prompt": {
     "description": "Message body of yes-no prompt that only shown when loose SD root check enabled and have some missing/unknown files, ask if they want to auto download and replace them"
   },
-  "setup_alert_sd_setup_failed": "Failed to setup SD root automatically!",
+  "setup_alert_sd_setup_failed": "無法自動設置 SD 卡！",
   "@setup_alert_sd_setup_failed": {
     "description": "Message body of error prompt when SD root setup failed"
   },
-  "setup_alert_sd_setup_file_state_missing": "Missing",
+  "setup_alert_sd_setup_file_state_missing": "缺少",
   "@setup_alert_sd_setup_file_state_missing": {
     "description": "State text of missing file within file list in SD root file missing prompt"
   },
-  "setup_alert_sd_setup_file_state_outdated": "Outdated",
+  "setup_alert_sd_setup_file_state_outdated": "須更新",
   "@setup_alert_sd_setup_file_state_outdated": {
     "description": "State text of outdated file within file list in SD root file missing prompt"
   },
-  "setup_alert_sd_setup_file_state_unknown_corrupted": "Corrupted/~Unknown",
+  "setup_alert_sd_setup_file_state_unknown_corrupted": "Corrupted/Unknown",
   "@setup_alert_sd_setup_file_state_unknown_corrupted": {
     "description": "State text of unknown/corrupted file within file list in SD root file missing prompt"
   },
