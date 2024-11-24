@@ -1,29 +1,29 @@
 {
-  "title_installer": "MSET9 Installer",
+  "title_installer": "MSET9 インストーラー",
   "@title_installer": {
     "description": ""
   },
-  "alert_neutral": "OK",
+  "alert_neutral": "確定",
   "@alert_neutral": {
     "description": ""
   },
-  "alert_general_yes": "Yes",
+  "alert_general_yes": "はい",
   "@alert_general_yes": {
     "description": ""
   },
-  "alert_general_no": "No",
+  "alert_general_no": "いいえ",
   "@alert_general_no": {
     "description": ""
   },
-  "alert_general_confirm": "Confirm",
+  "alert_general_confirm": "確認",
   "@alert_general_confirm": {
     "description": ""
   },
-  "alert_general_cancel": "Cancel",
+  "alert_general_cancel": "キャンセル",
   "@alert_general_cancel": {
     "description": ""
   },
-  "alert_action_troubleshooting": "Troubleshooting",
+  "alert_action_troubleshooting": "トラブルシューティング",
   "@alert_action_troubleshooting": {
     "description": ""
   },
@@ -31,7 +31,7 @@
   "@alert_general_troubleshooting_url": {
     "description": ""
   },
-  "alert_not_supported_title": "Not Supported",
+  "alert_not_supported_title": "サポートされていません",
   "@alert_not_supported_title": {
     "description": ""
   },
@@ -39,7 +39,7 @@
   "@alert_not_supported": {
     "description": ""
   },
-  "menu_credit": "Credit",
+  "menu_credit": "クレジット",
   "@menu_credit": {
     "description": ""
   },
@@ -67,7 +67,7 @@
   "@menu_legacy": {
     "description": ""
   },
-  "menu_log": "Logs",
+  "menu_log": "ログ",
   "@menu_log": {
     "description": ""
   },
@@ -75,11 +75,11 @@
   "@title_variant_selector": {
     "description": ""
   },
-  "installer_button_pick_sd": "Select Your SD Card",
+  "installer_button_pick_sd": "SDカードを選択する",
   "@installer_button_pick_sd": {
     "description": ""
   },
-  "installer_button_pick_3ds": "Select \"Nintendo 3DS\"",
+  "installer_button_pick_3ds": "\"Nintendo 3DS\" フォルダを選択する",
   "@installer_button_pick_3ds": {
     "description": ""
   },
@@ -91,19 +91,19 @@
   "@installer_button_check": {
     "description": ""
   },
-  "installer_button_setup": "Setup MSET9",
+  "installer_button_setup": "MEST9をセットアップする",
   "@installer_button_setup": {
     "description": ""
   },
-  "installer_button_inject_trigger": "Inject trigger file",
+  "installer_button_inject_trigger": "トリガーファイルを投入する",
   "@installer_button_inject_trigger": {
     "description": ""
   },
-  "installer_button_remove_trigger": "Remove trigger file",
+  "installer_button_remove_trigger": "トリガーファイルを削除する",
   "@installer_button_remove_trigger": {
     "description": ""
   },
-  "installer_button_remove": "Remove MSET9",
+  "installer_button_remove": "MEST9を削除する",
   "@installer_button_remove": {
     "description": ""
   },
@@ -123,7 +123,7 @@
   "@pick_common_n3ds_info": {
     "description": ""
   },
-  "pick_multiple_id0": "There's more than one ID0 folder, please check.",
+  "pick_multiple_id0": "ID0フォルダがありません。確認してください.",
   "@pick_multiple_id0": {
     "description": ""
   },
@@ -131,11 +131,11 @@
   "@pick_picked_id1": {
     "description": ""
   },
-  "pick_picked_unknown": "Unknown folder picked, please pick the correct folder.",
+  "pick_picked_unknown": "不明なフォルダが選択されました。正しいフォルダを選択してください.",
   "@pick_picked_unknown": {
     "description": ""
   },
-  "pick_multi_hax_id1": "There's more than one hax ID1 ???",
+  "pick_multi_hax_id1": "1つ以上のハックスID1がありますか?",
   "@pick_multi_hax_id1": {
     "description": ""
   },
@@ -147,15 +147,15 @@
   "@variant_selector_model_new": {
     "description": ""
   },
-  "variant_selector_version": "Select System Version:",
+  "variant_selector_version": "システムバージョンを選択してください:",
   "@variant_selector_version": {
     "description": ""
   },
-  "check_loading": "Checking ...",
+  "check_loading": "確認中…",
   "@check_loading": {
     "description": ""
   },
-  "setup_loading": "Setting up MSET9 ...",
+  "setup_loading": "MEST9をセットアップする ...",
   "@setup_loading": {
     "description": ""
   },
@@ -167,7 +167,7 @@
   "@setup_alert_warning_title": {
     "description": ""
   },
-  "setup_alert_error_title": "Setup Error",
+  "setup_alert_error_title": "セットアップエラー",
   "@setup_alert_error_title": {
     "description": ""
   },
