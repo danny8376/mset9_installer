@@ -107,10 +107,6 @@
   "@installer_button_remove": {
     "description": "Button in main app screen for removing MSET9"
   },
-  "pick_alert_title": "資料夾選取錯誤",
-  "@pick_alert_title": {
-    "description": "Title of prompt for folder/SD card picking related error"
-  },
   "pick_no_n3ds": "Nintendo 3DS 資料夾不存在",
   "@pick_no_n3ds": {
     "description": "Message body of prompt when the folder they pick don't have Nintendo 3DS folder, will append pick_common_n3ds_info at the end (with empty line)"
@@ -183,10 +179,6 @@
   "@setup_alert_disclaimer_title": {
     "description": "Title of disclaimer prompt about their console data (on SD card)"
   },
-  "setup_alert_disclaimer": "這個過程會暫時初始化你的大部分主機資料\n大部分的遊戲及主題會暫時消失\n這是完全正常的狀況，如果一切運作正常，它們會在結束時復原\n\n不論如何，仍然建議你備份 SD 卡上的資料到你的電腦或裝置上\n(特別是 Nintendo 3DS 資料夾)",
-  "@setup_alert_disclaimer": {
-    "description": "Message body of disclaimer prompt about their console data (on SD card)"
-  },
   "setup_alert_disclaimer_linux_addition": "(在 Linux 上，較有可能有問題 - 請確保你的 SD 卡使用 utf8 選項掛載)",
   "@setup_alert_disclaimer_linux_addition": {
     "description": "Additional message of disclaimer prompt about Linux"
@@ -214,10 +206,6 @@
   "setup_alert_sd_setup_file_state_outdated": "須更新",
   "@setup_alert_sd_setup_file_state_outdated": {
     "description": "State text of outdated file within file list in SD root file missing prompt"
-  },
-  "setup_alert_sd_setup_file_state_unknown_corrupted": "損毀/未知",
-  "@setup_alert_sd_setup_file_state_unknown_corrupted": {
-    "description": "State text of unknown/corrupted file within file list in SD root file missing prompt"
   },
   "setup_alert_sd_setup_file_state_required": "必要",
   "@setup_alert_sd_setup_file_state_required": {
