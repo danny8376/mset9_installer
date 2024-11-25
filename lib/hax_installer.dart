@@ -12,6 +12,8 @@ import 'root_check.dart';
 import 'string_utils.dart';
 import 'talker.dart';
 
+const kNonRootEventsCleanupDuration = Duration(seconds: 2);
+
 enum HaxStage { pickFolder, folderPicked, cardRemoved, /*pickVariant,*/ postSetup, readyToInject, doExploit, broken, doingWork }
 
 enum FolderAssignmentExceptionType { noN3DS, noId0, multipleId0, id1Picked, unknown }
@@ -53,6 +55,23 @@ class HaxInstaller {
   dynamic _folderAndDriveUpdateWatcherHandle;
   Directory? _folderAndDriveUpdateWatchRoot;
   bool _pauseFolderAndDriveUpdateWatcher = false;
+  bool __cleanupRemainingNonRootEvents = false;
+  Timer? _cleanupRemainingNonRootEventsTimer;
+  bool get _cleanupRemainingNonRootEvents => __cleanupRemainingNonRootEvents;
+  set _cleanupRemainingNonRootEvents(bool v) {
+    if (__cleanupRemainingNonRootEvents && v) {
+      return;
+    }
+    __cleanupRemainingNonRootEvents = v;
+    if (v) {
+      _cleanupRemainingNonRootEventsTimer = Timer(kNonRootEventsCleanupDuration, () {
+        _cleanupRemainingNonRootEvents = false;
+      });
+    } else {
+      _cleanupRemainingNonRootEventsTimer?.cancel();
+      _cleanupRemainingNonRootEventsTimer = null;
+    }
+  }
 
   void Function(HaxStage) stageUpdateCallback;
   void Function(HaxAlertType) alertCallback;
@@ -77,12 +96,14 @@ class HaxInstaller {
     onlyRecoverStageWhenException: true,
     pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
     work: () async {
-      talker.debug("Common: Checking state");
+      talker.debug("Check: Checking state");
+      //talker.debug("Check: Checking state", "StackTrace", StackTrace.current);
       if (id0Folder == null) {
         stageUpdateCallback(_stage = HaxStage.pickFolder);
         return;
       }
       if (await id0Folder?.exists() != true) {
+        talker.debug("Check: ID0 folder missing, switch to cardRemoved");
         stageUpdateCallback(_stage = HaxStage.cardRemoved);
         return;
       }
@@ -111,7 +132,8 @@ class HaxInstaller {
     onlyRecoverStageWhenException: true,
     pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
     work: () async {
-      talker.debug("Common: Checking inject state");
+      talker.debug("Check: Checking inject state");
+      //talker.debug("Check: Checking inject state", "StackTrace", StackTrace.current);
       if (id1HaxFolder == null) {
         // avoid stuck in doingWork state
         stageUpdateCallback(_stage = HaxStage.broken);
@@ -188,6 +210,7 @@ class HaxInstaller {
       return;
     }
     if (updates == null) {
+      _cleanupRemainingNonRootEvents = false;
       try {
         if (await _folderAndDriveUpdateWatchRoot?.exists() == true) {
           return checkState(silent: true);
@@ -197,7 +220,11 @@ class HaxInstaller {
       return stageUpdateCallback(_stage = HaxStage.cardRemoved);
     }
     if (updates.isEmpty) {
+      _cleanupRemainingNonRootEvents = false;
       return checkState(silent: true);
+    }
+    if (_cleanupRemainingNonRootEvents) {
+      return;
     }
     bool id0Altered = false;
     if (_folderAndDriveUpdateWatchRoot == id0Folder) {
@@ -753,6 +780,7 @@ class HaxInstaller {
     },
     done: (result, errorOut) async {
       _variant = null;
+      _cleanupRemainingNonRootEvents = true;
       checkState(silent: true, skipSdRoot: true);
     },
   );
