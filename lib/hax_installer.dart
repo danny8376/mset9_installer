@@ -74,6 +74,7 @@ class HaxInstaller {
     faultResult: null,
     isChecking: true,
     switchStageToDoingWork: true,
+    onlyRecoverStageWhenException: true,
     pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
     work: () async {
       talker.debug("Common: Checking state");
@@ -107,10 +108,13 @@ class HaxInstaller {
     faultResult: null,
     isChecking: true,
     switchStageToDoingWork: true,
+    onlyRecoverStageWhenException: true,
     pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
     work: () async {
       talker.debug("Common: Checking inject state");
       if (id1HaxFolder == null) {
+        // avoid stuck in doingWork state
+        stageUpdateCallback(_stage = HaxStage.broken);
         return;
       }
       if (await id1HaxFolder?.exists() != true) {
@@ -253,7 +257,7 @@ class HaxInstaller {
   }
 
   Future<void> checkAndAssignFolders(Directory dir) async {
-    final (root, n3ds, id0, missing) = (sdRoot, n3dsFolder, id0Folder, _sdRootMissing);
+    final (root, n3ds, id0, missing, stage) = (sdRoot, n3dsFolder, id0Folder, _sdRootMissing, _stage);
     try {
       var result = await _checkAndAssignFolders(dir);
       if (canAccessParentOfPicked) {
@@ -273,12 +277,18 @@ class HaxInstaller {
       n3dsFolder = n3ds;
       id0Folder = id0;
       _sdRootMissing = missing;
+      if (_stage != stage) {
+        stageUpdateCallback(_stage = stage);
+      }
       rethrow;
     } catch (e, st) {
       sdRoot = root;
       n3dsFolder = n3ds;
       id0Folder = id0;
       _sdRootMissing = missing;
+      if (_stage != stage) {
+        stageUpdateCallback(_stage = stage);
+      }
       talker.handle(e, st);
     }
   }
@@ -489,12 +499,15 @@ class HaxInstaller {
     required T faultResult,
     bool isChecking = false,
     bool switchStageToDoingWork = false,
+    bool onlyRecoverStageWhenException = false,
     bool pauseFolderAndDriveUpdateWatcherWhenDoingWork = false,
     required Future<T> Function() work,
-    Future<void> Function(T result)? done,
+    Future<void> Function(T result, bool exception)? done,
   }) async {
+    final previousStage = _stage;
+    bool errorOut = false;
     _workIsCheck = isChecking;
-    if (switchStageToDoingWork) {
+    if (switchStageToDoingWork && previousStage != HaxStage.doingWork) {
       stageUpdateCallback(_stage = HaxStage.doingWork);
     }
     T result = faultResult;
@@ -505,6 +518,7 @@ class HaxInstaller {
     try {
       result = await work();
     } catch (e, st) {
+      errorOut = true;
       talker.handle(e, st);
     }
     // if the work is already pause, don't resume it from us
@@ -513,7 +527,12 @@ class HaxInstaller {
     }
     _workIsCheck = false;
     if (done != null) {
-      await done(result);
+      await done(result, errorOut);
+    } else if (switchStageToDoingWork
+      && previousStage != HaxStage.doingWork
+      && (!onlyRecoverStageWhenException || errorOut)
+    ) {
+      stageUpdateCallback(_stage = previousStage);
     }
     return result;
   }
@@ -596,6 +615,7 @@ class HaxInstaller {
 
   Future<bool> setupHaxId1() => _exceptionGuard(
     faultResult: false,
+    switchStageToDoingWork: true,
     pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
     work: () async {
       talker.debug("Setup: Setup - ${_variant?.model.name} ${_variant?.version.major}.${_variant?.version.minor}");
@@ -645,7 +665,7 @@ class HaxInstaller {
       }
       return true;
     },
-    done: (result) async {
+    done: (result, errorOut) async {
       (result ? checkInjectState : checkState)(silent: true);
     },
   );
@@ -705,7 +725,7 @@ class HaxInstaller {
     pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
     work: () async =>
         await (await id1HaxExtdataFolder?.file(kTriggerFile, create: true))?.writeAsBytes([], flush: true) != null,
-    done: (result) async {
+    done: (result, errorOut) async {
       checkInjectState(skipSdRoot: true);
     }
   );
@@ -715,7 +735,7 @@ class HaxInstaller {
     switchStageToDoingWork: false,
     pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
     work: () async => await (await id1HaxExtdataFolder?.file(kTriggerFile))?.delete() != null,
-    done: (result) async {
+    done: (result, errorOut) async {
       checkInjectState(skipSdRoot: true);
     },
   );
@@ -731,7 +751,7 @@ class HaxInstaller {
       await backupId1?.renameInplace(backupId1.name.replaceAll(kOldId1Suffix, ''));
       return true;
     },
-    done: (result) async {
+    done: (result, errorOut) async {
       _variant = null;
       checkState(silent: true, skipSdRoot: true);
     },
