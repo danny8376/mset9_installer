@@ -52,7 +52,7 @@ jobs:
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_TOKEN }}
 
       - name: Git Pull
-        run: git pull
+        run: git pull origin l10n_${{ env.BRANCH }}
 
       - name: Common Build Steps for Flutter
         uses: ./.github/actions/build-steps-flutter-common
