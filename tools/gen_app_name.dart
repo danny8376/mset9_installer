@@ -46,7 +46,7 @@ void main() async {
     if (locale == mainLocale) {
       valuesPath = androidValuesPath;
     } else {
-      final [lang, ...rest] = locale.split("_");
+      final [lang, ...rest] = locale.split(RegExp(r'[_-]'));
       final region = rest.firstOrNull;
       if (region == null) {
         valuesPath = "$androidValuesPath-$lang";
