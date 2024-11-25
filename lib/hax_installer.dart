@@ -209,19 +209,16 @@ class HaxInstaller {
       // we can't easily distinguish events between user and app anyway
       return;
     }
-    if (updates == null) {
+    // if (updates?.isEmpty != false) { // Checker is not happy with this...
+    if (updates == null || updates.isEmpty) {
       _cleanupRemainingNonRootEvents = false;
       try {
         if (await _folderAndDriveUpdateWatchRoot?.exists() == true) {
-          return checkState(silent: true);
+          return checkState(/* silent: true */);
         }
       } on FileSystemException { // ignore
       }
       return stageUpdateCallback(_stage = HaxStage.cardRemoved);
-    }
-    if (updates.isEmpty) {
-      _cleanupRemainingNonRootEvents = false;
-      return checkState(silent: true);
     }
     if (_cleanupRemainingNonRootEvents) {
       return;
