@@ -276,10 +276,10 @@ class S {
     );
   }
 
-  /// `Select Your SD Card`
+  /// `Select your SD card`
   String get installer_button_pick_sd {
     return Intl.message(
-      'Select Your SD Card',
+      'Select your SD card',
       name: 'installer_button_pick_sd',
       desc: 'Button in main app screen for picking SD card',
       args: [],

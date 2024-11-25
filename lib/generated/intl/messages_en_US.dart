@@ -50,7 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "installer_button_pick_3ds":
             MessageLookupByLibrary.simpleMessage("Select \"Nintendo 3DS\""),
         "installer_button_pick_sd":
-            MessageLookupByLibrary.simpleMessage("Select Your SD Card"),
+            MessageLookupByLibrary.simpleMessage("Select your SD card"),
         "installer_button_remove":
             MessageLookupByLibrary.simpleMessage("Remove MSET9"),
         "installer_button_remove_trigger":
