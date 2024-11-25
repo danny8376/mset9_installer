@@ -16,7 +16,8 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-
+    environment:
+      name: crowdin
     steps:
       - name: Extract Branch Name
         if: ${{ github.event_name != 'schedule' }}
