@@ -57,6 +57,7 @@ jobs:
           git branch -D l10n_${{ env.BRANCH }}
           git fetch origin l10n_${{ env.BRANCH }}
           git checkout -b l10n_${{ env.BRANCH }} origin/l10n_${{ env.BRANCH }}
+          git rebase ${{ env.BRANCH }}
 
       - name: Common Build Steps for Flutter
         uses: ./.github/actions/build-steps-flutter-common
