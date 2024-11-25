@@ -6,7 +6,7 @@ inputs:
     required: true
   flutter-version:
     #default: '3.22.3'
-    default: '3.16.8'
+    default: '3.16.9'
   flutter-channel:
     default: 'stable'
 
