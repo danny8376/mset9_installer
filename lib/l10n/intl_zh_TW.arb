@@ -51,11 +51,11 @@
   "@menu_language": {
     "description": "Button in app menu for selecting language"
   },
-  "menu_force_light_mode": "Light Mode",
+  "menu_force_light_mode": "淺色模式",
   "@menu_force_light_mode": {
     "description": "Button in app menu for forcing use of light mode theme"
   },
-  "menu_force_dark_mode": "Dark Mode",
+  "menu_force_dark_mode": "深色模式",
   "@menu_force_dark_mode": {
     "description": "Button in app menu for forcing use of dark mode theme"
   },
