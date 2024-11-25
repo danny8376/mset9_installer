@@ -1,11 +1,11 @@
 name: Crowdin Action
 
 on:
-  push:
-    branches:
-      - master
-  schedule:
-    - cron: '27 */2 * * *'
+#  push:
+#    branches:
+#      - master
+#  schedule:
+#    - cron: '27 */2 * * *'
   workflow_dispatch:
 
 env:
@@ -51,24 +51,24 @@ jobs:
           # Visit https://crowdin.com/settings#api-key to create this token
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_TOKEN }}
 
-      - name: Fix Branch
-        run: |
-          git checkout ${{ env.BRANCH }}
-          git branch -D l10n_${{ env.BRANCH }}
-          git fetch origin l10n_${{ env.BRANCH }}
-          git checkout -b l10n_${{ env.BRANCH }} origin/l10n_${{ env.BRANCH }}
-          git rebase ${{ env.BRANCH }}
-
-      - name: Common Build Steps for Flutter
-        uses: ./.github/actions/build-steps-flutter-common
-        with:
-          shell: bash
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          flutter-channel: ${{ env.FLUTTER_CHANNEL }}
-
-      - name: Commit & Push changes
-        uses: devops-infra/action-commit-push@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          commit_message: Generate Translation Files
-          #force: true
+#      - name: Fix Branch
+#        run: |
+#          git checkout ${{ env.BRANCH }}
+#          git branch -D l10n_${{ env.BRANCH }}
+#          git fetch origin l10n_${{ env.BRANCH }}
+#          git checkout -b l10n_${{ env.BRANCH }} origin/l10n_${{ env.BRANCH }}
+#          git rebase ${{ env.BRANCH }}
+#
+#      - name: Common Build Steps for Flutter
+#        uses: ./.github/actions/build-steps-flutter-common
+#        with:
+#          shell: bash
+#          flutter-version: ${{ env.FLUTTER_VERSION }}
+#          flutter-channel: ${{ env.FLUTTER_CHANNEL }}
+#
+#      - name: Commit & Push changes
+#        uses: devops-infra/action-commit-push@master
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          commit_message: Generate Translation Files
+#          #force: true

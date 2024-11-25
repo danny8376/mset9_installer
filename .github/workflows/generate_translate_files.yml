@@ -1,0 +1,38 @@
+name: Generate Translate Files
+
+on:
+  pull_request:
+    branches:
+      - l10n_*
+
+env:
+  FLUTTER_VERSION: '3.16.9'
+  FLUTTER_CHANNEL: 'stable'
+
+jobs:
+  synchronize-with-crowdin:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Extract Branch Name
+        run: echo "BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_ENV
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.BRANCH }}
+
+      - name: Common Build Steps for Flutter
+        uses: ./.github/actions/build-steps-flutter-common
+        with:
+          shell: bash
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          flutter-channel: ${{ env.FLUTTER_CHANNEL }}
+
+      - name: Commit & Push changes
+        uses: devops-infra/action-commit-push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_message: Generate Translation Files
+          #force: true
