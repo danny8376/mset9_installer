@@ -1,6 +1,8 @@
 project_id: "739665"
 api_token_env: CROWDIN_TOKEN
 
+preserve_hierarchy: true
+
 files:
   - source: /lib/l10n/intl_en_US.arb
     translation: /lib/l10n/intl_%locale_with_underscore%.arb
