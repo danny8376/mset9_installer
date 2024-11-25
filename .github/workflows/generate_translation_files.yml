@@ -16,10 +16,12 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v4
 
-      - name: Build Steps for web
-        uses: ./.github/actions/build-steps-web
+      - name: Common Build Steps for Flutter
+        uses: ./.github/actions/build-steps-flutter-common
         with:
           shell: bash
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          flutter-channel: ${{ env.FLUTTER_CHANNEL }}
 
       - name: Commit & Push changes
         uses: devops-infra/action-commit-push@master
