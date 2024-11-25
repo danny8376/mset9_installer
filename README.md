@@ -15,7 +15,7 @@ Universal [MSET9](https://github.com/zoogie/MSET9) Installer that target Windows
 
 ## Preview
 
-<img src="/resources/screenshots/desktop/1.png" width="213" alt="MSET9 Installer Screenshot - SD card selected"> <img src="/resources/screenshots/desktop/2.png" width="213" alt="MSET9 Installer Screenshot - Ready to inject">
+<img src="/resources/screenshots/desktop/dark/1.png" width="213" alt="MSET9 Installer Screenshot - SD card selected"> <img src="/resources/screenshots/desktop/dark/2.png" width="213" alt="MSET9 Installer Screenshot - Ready to inject">
 
 ## Credits
 
