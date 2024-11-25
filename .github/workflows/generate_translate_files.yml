@@ -3,7 +3,8 @@ name: Generate Translate Files
 on:
   pull_request:
     branches:
-      - l10n_*
+      #- l10n_*
+      - branch_that_wont_ever_exist
 
 env:
   FLUTTER_VERSION: '3.16.9'
