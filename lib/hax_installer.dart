@@ -724,7 +724,7 @@ class HaxInstaller {
     switchStageToDoingWork: false,
     pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
     work: () async =>
-        await (await id1HaxExtdataFolder?.file(kTriggerFile, create: true))?.writeAsBytes([], flush: true) != null,
+      await (await id1HaxExtdataFolder?.file(kTriggerFile, create: true))?.writeAsBytes([], flush: true) != null,
     done: (result, errorOut) async {
       checkInjectState(skipSdRoot: true);
     }
@@ -767,9 +767,8 @@ class HaxInstaller {
       var installerDir = await sdRoot?.directory("boot9strap", caseInsensitive: true);
       installerDir ??= await sdRoot?.directory("ofi", caseInsensitive: true);
       return await installerDir?.list().asyncAny(
-          (child) async =>
-              await FileSystemUtils.isFile(child) &&
-              kFirmBakRegex.hasMatch((child as FileSystemEntity).name)
+        (child) async => await FileSystemUtils.isFile(child)
+          && kFirmBakRegex.hasMatch((child as FileSystemEntity).name)
       ) == true;
     },
   );

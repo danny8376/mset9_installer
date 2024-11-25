@@ -627,9 +627,9 @@ class _InstallerState extends State<Installer> {
             CheckStateState.outdated => _s().setup_alert_sd_setup_file_state_outdated,
             CheckStateState.unknownOrCorrupted => _s().setup_alert_sd_setup_file_state_unknown_corrupted,
           };
-          final suffix = installer.looseRootCheck ?
-              (entry.value.optional ? "" : " (${_s().setup_alert_sd_setup_file_state_required})") :
-              (entry.value.optional ? " (${_s().setup_alert_sd_setup_file_state_optional})" : "");
+          final suffix = installer.looseRootCheck
+            ? (entry.value.optional ? "" : " (${_s().setup_alert_sd_setup_file_state_required})")
+            : (entry.value.optional ? " (${_s().setup_alert_sd_setup_file_state_optional})" : "");
           return "${entry.key}: $state$suffix";
         }).sorted((a, b) => a.toUpperCase().compareTo(b.toUpperCase())).join("\n");
         var doSDSetup = false;
