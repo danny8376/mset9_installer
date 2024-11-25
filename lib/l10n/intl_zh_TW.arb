@@ -47,11 +47,15 @@
   "@menu_credit": {
     "description": "Button in app menu for showing credit"
   },
-  "menu_force_light_mode": "強制淺色模式",
+  "menu_language": "語言設定",
+  "@menu_language": {
+    "description": "Button in app menu for selecting language"
+  },
+  "menu_force_light_mode": "淺色模式",
   "@menu_force_light_mode": {
     "description": "Button in app menu for forcing use of light mode theme"
   },
-  "menu_force_dark_mode": "強制深色模式",
+  "menu_force_dark_mode": "深色模式",
   "@menu_force_dark_mode": {
     "description": "Button in app menu for forcing use of dark mode theme"
   },
@@ -74,6 +78,14 @@
   "menu_log": "日誌",
   "@menu_log": {
     "description": "Button in app menu for showing app logs"
+  },
+  "menu_alert_language_title": "選擇語言",
+  "@menu_alert_language_title": {
+    "description": "Title of language selection prompt"
+  },
+  "menu_alert_language_action": "完成",
+  "@menu_alert_language_action": {
+    "description": "Neutral action button of language selection prompt"
   },
   "installer_button_pick_sd": "選取 SD 卡",
   "@installer_button_pick_sd": {
