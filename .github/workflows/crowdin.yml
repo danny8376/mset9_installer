@@ -37,7 +37,8 @@ jobs:
 
       - name: Always Fresh L10n Branch
         run: |
-          git branch -b l10n_${{ env.BRANCH }}
+          git branch -D l10n_${{ env.BRANCH }} || true
+          git checkout -b l10n_${{ env.BRANCH }}
 
       - name: Crowdin Action
         uses: crowdin/github-action@v2
