@@ -172,6 +172,16 @@ class S {
     );
   }
 
+  /// `Language`
+  String get menu_language {
+    return Intl.message(
+      'Language',
+      name: 'menu_language',
+      desc: 'Button in app menu for selecting language',
+      args: [],
+    );
+  }
+
   /// `Force Light Mode`
   String get menu_force_light_mode {
     return Intl.message(
@@ -242,6 +252,26 @@ class S {
       'Logs',
       name: 'menu_log',
       desc: 'Button in app menu for showing app logs',
+      args: [],
+    );
+  }
+
+  /// `Select Language`
+  String get menu_alert_language_title {
+    return Intl.message(
+      'Select Language',
+      name: 'menu_alert_language_title',
+      desc: 'Title of language selection prompt',
+      args: [],
+    );
+  }
+
+  /// `Done`
+  String get menu_alert_language_action {
+    return Intl.message(
+      'Done',
+      name: 'menu_alert_language_action',
+      desc: 'Neutral action button of language selection prompt',
       args: [],
     );
   }

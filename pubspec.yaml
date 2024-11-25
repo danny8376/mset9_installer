@@ -73,6 +73,7 @@ dependencies:
   #fwfh_url_launcher: ^0.9.1
   markdown_widget: ^2.3.2+6
   package_info_plus: ^5.0.1
+  locale_names: ^1.1.1
 
 dependency_overrides:
 # this is heavily broken, trash wasm support for now

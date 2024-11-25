@@ -6,9 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:intl/intl.dart';
 //import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 //import 'package:fwfh_url_launcher/fwfh_url_launcher.dart';
+import 'package:intl/intl.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
@@ -20,10 +20,11 @@ import 'generated/l10n.dart';
 import 'console.dart';
 import 'hax_installer.dart';
 import 'io.dart';
+import 'locale_dropdown_menu.dart';
 import 'root_check.dart';
 import 'talker.dart';
 
-enum Menu { credit, toggleTheme, advance, extra, looseRootCheck, legacyCode, log }
+enum Menu { credit, locale, toggleTheme, advance, extra, looseRootCheck, legacyCode, log }
 
 void main() async {
   if (isDesktop) {
@@ -33,22 +34,62 @@ void main() async {
   runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider(
-        create: (_) => ThemeProvider(),
+        create: (_) => SettingsProvider(),
       ),
     ], child: const MyApp()),
   );
 }
 
-class ThemeProvider with ChangeNotifier, WidgetsBindingObserver {
+class SettingsProvider with ChangeNotifier, WidgetsBindingObserver {
+  Locale _locale = S.delegate.supportedLocales.first;
+  bool _localeForced = false;
+
   bool _darkMode = true;
-  bool _forced = false;
+  bool _darkModeForced = false;
+
+  Locale get locale => _locale;
+  set locale(Locale? newLocale) {
+    if (newLocale == null) {
+      _localeForced = false;
+      updateLocale();
+      return;
+    }
+    if (!S.delegate.supportedLocales.contains(newLocale)) {
+      throw Exception("Unsupported Locale");
+    }
+    _locale = newLocale;
+    _localeForced = true;
+    notifyListeners();
+  }
 
   bool get darkMode => _darkMode;
   ThemeMode get themeMode => _darkMode ? ThemeMode.dark : ThemeMode.light;
 
-  ThemeProvider() {
+  SettingsProvider() {
+    updateLocale();
     updateModeFromSystem();
     WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeLocales(List<Locale>? locales) {
+    if (_localeForced) {
+      return;
+    }
+    updateLocale(locales);
+  }
+
+  void updateLocale([List<Locale>? locales]) {
+    locales ??= kDebugMode
+      ? [S.delegate.supportedLocales.first]
+      : PlatformDispatcher.instance.locales;
+    for (final locale in locales) {
+      if (S.delegate.supportedLocales.contains(locale)) {
+        _locale = locale;
+        break;
+      }
+    }
+    notifyListeners();
   }
 
   @override
@@ -61,7 +102,7 @@ class ThemeProvider with ChangeNotifier, WidgetsBindingObserver {
 
   void toggleTheme([bool systemBrightness = false]) {
     if (systemBrightness) {
-      if (_forced) {
+      if (_darkModeForced) {
         return;
       }
       final systemDarkMode = PlatformDispatcher.instance.platformBrightness == Brightness.dark;
@@ -70,7 +111,7 @@ class ThemeProvider with ChangeNotifier, WidgetsBindingObserver {
       }
       _darkMode = systemDarkMode;
     } else {
-      _forced = true;
+      _darkModeForced = true;
       _darkMode = !_darkMode;
     }
     notifyListeners();
@@ -85,7 +126,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData.light(useMaterial3: true),
       darkTheme: ThemeData.dark(useMaterial3: true),
-      themeMode: Provider.of<ThemeProvider>(context).themeMode,
+      themeMode: Provider.of<SettingsProvider>(context).themeMode,
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -93,6 +134,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
+      locale: Provider.of<SettingsProvider>(context).locale,
       home: const Installer(),
       onGenerateTitle: (context) {
         final title = S.of(context).app_name;
@@ -128,12 +170,12 @@ class _InstallerState extends State<Installer> {
     return S.of(context);
   }
 
-  ThemeProvider? _themeProvider;
-  ThemeProvider get themeProvider {
-    if (_themeProvider == null) {
+  SettingsProvider? _settings;
+  SettingsProvider get settings {
+    if (_settings == null) {
       throw Exception("Try to access theme provider before build ever run somehow!");
     }
-    return _themeProvider!;
+    return _settings!;
   }
 
   Widget _buildAlertButton(BuildContext context, String text, void Function(void Function())? action) {
@@ -258,7 +300,9 @@ class _InstallerState extends State<Installer> {
       mdTpl = await rootBundle.loadString("assets/credit/en.md");
     }
     final info = await PackageInfo.fromPlatform();
-    final md = mdTpl.replaceAllMapped(RegExp(r'{{(?<varName>[^}]+)}}|(?<comment><!--) .*? -->|<(?<comment2>translatable-comment)>.*?</translatable-comment>'), (match) {
+    final md = mdTpl.replaceAllMapped(RegExp(
+      r'{{(?<varName>[^}]+)}}|(?<comment><!--) .*? -->|<(?<comment2>translatable-comment)>.*?</translatable-comment>'
+    ), (match) {
       if (match is! RegExpMatch) {
         return match.toString();
       }
@@ -273,7 +317,7 @@ class _InstallerState extends State<Installer> {
         _ => "{{$varName}}",
       };
     });
-    final mdConfig = themeProvider.darkMode
+    final mdConfig = settings.darkMode
       ? MarkdownConfig.darkConfig.copy(
         configs: [
           const LinkConfig(
@@ -314,6 +358,33 @@ class _InstallerState extends State<Installer> {
           ),
           actions: <Widget>[
             _buildAlertButton(dialogContext, _s().alert_neutral, null),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showLocaleSelection([BuildContext? context]) async {
+    context ??= this.context;
+    if (!context.mounted) {
+      throw Exception("context somehow get unmounted!");
+    }
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(_s().menu_alert_language_title),
+          content: LocaleDropdownMenu.fromSupportedLocales(
+            initialSelection: settings.locale,
+            onSelected: (Locale? locale) {
+              if (locale == null) {
+                return;
+              }
+              settings.locale = locale;
+            },
+          ),
+          actions: <Widget>[
+            _buildAlertButton(dialogContext, _s().menu_alert_language_action, null),
           ],
         );
       },
@@ -649,7 +720,7 @@ class _InstallerState extends State<Installer> {
   @override
   Widget build(BuildContext context) {
     // we don't need to listen as parent widget (MyApp) will handle all rebuild
-    _themeProvider ??= Provider.of<ThemeProvider>(context, listen: false);
+    _settings ??= Provider.of<SettingsProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -665,8 +736,10 @@ class _InstallerState extends State<Installer> {
               switch (item) {
                 case Menu.credit:
                   _showCredit(context);
+                case Menu.locale:
+                  _showLocaleSelection(context);
                 case Menu.toggleTheme:
-                  themeProvider.toggleTheme();
+                  settings.toggleTheme();
                 case Menu.advance:
                 case Menu.extra:
                 case Menu.looseRootCheck:
@@ -690,8 +763,15 @@ class _InstallerState extends State<Installer> {
               ),
               const PopupMenuDivider(),
               PopupMenuItem<Menu>(
+                value: Menu.locale,
+                child: ListTile(
+                  leading: const Icon(Icons.language),
+                  title: Text(_s().menu_language),
+                ),
+              ),
+              PopupMenuItem<Menu>(
                 value: Menu.toggleTheme,
-                child: themeProvider.darkMode ? ListTile(
+                child: settings.darkMode ? ListTile(
                   leading: const Icon(Icons.light_mode),
                   title: Text(_s().menu_force_light_mode),
                 ) : ListTile(

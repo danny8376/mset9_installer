@@ -23,7 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "about_translation_contribution": MessageLookupByLibrary.simpleMessage(
-            "If you want to contribute to translations (non en/en_US), please go https://crowdin.com/project/mset9_installer"),
+            "如果你想要貢獻翻譯(非 en/en_US)，請前往 https://crowdin.com/project/mset9_installer"),
         "alert_action_troubleshooting":
             MessageLookupByLibrary.simpleMessage("疑難排解"),
         "alert_general_cancel": MessageLookupByLibrary.simpleMessage("取消"),
