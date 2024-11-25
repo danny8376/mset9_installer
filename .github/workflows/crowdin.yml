@@ -1,11 +1,11 @@
 name: Crowdin Action
 
 on:
-#  push:
-#    branches:
-#      - master
-#  schedule:
-#    - cron: '27 */2 * * *'
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '27 */2 * * *'
   workflow_dispatch:
 
 env:
