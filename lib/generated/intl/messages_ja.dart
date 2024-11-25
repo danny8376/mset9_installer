@@ -57,12 +57,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "installer_button_setup":
             MessageLookupByLibrary.simpleMessage("MEST9をセットアップする"),
         "menu_advance": MessageLookupByLibrary.simpleMessage("Advance Options"),
+        "menu_alert_language_action":
+            MessageLookupByLibrary.simpleMessage("Done"),
+        "menu_alert_language_title":
+            MessageLookupByLibrary.simpleMessage("Select Language"),
         "menu_credit": MessageLookupByLibrary.simpleMessage("クレジット"),
         "menu_extra": MessageLookupByLibrary.simpleMessage("Extra Versions"),
         "menu_force_dark_mode":
-            MessageLookupByLibrary.simpleMessage("Force Dark Mode"),
+            MessageLookupByLibrary.simpleMessage("Dark Mode"),
         "menu_force_light_mode":
-            MessageLookupByLibrary.simpleMessage("Force Light Mode"),
+            MessageLookupByLibrary.simpleMessage("Light Mode"),
+        "menu_language": MessageLookupByLibrary.simpleMessage("Language"),
         "menu_legacy": MessageLookupByLibrary.simpleMessage("Legacy Hax ID1"),
         "menu_log": MessageLookupByLibrary.simpleMessage("ログ"),
         "menu_loose_root_check":

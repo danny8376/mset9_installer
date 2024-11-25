@@ -57,10 +57,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "installer_button_setup":
             MessageLookupByLibrary.simpleMessage("設置 MSET9"),
         "menu_advance": MessageLookupByLibrary.simpleMessage("進階選項"),
+        "menu_alert_language_action":
+            MessageLookupByLibrary.simpleMessage("完成"),
+        "menu_alert_language_title":
+            MessageLookupByLibrary.simpleMessage("選擇語言"),
         "menu_credit": MessageLookupByLibrary.simpleMessage("感謝"),
         "menu_extra": MessageLookupByLibrary.simpleMessage("延伸版本支援"),
-        "menu_force_dark_mode": MessageLookupByLibrary.simpleMessage("強制深色模式"),
-        "menu_force_light_mode": MessageLookupByLibrary.simpleMessage("強制淺色模式"),
+        "menu_force_dark_mode": MessageLookupByLibrary.simpleMessage("深色模式"),
+        "menu_force_light_mode": MessageLookupByLibrary.simpleMessage("淺色模式"),
+        "menu_language": MessageLookupByLibrary.simpleMessage("語言設定"),
         "menu_legacy": MessageLookupByLibrary.simpleMessage("使用舊版漏洞ID1"),
         "menu_log": MessageLookupByLibrary.simpleMessage("日誌"),
         "menu_loose_root_check":
