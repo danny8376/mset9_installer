@@ -42,8 +42,7 @@ runs:
 #      run: flutter build web --wasm
       run: flutter build web
 
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v4
+    - name: Upload Pages Artifacts
+      uses: actions/upload-pages-artifact@v3
       with:
-        name: Releases-for-web
         path: ./build/web/
