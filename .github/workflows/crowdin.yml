@@ -45,6 +45,7 @@ jobs:
           pull_request_body: 'New Crowdin translations by [Crowdin GH Action](https://github.com/crowdin/github-action)'
           pull_request_base_branch_name: ${{ env.BRANCH }}
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Visit https://crowdin.com/settings#api-key to create this token
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_TOKEN }}
 
