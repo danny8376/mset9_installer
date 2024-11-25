@@ -3,7 +3,7 @@
   "@about_translation_contribution": {
     "description": "Not used in app, this is information for people who want to contribute to translations"
   },
-  "app_name": "MSET9 Installer",
+  "app_name": "MSET9 安装器",
   "@app_name": {
     "description": "Translated name of this app"
   },
@@ -87,7 +87,7 @@
   "@menu_alert_language_action": {
     "description": "Neutral action button of language selection prompt"
   },
-  "installer_button_pick_sd": "Select Your SD Card",
+  "installer_button_pick_sd": "选择 SD 卡",
   "@installer_button_pick_sd": {
     "description": "Button in main app screen for picking SD card"
   },

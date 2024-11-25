@@ -39,7 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Your browser is not supported, please use different browser or different version of installer."),
         "alert_not_supported_title":
             MessageLookupByLibrary.simpleMessage("Not Supported"),
-        "app_name": MessageLookupByLibrary.simpleMessage("MSET9 Installer"),
+        "app_name": MessageLookupByLibrary.simpleMessage("MSET9 安装器"),
         "check_loading": MessageLookupByLibrary.simpleMessage("Checking ..."),
         "installer_button_check":
             MessageLookupByLibrary.simpleMessage("Check MSET9 status"),
@@ -50,7 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "installer_button_pick_3ds":
             MessageLookupByLibrary.simpleMessage("Select \"Nintendo 3DS\""),
         "installer_button_pick_sd":
-            MessageLookupByLibrary.simpleMessage("Select Your SD Card"),
+            MessageLookupByLibrary.simpleMessage("选择 SD 卡"),
         "installer_button_remove":
             MessageLookupByLibrary.simpleMessage("Remove MSET9"),
         "installer_button_remove_trigger":
