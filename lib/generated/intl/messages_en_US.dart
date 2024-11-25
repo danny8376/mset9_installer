@@ -65,9 +65,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "menu_credit": MessageLookupByLibrary.simpleMessage("Credit"),
         "menu_extra": MessageLookupByLibrary.simpleMessage("Extra Versions"),
         "menu_force_dark_mode":
-            MessageLookupByLibrary.simpleMessage("Force Dark Mode"),
+            MessageLookupByLibrary.simpleMessage("Dark Mode"),
         "menu_force_light_mode":
-            MessageLookupByLibrary.simpleMessage("Force Light Mode"),
+            MessageLookupByLibrary.simpleMessage("Light Mode"),
         "menu_language": MessageLookupByLibrary.simpleMessage("Language"),
         "menu_legacy": MessageLookupByLibrary.simpleMessage("Legacy Hax ID1"),
         "menu_log": MessageLookupByLibrary.simpleMessage("Logs"),

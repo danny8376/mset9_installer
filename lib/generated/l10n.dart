@@ -182,20 +182,20 @@ class S {
     );
   }
 
-  /// `Force Light Mode`
+  /// `Light Mode`
   String get menu_force_light_mode {
     return Intl.message(
-      'Force Light Mode',
+      'Light Mode',
       name: 'menu_force_light_mode',
       desc: 'Button in app menu for forcing use of light mode theme',
       args: [],
     );
   }
 
-  /// `Force Dark Mode`
+  /// `Dark Mode`
   String get menu_force_dark_mode {
     return Intl.message(
-      'Force Dark Mode',
+      'Dark Mode',
       name: 'menu_force_dark_mode',
       desc: 'Button in app menu for forcing use of dark mode theme',
       args: [],
