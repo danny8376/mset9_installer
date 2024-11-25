@@ -40,6 +40,9 @@ jobs:
           git branch -D l10n_${{ env.BRANCH }} || true
           git checkout -b l10n_${{ env.BRANCH }}
 
+      - name: Store Current HEAD
+        run: echo "PRE_CROWDING_COMMIT=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
       - name: Crowdin Action
         uses: crowdin/github-action@v2
         with:
@@ -57,15 +60,12 @@ jobs:
           # Visit https://crowdin.com/settings#api-key to create this token
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_TOKEN }}
 
-#      - name: Fix Branch
-#        run: |
-#          git checkout ${{ env.BRANCH }}
-#          git branch -D l10n_${{ env.BRANCH }}
-#          git fetch origin l10n_${{ env.BRANCH }}
-#          git checkout -b l10n_${{ env.BRANCH }} origin/l10n_${{ env.BRANCH }}
+      - name: Store Post Crowding HEAD
+        run: echo "POST_CROWDING_COMMIT=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
       - name: Common Build Steps for Flutter
         uses: ./.github/actions/build-steps-flutter-common
+        if: ${{ env.PRE_CROWDING_COMMIT != env.POST_CROWDING_COMMIT }}
         with:
           shell: bash
           flutter-version: ${{ env.FLUTTER_VERSION }}
@@ -73,6 +73,7 @@ jobs:
 
       - name: Commit & Push changes
         uses: devops-infra/action-commit-push@master
+        if: ${{ env.PRE_CROWDING_COMMIT != env.POST_CROWDING_COMMIT }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           commit_message: Generate Translation Files
