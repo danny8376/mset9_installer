@@ -28,7 +28,7 @@ class LocaleDropdownMenu<T> extends DropdownMenu<T> {
     super.controller,
     super.initialSelection,
     super.onSelected,
-    super.requestFocusOnTap = true,
+    super.requestFocusOnTap,
     super.expandedInsets,
     required super.dropdownMenuEntries,
   });
