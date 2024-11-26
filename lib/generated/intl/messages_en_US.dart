@@ -143,6 +143,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Hax ID1 has been created."),
         "setup_alert_hax_id1_created_title":
             MessageLookupByLibrary.simpleMessage("Hax ID1 Created"),
+        "setup_alert_no_hax_available": MessageLookupByLibrary.simpleMessage(
+            "Not supported for your system version"),
+        "setup_alert_no_hax_available_subtitle":
+            MessageLookupByLibrary.simpleMessage("Unsupported Version"),
         "setup_alert_no_or_more_id1": MessageLookupByLibrary.simpleMessage(
             "There\'s no ID1 folder or multiple ID1 folders!"),
         "setup_alert_repick_variant_prompt":

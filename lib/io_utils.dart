@@ -1,6 +1,6 @@
 import 'io.dart';
 
-Future<bool> findJustOneFolder(Directory? parent, {required Future<bool> Function(Directory) rule, void Function(Directory)? success, void Function(int)? fail}) async {
+Future<bool> findJustOneFolder(Directory? parent, {required Future<bool> Function(Directory) rule, Future<void> Function(Directory)? success, Future<void> Function(int)? fail}) async {
   var count = 0;
   Directory? candidate;
   if (parent != null) {
@@ -12,10 +12,10 @@ Future<bool> findJustOneFolder(Directory? parent, {required Future<bool> Functio
     }
   }
   if (count == 1) {
-    success?.call(candidate!);
+    await success?.call(candidate!);
     return true;
   } else {
-    fail?.call(count);
+    await fail?.call(count);
     return false;
   }
 }

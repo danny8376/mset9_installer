@@ -546,21 +546,8 @@ class _InstallerState extends State<Installer> {
     try {
       await installer.checkAndAssignFolders(dir);
     } on FolderAssignmentException catch (e) {
-      const error = AlertType.error;
-      const stage = AlertStage.folder;
-      final troubleshooting = _buildAlertTroubleshootingButtonsFunc;
-      switch (e.type) {
-        case FolderAssignmentExceptionType.noN3DS:
-          _showAlert("${_s().pick_no_n3ds}\n${_s().pick_common_n3ds_info}", type: error, stage: stage, buttonBuilder: troubleshooting);
-        case FolderAssignmentExceptionType.noId0:
-          _showAlert("${_s().pick_no_id0}\n${_s().pick_common_n3ds_info}", type: error, stage: stage, buttonBuilder: troubleshooting);
-        case FolderAssignmentExceptionType.multipleId0:
-          _showAlert(_s().pick_multiple_id0, type: error, stage: stage, buttonBuilder: troubleshooting);
-        case FolderAssignmentExceptionType.id1Picked:
-          _showAlert(_s().pick_picked_id1, type: error, stage: stage, buttonBuilder: troubleshooting);
-        case FolderAssignmentExceptionType.unknown:
-          _showAlert(_s().pick_picked_unknown, type: error, stage: stage);
-      }
+      _handleAlert(e.type, additionalInfo: e.count,
+        alertTypeOverride: AlertType.error, stageOverride: AlertStage.folder);
     }
   }
 
@@ -811,21 +798,33 @@ class _InstallerState extends State<Installer> {
     }
   }
 
-  void _handleAlert(HaxAlertType exceptionType) {
+  void _handleAlert(HaxAlertType haxAlertType, {dynamic additionalInfo, AlertType? alertTypeOverride, AlertStage? stageOverride}) {
     const error = AlertType.error;
-    const stage = AlertStage.setup;
+    //final type = alertTypeOverride ?? error;
+    final stage = stageOverride ?? AlertStage.setup;
     final troubleshooting = _buildAlertTroubleshootingButtonsFunc;
     final visualAid = _buildAlertVisualAidButtonsFunc;
     final dummyDb = _s().setup_alert_dummy_db_subtitle;
     final extdata = _s().setup_alert_extdata_subtitle;
-    switch (exceptionType) {
-      case HaxAlertType.noHaxAvailable:
-      case HaxAlertType.multipleHaxId1:
-        break;
+    switch (haxAlertType) {
+      case HaxAlertType.noN3DS:
+        _showAlert("${_s().pick_no_n3ds}\n${_s().pick_common_n3ds_info}", type: error, stage: stage, buttonBuilder: troubleshooting);
+      case HaxAlertType.noId0:
+        _showAlert("${_s().pick_no_id0}\n${_s().pick_common_n3ds_info}", type: error, stage: stage, buttonBuilder: troubleshooting);
+      case HaxAlertType.multipleId0:
+        _showAlert(_s().pick_multiple_id0, type: error, stage: stage, buttonBuilder: troubleshooting);
       case HaxAlertType.noId1:
         _showAlert(_s().setup_alert_no_or_more_id1, type: error, stage: stage, buttonBuilder: troubleshooting);
       case HaxAlertType.multipleId1:
         _showAlert(_s().setup_alert_no_or_more_id1, type: error, stage: stage, buttonBuilder: troubleshooting);
+      case HaxAlertType.id1Picked:
+        _showAlert(_s().pick_picked_id1, type: error, stage: stage, buttonBuilder: troubleshooting);
+      case HaxAlertType.unknownFolderPicked:
+        _showAlert(_s().pick_picked_unknown, type: error, stage: stage);
+      case HaxAlertType.noHaxAvailable:
+        _showAlert(_s().setup_alert_no_hax_available, type: error, stage: stage, subtitle: _s().setup_alert_no_hax_available_subtitle);
+      case HaxAlertType.multipleHaxId1:
+        break;
       case HaxAlertType.sdSetupFailed:
         _showAlert(_s().setup_alert_sd_setup_failed, type: error, stage: stage);
       case HaxAlertType.dummyDb:

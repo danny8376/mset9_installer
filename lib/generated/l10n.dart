@@ -625,6 +625,26 @@ class S {
     );
   }
 
+  /// `Unsupported Version`
+  String get setup_alert_no_hax_available_subtitle {
+    return Intl.message(
+      'Unsupported Version',
+      name: 'setup_alert_no_hax_available_subtitle',
+      desc: 'Subtitle of prompt when unsupported version picked',
+      args: [],
+    );
+  }
+
+  /// `Not supported for your system version`
+  String get setup_alert_no_hax_available {
+    return Intl.message(
+      'Not supported for your system version',
+      name: 'setup_alert_no_hax_available',
+      desc: 'Message body of prompt when unsupported version picked',
+      args: [],
+    );
+  }
+
   /// `Do you want to automatically download corrupted/unknown/non-critical files? (This will overwrite all related files automatically)`
   String get setup_alert_sd_setup_optional_prompt {
     return Intl.message(

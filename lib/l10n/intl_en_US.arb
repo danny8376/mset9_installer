@@ -219,6 +219,14 @@
   "@setup_alert_disclaimer_confirm_to_continue": {
     "description": "Additional message at the end of disclaimer prompt tell them to confirm"
   },
+  "setup_alert_no_hax_available_subtitle": "Unsupported Version",
+  "@setup_alert_no_hax_available_subtitle": {
+    "description": "Subtitle of prompt when unsupported version picked"
+  },
+  "setup_alert_no_hax_available": "Not supported for your system version",
+  "@setup_alert_no_hax_available": {
+    "description": "Message body of prompt when unsupported version picked"
+  },
   "setup_alert_sd_setup_optional_prompt": "Do you want to automatically download corrupted/unknown/non-critical files? (This will overwrite all related files automatically)",
   "@setup_alert_sd_setup_optional_prompt": {
     "description": "Message body of yes-no prompt that only shown when loose SD root check enabled and have some missing/unknown files, ask if they want to auto download and replace them"
