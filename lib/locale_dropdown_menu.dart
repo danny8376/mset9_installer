@@ -35,10 +35,12 @@ class LocaleDropdownMenu<T> extends DropdownMenu<T> {
 
   factory LocaleDropdownMenu.fromSupportedLocales({
     T? initialSelection,
+    double? width,
     Widget? label,
     ValueChanged<T?>? onSelected,
   }) =>
     LocaleDropdownMenu.fromLocales(
+      width: width,
       locales: S.delegate.supportedLocales.cast<T>(),
       initialSelection: initialSelection,
       onSelected: onSelected,
@@ -47,6 +49,7 @@ class LocaleDropdownMenu<T> extends DropdownMenu<T> {
   factory LocaleDropdownMenu.fromLocales({
     required List<T> locales,
     T? initialSelection,
+    double? width,
     Widget? label,
     ValueChanged<T?>? onSelected,
   }) {
@@ -74,6 +77,11 @@ class LocaleDropdownMenu<T> extends DropdownMenu<T> {
       initialSelection: initialSelection,
       controller: controller,
       label: label,
+      textStyle: const TextStyle(
+        fontSize: 12.0,
+        fontWeight: FontWeight.bold,
+      ),
+      width: width,
       onSelected: onSelected,
       dropdownMenuEntries: locales.map(
         (locale) => DropdownMenuEntry<T>(

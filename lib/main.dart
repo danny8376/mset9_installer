@@ -371,10 +371,11 @@ class _InstallerState extends State<Installer> {
     }
     await showDialog<void>(
       context: context,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: Text(_s().menu_alert_language_title),
-          content: LocaleDropdownMenu.fromSupportedLocales(
+      builder: (BuildContext dialogContext) => AlertDialog(
+        title: Text(_s().menu_alert_language_title),
+        content: LayoutBuilder(
+          builder: (_, constraints) => LocaleDropdownMenu.fromSupportedLocales(
+            width: constraints.constrainWidth(),
             initialSelection: settings.locale,
             onSelected: (Locale? locale) {
               if (locale == null) {
@@ -383,11 +384,11 @@ class _InstallerState extends State<Installer> {
               settings.locale = locale;
             },
           ),
-          actions: <Widget>[
-            _buildAlertButton(dialogContext, _s().menu_alert_language_action, null),
-          ],
-        );
-      },
+        ),
+        actions: <Widget>[
+          _buildAlertButton(dialogContext, _s().menu_alert_language_action, null),
+        ],
+      ),
     );
   }
 
