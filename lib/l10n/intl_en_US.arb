@@ -27,6 +27,22 @@
   "@alert_general_cancel": {
     "description": "Negative action button for confirm-cancel prompts"
   },
+  "alert_error_title": "Error",
+  "@alert_error_title": {
+    "description": "Title for error prompts, if this combined with any *_stage_name will be too long for title, add ascii symbol $ at the end to force stage name to use icons instead"
+  },
+  "alert_warning_title": "Warning",
+  "@alert_warning_title": {
+    "description": "Title for warning prompts, if this combined with any *_stage_name will be too long for title, add ascii symbol $ at the end to force stage name to use icons instead"
+  },
+  "alert_info_title": "Info",
+  "@alert_info_title": {
+    "description": "Title for information prompts, if this combined with any *_stage_name will be too long for title, add ascii symbol $ at the end to force stage name to use icons instead"
+  },
+  "alert_confirm_title": "Confirm",
+  "@alert_confirm_title": {
+    "description": "Title for confirmation prompts, if this combined with any *_stage_name will be too long for title, add ascii symbol $ at the end to force stage name to use icons instead"
+  },
   "alert_action_troubleshooting": "Troubleshooting",
   "@alert_action_troubleshooting": {
     "description": "Button for opening troubleshooting page in error prompts"
@@ -119,9 +135,9 @@
   "@installer_button_remove": {
     "description": "Button in main app screen for removing MSET9"
   },
-  "pick_alert_title": "Folder Picking Error",
-  "@pick_alert_title": {
-    "description": "Title of prompt for folder/SD card picking related error"
+  "pick_alert_stage_name": "Folder",
+  "@pick_alert_stage_name": {
+    "description": "Stage name next to title for folder/SD card picking related prompts, if this combined with all general (error/warning/info/confirm) will be too long for title, set this to @ to force stage name to use icons instead"
   },
   "pick_no_n3ds": "There's no Nintendo 3DS folder.",
   "@pick_no_n3ds": {
@@ -179,17 +195,9 @@
   "@sd_setup_loading": {
     "description": "Text in loading prompt when setting up SD root files"
   },
-  "setup_alert_confirm_title": "Setup - Confirm",
-  "@setup_alert_confirm_title": {
-    "description": "Title of prompt for confirmations during setup"
-  },
-  "setup_alert_warning_title": "Setup - Warning",
-  "@setup_alert_warning_title": {
-    "description": "Title of prompt for warnings during setup"
-  },
-  "setup_alert_error_title": "Setup Error",
-  "@setup_alert_error_title": {
-    "description": "Title of prompt for errors during setup"
+  "setup_alert_stage_name": "Setup",
+  "@setup_alert_stage_name": {
+    "description": "Stage name next to title for prompts related to MSET9 setup, if this combined with all general (error/warning/info/confirm) will be too long for title, set this to @ to force stage name to use icons instead"
   },
   "setup_alert_disclaimer_title": "Disclaimer",
   "@setup_alert_disclaimer_title": {
@@ -251,9 +259,9 @@
   "@setup_alert_no_or_more_id1": {
     "description": "Message body of error prompt when there's no or multiple ID1 folder"
   },
-  "setup_alert_extdata_title": "Setup Error - Extra Data",
-  "@setup_alert_extdata_title": {
-    "description": "Title of prompt for ext data related errors during setup"
+  "setup_alert_extdata_subtitle": "Extra Data",
+  "@setup_alert_extdata_subtitle": {
+    "description": "Subtitle of prompt for extra data related errors during setup"
   },
   "setup_alert_extdata_missing": "There's no Extra Data",
   "@setup_alert_extdata_missing": {
@@ -267,9 +275,9 @@
   "@setup_alert_extdata_mii_maker": {
     "description": "Message body of error prompt when there's no Mii Maker extra data"
   },
-  "setup_alert_dummy_db_title": "Setup Error - Dummy Title Database",
-  "@setup_alert_dummy_db_title": {
-    "description": "Title of prompt for dummy title database"
+  "setup_alert_dummy_db_subtitle": "Dummy Title Database",
+  "@setup_alert_dummy_db_subtitle": {
+    "description": "Subtitle of prompt for dummy title database"
   },
   "setup_alert_repick_variant_prompt": "Are you sure you want to pick different model/version?",
   "@setup_alert_repick_variant_prompt": {
@@ -299,7 +307,7 @@
   "@setup_alert_dummy_db_reset": {
     "description": "Common text for instruction of resetting dummy/corrupted title database, appended after setup_alert_dummy_db_found and setup_alert_dummy_db_corrupted with extra empty line"
   },
-  "setup_alert_hax_id1_created_title": "Setup - Hax ID1 Created",
+  "setup_alert_hax_id1_created_title": "Hax ID1 Created",
   "@setup_alert_hax_id1_created_title": {
     "description": "Title of prompt after MSET9 set up"
   },
@@ -315,9 +323,9 @@
   "@remove_loading": {
     "description": "Text in loading prompt when removing MSET9"
   },
-  "remove_alert_confirm_title": "Remove - Confirm",
-  "@remove_alert_confirm_title": {
-    "description": "Title of confirmation prompt when try to remove mset9 before boot9strap installed"
+  "remove_alert_stage_name": "Remove",
+  "@remove_alert_stage_name": {
+    "description": "Stage name next to title for MSET9 removal related prompts, if this combined with all general (error/warning/info/confirm) will be too long for title, set this to @ to force stage name to use icons instead"
   },
   "remove_alert_confirm": "It seems that you haven't installed boot9strap yet, are you sure you want to remove MSET9?\n\nIf you picked wrong model/version, you can click Repick to pick again.",
   "@remove_alert_confirm": {

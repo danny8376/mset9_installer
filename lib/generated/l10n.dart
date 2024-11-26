@@ -121,6 +121,50 @@ class S {
     );
   }
 
+  /// `Error`
+  String get alert_error_title {
+    return Intl.message(
+      'Error',
+      name: 'alert_error_title',
+      desc:
+          'Title for error prompts, if this combined with any *_stage_name will be too long for title, add ascii symbol \$ at the end to force stage name to use icons instead',
+      args: [],
+    );
+  }
+
+  /// `Warning`
+  String get alert_warning_title {
+    return Intl.message(
+      'Warning',
+      name: 'alert_warning_title',
+      desc:
+          'Title for warning prompts, if this combined with any *_stage_name will be too long for title, add ascii symbol \$ at the end to force stage name to use icons instead',
+      args: [],
+    );
+  }
+
+  /// `Info`
+  String get alert_info_title {
+    return Intl.message(
+      'Info',
+      name: 'alert_info_title',
+      desc:
+          'Title for information prompts, if this combined with any *_stage_name will be too long for title, add ascii symbol \$ at the end to force stage name to use icons instead',
+      args: [],
+    );
+  }
+
+  /// `Confirm`
+  String get alert_confirm_title {
+    return Intl.message(
+      'Confirm',
+      name: 'alert_confirm_title',
+      desc:
+          'Title for confirmation prompts, if this combined with any *_stage_name will be too long for title, add ascii symbol \$ at the end to force stage name to use icons instead',
+      args: [],
+    );
+  }
+
   /// `Troubleshooting`
   String get alert_action_troubleshooting {
     return Intl.message(
@@ -358,12 +402,13 @@ class S {
     );
   }
 
-  /// `Folder Picking Error`
-  String get pick_alert_title {
+  /// `Folder`
+  String get pick_alert_stage_name {
     return Intl.message(
-      'Folder Picking Error',
-      name: 'pick_alert_title',
-      desc: 'Title of prompt for folder/SD card picking related error',
+      'Folder',
+      name: 'pick_alert_stage_name',
+      desc:
+          'Stage name next to title for folder/SD card picking related prompts, if this combined with all general (error/warning/info/confirm) will be too long for title, set this to @ to force stage name to use icons instead',
       args: [],
     );
   }
@@ -517,32 +562,13 @@ class S {
     );
   }
 
-  /// `Setup - Confirm`
-  String get setup_alert_confirm_title {
+  /// `Setup`
+  String get setup_alert_stage_name {
     return Intl.message(
-      'Setup - Confirm',
-      name: 'setup_alert_confirm_title',
-      desc: 'Title of prompt for confirmations during setup',
-      args: [],
-    );
-  }
-
-  /// `Setup - Warning`
-  String get setup_alert_warning_title {
-    return Intl.message(
-      'Setup - Warning',
-      name: 'setup_alert_warning_title',
-      desc: 'Title of prompt for warnings during setup',
-      args: [],
-    );
-  }
-
-  /// `Setup Error`
-  String get setup_alert_error_title {
-    return Intl.message(
-      'Setup Error',
-      name: 'setup_alert_error_title',
-      desc: 'Title of prompt for errors during setup',
+      'Setup',
+      name: 'setup_alert_stage_name',
+      desc:
+          'Stage name next to title for prompts related to MSET9 setup, if this combined with all general (error/warning/info/confirm) will be too long for title, set this to @ to force stage name to use icons instead',
       args: [],
     );
   }
@@ -705,12 +731,12 @@ class S {
     );
   }
 
-  /// `Setup Error - Extra Data`
-  String get setup_alert_extdata_title {
+  /// `Extra Data`
+  String get setup_alert_extdata_subtitle {
     return Intl.message(
-      'Setup Error - Extra Data',
-      name: 'setup_alert_extdata_title',
-      desc: 'Title of prompt for ext data related errors during setup',
+      'Extra Data',
+      name: 'setup_alert_extdata_subtitle',
+      desc: 'Subtitle of prompt for extra data related errors during setup',
       args: [],
     );
   }
@@ -747,12 +773,12 @@ class S {
     );
   }
 
-  /// `Setup Error - Dummy Title Database`
-  String get setup_alert_dummy_db_title {
+  /// `Dummy Title Database`
+  String get setup_alert_dummy_db_subtitle {
     return Intl.message(
-      'Setup Error - Dummy Title Database',
-      name: 'setup_alert_dummy_db_title',
-      desc: 'Title of prompt for dummy title database',
+      'Dummy Title Database',
+      name: 'setup_alert_dummy_db_subtitle',
+      desc: 'Subtitle of prompt for dummy title database',
       args: [],
     );
   }
@@ -833,10 +859,10 @@ class S {
     );
   }
 
-  /// `Setup - Hax ID1 Created`
+  /// `Hax ID1 Created`
   String get setup_alert_hax_id1_created_title {
     return Intl.message(
-      'Setup - Hax ID1 Created',
+      'Hax ID1 Created',
       name: 'setup_alert_hax_id1_created_title',
       desc: 'Title of prompt after MSET9 set up',
       args: [],
@@ -875,13 +901,13 @@ class S {
     );
   }
 
-  /// `Remove - Confirm`
-  String get remove_alert_confirm_title {
+  /// `Remove`
+  String get remove_alert_stage_name {
     return Intl.message(
-      'Remove - Confirm',
-      name: 'remove_alert_confirm_title',
+      'Remove',
+      name: 'remove_alert_stage_name',
       desc:
-          'Title of confirmation prompt when try to remove mset9 before boot9strap installed',
+          'Stage name next to title for MSET9 removal related prompts, if this combined with all general (error/warning/info/confirm) will be too long for title, set this to @ to force stage name to use icons instead',
       args: [],
     );
   }

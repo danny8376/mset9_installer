@@ -73,8 +73,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "menu_log": MessageLookupByLibrary.simpleMessage("Logs"),
         "menu_loose_root_check":
             MessageLookupByLibrary.simpleMessage("Loose Root Check"),
-        "pick_alert_title":
-            MessageLookupByLibrary.simpleMessage("Folder Picking Error"),
         "pick_common_n3ds_info": MessageLookupByLibrary.simpleMessage(
             "Ensure that you put SD card in the console and boot normally first.\nDon\'t try to create Nintendo 3DS folder yourself."),
         "pick_multi_hax_id1": MessageLookupByLibrary.simpleMessage(
@@ -93,14 +91,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Repick"),
         "remove_alert_confirm": MessageLookupByLibrary.simpleMessage(
             "It seems that you haven\'t installed boot9strap yet, are you sure you want to remove MSET9?\n\nIf you picked wrong model/version, you can click Repick to pick again."),
-        "remove_alert_confirm_title":
-            MessageLookupByLibrary.simpleMessage("Remove - Confirm"),
         "remove_loading":
             MessageLookupByLibrary.simpleMessage("Removing MSET9 ..."),
         "sd_setup_loading":
             MessageLookupByLibrary.simpleMessage("Setting up SD ..."),
-        "setup_alert_confirm_title":
-            MessageLookupByLibrary.simpleMessage("Setup - Confirm"),
         "setup_alert_disclaimer": MessageLookupByLibrary.simpleMessage(
             "This process will temporarily reset most of your 3DS data.\nMost of your applications and themes will disappear.\nThis is perfectly normal, and if everything goes right, it will re-appear at the end of the process.\n\nIn any case, it is highly recommended to make a backup of your SD card\'s contents to a folder on your PC/Device.\n(Especially the \'Nintendo 3DS\' folder.)"),
         "setup_alert_disclaimer_confirm_to_continue":
@@ -120,8 +114,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Dummy title database found."),
         "setup_alert_dummy_db_reset": MessageLookupByLibrary.simpleMessage(
             "Put SD card back to your 3ds, power it on, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset."),
-        "setup_alert_dummy_db_title": MessageLookupByLibrary.simpleMessage(
-            "Setup Error - Dummy Title Database"),
         "setup_alert_dummy_db_visual_aid":
             MessageLookupByLibrary.simpleMessage("Visual Aid"),
         "setup_alert_dummy_db_visual_aid_url":
@@ -130,16 +122,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "setup_alert_dummy_mii_maker_and_db_reset":
             MessageLookupByLibrary.simpleMessage(
                 "Put SD card back to your 3ds, power it on, then open Mii Maker.\nAfter Mii Maker loaded, press HOME, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset."),
-        "setup_alert_error_title":
-            MessageLookupByLibrary.simpleMessage("Setup Error"),
         "setup_alert_extdata_home_menu":
             MessageLookupByLibrary.simpleMessage("There\'s no Home Menu Data"),
         "setup_alert_extdata_mii_maker":
             MessageLookupByLibrary.simpleMessage("There\'s no Mii Maker Data"),
         "setup_alert_extdata_missing":
             MessageLookupByLibrary.simpleMessage("There\'s no Extra Data"),
-        "setup_alert_extdata_title":
-            MessageLookupByLibrary.simpleMessage("Setup Error - Extra Data"),
         "setup_alert_hax_id1_created":
             MessageLookupByLibrary.simpleMessage("Hax ID1 has been created."),
         "setup_alert_hax_id1_created_title":
@@ -168,8 +156,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "setup_alert_sd_setup_optional_prompt":
             MessageLookupByLibrary.simpleMessage(
                 "Do you want to automatically download corrupted/unknown/non-critical files? (This will overwrite all related files automatically)"),
-        "setup_alert_warning_title":
-            MessageLookupByLibrary.simpleMessage("Setup - Warning"),
         "setup_loading":
             MessageLookupByLibrary.simpleMessage("Setting up MSET9 ..."),
         "title_variant_selector":

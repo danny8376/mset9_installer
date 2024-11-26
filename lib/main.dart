@@ -25,6 +25,8 @@ import 'root_check.dart';
 import 'talker.dart';
 
 enum Menu { credit, locale, toggleTheme, advance, extra, looseRootCheck, legacyCode, log }
+enum AlertType { error, warning, info, confirm }
+enum AlertStage { folder, setup, remove }
 
 void main() async {
   if (isDesktop) {
@@ -214,12 +216,142 @@ class _InstallerState extends State<Installer> {
     ];
   }
 
-  Future<void> _showAlert(BuildContext? context, String title, String message, [List<Widget> Function(BuildContext)? buttonBuilder, dismissible = true]) async {
+  Future<void> _showAlert(String message, {
+    BuildContext? context,
+    String? title,
+    String? subtitle,
+    AlertStage? stage,
+    AlertType? type,
+    String? no,
+    double? fontSize,
+    bool dismissible = true,
+    List<Widget> Function(BuildContext)? buttonBuilder,
+  }) async {
     // required or this will break when showLoading
     await Future.delayed(Duration.zero);
     context ??= this.context;
     if (!context.mounted) {
       throw Exception("context somehow get unmounted!");
+    }
+    Widget? genTitleWidget() {
+      var localTitle = title;
+      localTitle ??= switch (type) {
+        AlertType.error => _s().alert_error_title,
+        AlertType.warning => _s().alert_warning_title,
+        AlertType.info => _s().alert_info_title,
+        AlertType.confirm => _s().alert_confirm_title,
+        null => null,
+      };
+      if (localTitle == null) {
+        return null;
+      }
+      var squashStage = false;
+      if (localTitle.endsWith("\$")) {
+        squashStage = true;
+        localTitle = localTitle.substring(0, localTitle.length - 1);
+      }
+      const iconSize = 34.0;
+      const mainFontWeight = FontWeight.w900;
+      final mainTitleTextWidget = Text(
+        no == null ? localTitle : "$localTitle #$no",
+        style: fontSize == null ? const TextStyle(
+          fontSize: 24.0,
+          fontWeight: mainFontWeight,
+        ) : TextStyle(
+          fontSize: fontSize,
+          fontWeight: mainFontWeight,
+        ),
+      );
+      final icon = switch ((type, settings.darkMode)) {
+        (AlertType.error, true /* dark */) => const Icon(
+          Icons.error_sharp,
+          size: iconSize,
+          color: Colors.redAccent,
+        ),
+        (AlertType.error, false /* light */) => const Icon(
+          Icons.error_sharp,
+          size: iconSize,
+          color: Colors.red,
+        ),
+        (AlertType.warning, true /* dark */) => const Icon(
+          Icons.warning_amber_outlined,
+          size: iconSize,
+          color: Colors.amberAccent,
+        ),
+        (AlertType.warning, false /* light */) => const Icon(
+          Icons.warning_amber_outlined,
+          size: iconSize,
+          color: Colors.amber,
+        ),
+        (AlertType.info, true /* dark */) => const Icon(
+          Icons.info_outline,
+          size: iconSize,
+          color: Colors.blueGrey,
+        ),
+        (AlertType.info, false /* light */) => const Icon(
+          Icons.info_outline,
+          size: iconSize,
+          color: Colors.lightBlueAccent,
+        ),
+        (AlertType.confirm, true /* dark */) => const Icon(
+          Icons.question_mark,
+          size: iconSize,
+          color: Colors.blueGrey,
+        ),
+        (AlertType.confirm, false /* light */) => const Icon(
+          Icons.question_mark,
+          size: iconSize,
+          color: Colors.lightBlueAccent,
+        ),
+        (null, _) => null,
+      };
+      final titleTextsWidget = subtitle == null ? mainTitleTextWidget : Column(
+        children: [
+          mainTitleTextWidget,
+          const Padding(padding: EdgeInsets.all(2.0)),
+          Text(
+            subtitle,
+            style: const TextStyle(
+              fontSize: 12.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      );
+      if (icon == null) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [titleTextsWidget],
+        );
+      }
+      Widget genStage(String text, IconData icon) {
+        const style = TextStyle(
+          fontSize: 12.0,
+          color: Colors.grey,
+        );
+        final (width, widget) = (squashStage || text == "@")
+          ? (28.0, Icon(icon, size: style.fontSize, color: style.color))
+          : (iconSize, Text(text, style: style));
+        return SizedOverflowBox(
+          size: Size(width, iconSize),
+          alignment: AlignmentDirectional.centerEnd,
+          child: widget,
+        );
+      }
+      final stageWidget = switch (stage) {
+        AlertStage.folder => genStage(_s().pick_alert_stage_name, Icons.folder_open_outlined),
+        AlertStage.setup => genStage(_s().setup_alert_stage_name, Icons.build_circle_outlined),
+        AlertStage.remove => genStage(_s().remove_alert_stage_name, Icons.delete_outlined),
+        null => const SizedBox(width: 10.0),
+      };
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          icon,
+          titleTextsWidget,
+          stageWidget,
+        ],
+      );
     }
     buttonBuilder ??= (BuildContext dialogContext) => dismissible ? <Widget>[
       _buildAlertButton(dialogContext, _s().alert_neutral, null),
@@ -229,7 +361,7 @@ class _InstallerState extends State<Installer> {
       barrierDismissible: dismissible,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text(title),
+          title: genTitleWidget(),
           content: Text(message),
           actions: buttonBuilder!(dialogContext),
         );
@@ -414,17 +546,20 @@ class _InstallerState extends State<Installer> {
     try {
       await installer.checkAndAssignFolders(dir);
     } on FolderAssignmentException catch (e) {
+      const error = AlertType.error;
+      const stage = AlertStage.folder;
+      final troubleshooting = _buildAlertTroubleshootingButtonsFunc;
       switch (e.type) {
         case FolderAssignmentExceptionType.noN3DS:
-          _showAlert(null, _s().pick_alert_title, "${_s().pick_no_n3ds}\n${_s().pick_common_n3ds_info}", _buildAlertTroubleshootingButtonsFunc);
+          _showAlert("${_s().pick_no_n3ds}\n${_s().pick_common_n3ds_info}", type: error, stage: stage, buttonBuilder: troubleshooting);
         case FolderAssignmentExceptionType.noId0:
-          _showAlert(null, _s().pick_alert_title, "${_s().pick_no_id0}\n${_s().pick_common_n3ds_info}", _buildAlertTroubleshootingButtonsFunc);
+          _showAlert("${_s().pick_no_id0}\n${_s().pick_common_n3ds_info}", type: error, stage: stage, buttonBuilder: troubleshooting);
         case FolderAssignmentExceptionType.multipleId0:
-          _showAlert(null, _s().pick_alert_title, _s().pick_multiple_id0, _buildAlertTroubleshootingButtonsFunc);
+          _showAlert(_s().pick_multiple_id0, type: error, stage: stage, buttonBuilder: troubleshooting);
         case FolderAssignmentExceptionType.id1Picked:
-          _showAlert(null, _s().pick_alert_title, _s().pick_picked_id1, _buildAlertTroubleshootingButtonsFunc);
+          _showAlert(_s().pick_picked_id1, type: error, stage: stage, buttonBuilder: troubleshooting);
         case FolderAssignmentExceptionType.unknown:
-          _showAlert(null, _s().pick_alert_title, _s().pick_picked_unknown);
+          _showAlert(_s().pick_picked_unknown, type: error, stage: stage);
       }
     }
   }
@@ -444,10 +579,9 @@ class _InstallerState extends State<Installer> {
     if (kIsWeb) disclaimer += "\n\n${_s().setup_alert_disclaimer_web_addition}";
     disclaimer += "\n\n${_s().setup_alert_disclaimer_confirm_to_continue}";
     await _showAlert(
-      null,
-      _s().setup_alert_disclaimer_title,
       disclaimer,
-      (context) => <Widget>[
+      title: _s().setup_alert_disclaimer_title,
+      buttonBuilder:  (context) => <Widget>[
         _buildAlertButton(context, _s().alert_general_cancel, null),
         _buildAlertButton(context, _s().alert_general_confirm, (pop) {
           pop();
@@ -474,9 +608,12 @@ class _InstallerState extends State<Installer> {
       work: installer.setupHaxId1,
       done: (result) async {
         if (result) {
-          _showAlert(null, _s().setup_alert_hax_id1_created_title,
-              "${_s().setup_alert_hax_id1_created}\n\n${_s().setup_alert_dummy_mii_maker_and_db_reset}",
-              _buildAlertVisualAidButtonsFunc);
+          _showAlert(
+            "${_s().setup_alert_hax_id1_created}\n\n${_s().setup_alert_dummy_mii_maker_and_db_reset}",
+            type: AlertType.info,
+            title: _s().setup_alert_hax_id1_created_title,
+            buttonBuilder: _buildAlertVisualAidButtonsFunc
+          );
         }
       },
     );
@@ -514,10 +651,10 @@ class _InstallerState extends State<Installer> {
     if (!_advance && !await installer.checkIfCfwInstalled()) {
       var cancel = true;
       await _showAlert(
-          null,
-          _s().remove_alert_confirm_title,
           _s().remove_alert_confirm,
-          (context) => <Widget>[
+          type: AlertType.confirm,
+          stage: AlertStage.remove,
+          buttonBuilder: (context) => <Widget>[
             _buildAlertButton(context, _s().remove_alert_action_repick, (pop) {
               pop();
               _doRepickVariant();
@@ -635,10 +772,10 @@ class _InstallerState extends State<Installer> {
         }).sorted((a, b) => a.toUpperCase().compareTo(b.toUpperCase())).join("\n");
         var doSDSetup = false;
         await _showAlert(
-            null,
-            optionalOnly ? _s().setup_alert_warning_title : _s().setup_alert_error_title,
             "${_s().setup_alert_sd_setup_file_missing}\n\n$list",
-            (context) => <Widget>[
+            type: optionalOnly ? AlertType.warning : AlertType.error,
+            stage: AlertStage.setup,
+            buttonBuilder: (context) => <Widget>[
               _buildAlertButton(context, _s().setup_alert_sd_setup_action_setup, (pop) {
                 pop();
                 doSDSetup = true;
@@ -659,10 +796,10 @@ class _InstallerState extends State<Installer> {
       case HaxConfirmationType.sdRootSetupIncludeCorruptedUnknownOptional:
         var getOptional = false;
         await _showAlert(
-          null,
-          _s().setup_alert_confirm_title,
           _s().setup_alert_sd_setup_optional_prompt,
-          (context) => <Widget>[
+          type: AlertType.confirm,
+          stage: AlertStage.setup,
+          buttonBuilder: (context) => <Widget>[
             _buildAlertButton(context, _s().alert_general_no, null),
             _buildAlertButton(context, _s().alert_general_yes, (pop) {
               pop();
@@ -675,26 +812,32 @@ class _InstallerState extends State<Installer> {
   }
 
   void _handleAlert(HaxAlertType exceptionType) {
+    const error = AlertType.error;
+    const stage = AlertStage.setup;
+    final troubleshooting = _buildAlertTroubleshootingButtonsFunc;
+    final visualAid = _buildAlertVisualAidButtonsFunc;
+    final dummyDb = _s().setup_alert_dummy_db_subtitle;
+    final extdata = _s().setup_alert_extdata_subtitle;
     switch (exceptionType) {
       case HaxAlertType.noHaxAvailable:
       case HaxAlertType.multipleHaxId1:
         break;
       case HaxAlertType.noId1:
-        _showAlert(null, _s().setup_alert_error_title, _s().setup_alert_no_or_more_id1, _buildAlertTroubleshootingButtonsFunc);
+        _showAlert(_s().setup_alert_no_or_more_id1, type: error, stage: stage, buttonBuilder: troubleshooting);
       case HaxAlertType.multipleId1:
-        _showAlert(null, _s().setup_alert_error_title, _s().setup_alert_no_or_more_id1, _buildAlertTroubleshootingButtonsFunc);
+        _showAlert(_s().setup_alert_no_or_more_id1, type: error, stage: stage, buttonBuilder: troubleshooting);
       case HaxAlertType.sdSetupFailed:
-        _showAlert(null, _s().setup_alert_error_title, _s().setup_alert_sd_setup_failed);
+        _showAlert(_s().setup_alert_sd_setup_failed, type: error, stage: stage);
       case HaxAlertType.dummyDb:
-        _showAlert(null, _s().setup_alert_dummy_db_title, "${_s().setup_alert_dummy_db_found}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
+        _showAlert("${_s().setup_alert_dummy_db_found}\n\n${_s().setup_alert_dummy_db_reset}", type: error, stage: stage, subtitle: dummyDb, buttonBuilder: visualAid);
       case HaxAlertType.corruptedDb:
-        _showAlert(null, _s().setup_alert_dummy_db_title, "${_s().setup_alert_dummy_db_corrupted}\n\n${_s().setup_alert_dummy_db_reset}", _buildAlertVisualAidButtonsFunc);
+        _showAlert("${_s().setup_alert_dummy_db_corrupted}\n\n${_s().setup_alert_dummy_db_reset}", type: error, stage: stage, subtitle: dummyDb, buttonBuilder: visualAid);
       case HaxAlertType.extdataFolderMissing:
-        _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_missing, _buildAlertTroubleshootingButtonsFunc);
+        _showAlert(_s().setup_alert_extdata_missing, type: error, stage: stage, subtitle: extdata, buttonBuilder: troubleshooting);
       case HaxAlertType.homeMenuExtdataMissing:
-        _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_home_menu, _buildAlertTroubleshootingButtonsFunc);
+        _showAlert(_s().setup_alert_extdata_home_menu, type: error, stage: stage, subtitle: extdata, buttonBuilder: troubleshooting);
       case HaxAlertType.miiMakerExtdataMissing:
-        _showAlert(null, _s().setup_alert_extdata_title, _s().setup_alert_extdata_mii_maker, _buildAlertTroubleshootingButtonsFunc);
+        _showAlert(_s().setup_alert_extdata_mii_maker, type: error, stage: stage, subtitle: extdata, buttonBuilder: troubleshooting);
     }
   }
 
@@ -704,8 +847,11 @@ class _InstallerState extends State<Installer> {
     if (!isSupported) {
       WidgetsBinding.instance.addPostFrameCallback((timestamp) {
         _showAlert(
-            null, _s().alert_not_supported_title, _s().alert_not_supported,
-            null, false);
+          _s().alert_not_supported,
+          type: AlertType.error,
+          title: _s().alert_not_supported_title,
+          dismissible: false,
+        );
       });
     }
     if (kDebugMode) {
@@ -862,35 +1008,35 @@ class _InstallerState extends State<Installer> {
           ),
           switch (installer.stage) {
             HaxStage.doingWork =>
-                _genButton(context, null, null, _s().installer_button_dummy_checking),
+              _genButton(context, null, null, _s().installer_button_dummy_checking),
             HaxStage.cardRemoved || HaxStage.postSetup || HaxStage.readyToInject || HaxStage.doExploit || HaxStage.broken =>
-                _genButton(
-                  context,
-                  const [],
-                  installer.checkState,
-                  _s().installer_button_check,
-                  extraAction: () {
-                    _showAlert(
-                      null,
-                      _s().setup_alert_confirm_title,
-                      _s().setup_alert_repick_variant_prompt,
-                      (context) => <Widget>[
-                        _buildAlertButton(context, _s().alert_general_cancel, null),
-                        _buildAlertButton(context, _s().alert_general_yes, (pop) {
-                          pop();
-                          _doRepickVariant();
-                        }),
-                      ],
-                    );
-                  },
-                ),
+              _genButton(
+                context,
+                const [],
+                installer.checkState,
+                _s().installer_button_check,
+                extraAction: () {
+                  _showAlert(
+                    _s().setup_alert_repick_variant_prompt,
+                    type: AlertType.confirm,
+                    stage: AlertStage.setup,
+                    buttonBuilder: (context) => <Widget>[
+                      _buildAlertButton(context, _s().alert_general_cancel, null),
+                      _buildAlertButton(context, _s().alert_general_yes, (pop) {
+                        pop();
+                        _doRepickVariant();
+                      }),
+                    ],
+                  );
+                },
+              ),
             _ =>
-                _genButton(
-                  context,
-                  const [HaxStage.folderPicked],
-                  _doSetup,
-                  _s().installer_button_setup,
-                )
+              _genButton(
+                context,
+                const [HaxStage.folderPicked],
+                _doSetup,
+                _s().installer_button_setup,
+              )
           },
           _genButton(
             context,

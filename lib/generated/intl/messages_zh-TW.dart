@@ -70,7 +70,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "menu_log": MessageLookupByLibrary.simpleMessage("日誌"),
         "menu_loose_root_check":
             MessageLookupByLibrary.simpleMessage("寬鬆根目錄檢查"),
-        "pick_alert_title": MessageLookupByLibrary.simpleMessage("資料夾選取錯誤"),
         "pick_common_n3ds_info": MessageLookupByLibrary.simpleMessage(
             "請把 SD 卡放回你的主機並正常開機\n請勿自行建立 Nintendo 3DS 資料夾"),
         "pick_multi_hax_id1":
@@ -87,12 +86,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("重新選擇"),
         "remove_alert_confirm": MessageLookupByLibrary.simpleMessage(
             "看起來你還沒成功安裝 boot9strap，確定要移除 MSET9 嗎？\n\n如果你選擇了錯誤的型號或系統版本，可以點選\"重新選擇\"再次選取"),
-        "remove_alert_confirm_title":
-            MessageLookupByLibrary.simpleMessage("移除：確認"),
         "remove_loading": MessageLookupByLibrary.simpleMessage("移除 MSET9 ..."),
         "sd_setup_loading": MessageLookupByLibrary.simpleMessage("正在設置 SD ..."),
-        "setup_alert_confirm_title":
-            MessageLookupByLibrary.simpleMessage("設置：確認"),
         "setup_alert_disclaimer": MessageLookupByLibrary.simpleMessage(
             "這個過程會暫時初始化你的大部分主機資料\n大部分的遊戲及主題會暫時消失\n這是完全正常的狀況，如果一切運作正常，它們會在結束時復原\n\n不論如何，仍然建議你備份 SD 卡上的資料到你的電腦或裝置上\n(特別是 Nintendo 3DS 資料夾)"),
         "setup_alert_disclaimer_confirm_to_continue":
@@ -113,8 +108,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("偵測到假安裝資料庫"),
         "setup_alert_dummy_db_reset": MessageLookupByLibrary.simpleMessage(
             "將 SD 卡放回主機後開機，然後進入主機設定⮕資料管理⮕Nintendo 3DS⮕軟體⮕重設"),
-        "setup_alert_dummy_db_title":
-            MessageLookupByLibrary.simpleMessage("設置錯誤：假安裝資料庫"),
         "setup_alert_dummy_db_visual_aid":
             MessageLookupByLibrary.simpleMessage("參考圖片"),
         "setup_alert_dummy_db_visual_aid_url":
@@ -123,15 +116,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "setup_alert_dummy_mii_maker_and_db_reset":
             MessageLookupByLibrary.simpleMessage(
                 "將 SD 卡放回主機後開機，開啟 Mii 工作室\nMii 工作室完成載入後，按下 HOME 鍵，然後進入主機設定⮕資料管理⮕Nintendo 3DS⮕軟體⮕重設"),
-        "setup_alert_error_title": MessageLookupByLibrary.simpleMessage("設置錯誤"),
         "setup_alert_extdata_home_menu":
             MessageLookupByLibrary.simpleMessage("找不到HOME 選單新增資料"),
         "setup_alert_extdata_mii_maker":
             MessageLookupByLibrary.simpleMessage("找不到 Mii 工作室新增資料"),
         "setup_alert_extdata_missing":
             MessageLookupByLibrary.simpleMessage("找不到新增資料"),
-        "setup_alert_extdata_title":
-            MessageLookupByLibrary.simpleMessage("設置錯誤：新增資料"),
         "setup_alert_hax_id1_created":
             MessageLookupByLibrary.simpleMessage("已成功建立漏洞 ID1"),
         "setup_alert_hax_id1_created_title":
@@ -159,8 +149,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "setup_alert_sd_setup_optional_prompt":
             MessageLookupByLibrary.simpleMessage(
                 "要自動下載損毀/未知/非關鍵的檔案嗎?\n(這會自動覆蓋相關檔案)"),
-        "setup_alert_warning_title":
-            MessageLookupByLibrary.simpleMessage("設置：警告"),
         "setup_loading": MessageLookupByLibrary.simpleMessage("正在設置 MSET9 ..."),
         "title_variant_selector":
             MessageLookupByLibrary.simpleMessage("請選擇型號及主機板本"),
