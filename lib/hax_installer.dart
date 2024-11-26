@@ -375,7 +375,7 @@ class HaxInstaller {
       folder,
       rule: (sub) => _checkIfId0(sub),
       success: (sub) {
-        //talker.debug("FolderPicking: ID0 Folder Auto Picked - ${id0Folder?.path}");
+        //talker.debug("FolderPicking: ID0 Folder Auto Picked - ${sub.path}");
         id0Folder = sub;
       },
       fail: (count) {
