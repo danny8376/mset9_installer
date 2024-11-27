@@ -2,6 +2,7 @@
 
 ### Todo
 
+- [ ] Copy valid title database back to normal id1 after removed if there's no existing one
 - [ ] Show current status clearly in app
 - [ ] Auto SD card detection for desktop (with disks_desktop)
 - [ ] SD card monitoring for auto checking status
