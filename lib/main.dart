@@ -223,7 +223,7 @@ class _InstallerState extends State<Installer> {
     AlertStage? stage,
     AlertType? type,
     String? no,
-    double? fontSize,
+    double? titleFontSize,
     bool dismissible = true,
     List<Widget> Function(BuildContext)? buttonBuilder,
   }) async {
@@ -254,11 +254,11 @@ class _InstallerState extends State<Installer> {
       const mainFontWeight = FontWeight.w900;
       final mainTitleTextWidget = Text(
         no == null ? localTitle : "$localTitle #$no",
-        style: fontSize == null ? const TextStyle(
+        style: titleFontSize == null ? const TextStyle(
           fontSize: 24.0,
           fontWeight: mainFontWeight,
         ) : TextStyle(
-          fontSize: fontSize,
+          fontSize: titleFontSize,
           fontWeight: mainFontWeight,
         ),
       );
@@ -599,7 +599,8 @@ class _InstallerState extends State<Installer> {
             "${_s().setup_alert_hax_id1_created}\n\n${_s().setup_alert_dummy_mii_maker_and_db_reset}",
             type: AlertType.info,
             title: _s().setup_alert_hax_id1_created_title,
-            buttonBuilder: _buildAlertVisualAidButtonsFunc
+            titleFontSize: 16.0,
+            buttonBuilder: _buildAlertVisualAidButtonsFunc,
           );
         }
       },
