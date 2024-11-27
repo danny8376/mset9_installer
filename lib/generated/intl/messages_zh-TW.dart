@@ -26,6 +26,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "如果你想要貢獻翻譯(非 en/en_US)，請前往 https://crowdin.com/project/mset9_installer"),
         "alert_action_troubleshooting":
             MessageLookupByLibrary.simpleMessage("疑難排解"),
+        "alert_confirm_title": MessageLookupByLibrary.simpleMessage("確認"),
+        "alert_error_title": MessageLookupByLibrary.simpleMessage("錯誤"),
         "alert_general_cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "alert_general_confirm": MessageLookupByLibrary.simpleMessage("確認"),
         "alert_general_no": MessageLookupByLibrary.simpleMessage("否"),
@@ -33,15 +35,19 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "https://3ds.hacks.guide/troubleshooting-mset9.html"),
         "alert_general_yes": MessageLookupByLibrary.simpleMessage("是"),
+        "alert_info_title": MessageLookupByLibrary.simpleMessage("資訊"),
         "alert_neutral": MessageLookupByLibrary.simpleMessage("好"),
         "alert_not_supported": MessageLookupByLibrary.simpleMessage(
             "你的瀏覽器不相容，請使用不同的瀏覽器或者其他版本的安裝工具。"),
         "alert_not_supported_title":
             MessageLookupByLibrary.simpleMessage("不相容"),
+        "alert_warning_title": MessageLookupByLibrary.simpleMessage("警告"),
         "app_name": MessageLookupByLibrary.simpleMessage("MSET9 安裝工具"),
         "check_loading": MessageLookupByLibrary.simpleMessage("檢查中…"),
         "installer_button_check":
             MessageLookupByLibrary.simpleMessage("確認 MSET9 狀態"),
+        "installer_button_check_sd":
+            MessageLookupByLibrary.simpleMessage("確認 SD 卡"),
         "installer_button_dummy_checking":
             MessageLookupByLibrary.simpleMessage("檢查中…"),
         "installer_button_inject_trigger":
@@ -70,6 +76,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "menu_log": MessageLookupByLibrary.simpleMessage("日誌"),
         "menu_loose_root_check":
             MessageLookupByLibrary.simpleMessage("寬鬆根目錄檢查"),
+        "pick_alert_stage_name": MessageLookupByLibrary.simpleMessage("選取"),
         "pick_common_n3ds_info": MessageLookupByLibrary.simpleMessage(
             "請把 SD 卡放回你的主機並正常開機\n請勿自行建立 Nintendo 3DS 資料夾"),
         "pick_multi_hax_id1":
@@ -86,6 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("重新選擇"),
         "remove_alert_confirm": MessageLookupByLibrary.simpleMessage(
             "看起來你還沒成功安裝 boot9strap，確定要移除 MSET9 嗎？\n\n如果你選擇了錯誤的型號或系統版本，可以點選\"重新選擇\"再次選取"),
+        "remove_alert_stage_name": MessageLookupByLibrary.simpleMessage("移除"),
         "remove_loading": MessageLookupByLibrary.simpleMessage("移除 MSET9 ..."),
         "sd_setup_loading": MessageLookupByLibrary.simpleMessage("正在設置 SD ..."),
         "setup_alert_disclaimer": MessageLookupByLibrary.simpleMessage(
@@ -108,6 +116,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("偵測到假安裝資料庫"),
         "setup_alert_dummy_db_reset": MessageLookupByLibrary.simpleMessage(
             "將 SD 卡放回主機後開機，然後進入主機設定⮕資料管理⮕Nintendo 3DS⮕軟體⮕重設"),
+        "setup_alert_dummy_db_subtitle":
+            MessageLookupByLibrary.simpleMessage("假安裝資料庫"),
         "setup_alert_dummy_db_visual_aid":
             MessageLookupByLibrary.simpleMessage("參考圖片"),
         "setup_alert_dummy_db_visual_aid_url":
@@ -122,10 +132,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("找不到 Mii 工作室新增資料"),
         "setup_alert_extdata_missing":
             MessageLookupByLibrary.simpleMessage("找不到新增資料"),
+        "setup_alert_extdata_subtitle":
+            MessageLookupByLibrary.simpleMessage("新增資料"),
         "setup_alert_hax_id1_created":
             MessageLookupByLibrary.simpleMessage("已成功建立漏洞 ID1"),
         "setup_alert_hax_id1_created_title":
-            MessageLookupByLibrary.simpleMessage("設置：已建立漏洞 ID1"),
+            MessageLookupByLibrary.simpleMessage("已建立漏洞 ID1"),
+        "setup_alert_no_hax_available":
+            MessageLookupByLibrary.simpleMessage("不支援所選取的系統版本"),
+        "setup_alert_no_hax_available_subtitle":
+            MessageLookupByLibrary.simpleMessage("不支援的版本"),
         "setup_alert_no_or_more_id1":
             MessageLookupByLibrary.simpleMessage("沒有 ID1 或者有多個 ID1"),
         "setup_alert_repick_variant_prompt":
@@ -149,6 +165,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "setup_alert_sd_setup_optional_prompt":
             MessageLookupByLibrary.simpleMessage(
                 "要自動下載損毀/未知/非關鍵的檔案嗎?\n(這會自動覆蓋相關檔案)"),
+        "setup_alert_stage_name": MessageLookupByLibrary.simpleMessage("設置"),
         "setup_loading": MessageLookupByLibrary.simpleMessage("正在設置 MSET9 ..."),
         "title_variant_selector":
             MessageLookupByLibrary.simpleMessage("請選擇型號及主機板本"),
