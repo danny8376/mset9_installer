@@ -115,6 +115,10 @@
   "@installer_button_dummy_checking": {
     "description": "Dummy non-clickable button in main app screen shown when the app is doing work (only really noticeable when doing check)"
   },
+  "installer_button_check_sd": "Check SD card",
+  "@installer_button_check_sd": {
+    "description": "Button in main app screen for rechecking picked SD card on desktop only"
+  },
   "installer_button_check": "Check MSET9 status",
   "@installer_button_check": {
     "description": "Button in main app screen for (re)checking setup status"

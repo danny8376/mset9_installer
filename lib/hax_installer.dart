@@ -14,7 +14,7 @@ import 'talker.dart';
 
 const kNonRootEventsCleanupDuration = Duration(seconds: 2);
 
-enum HaxStage { pickFolder, folderPicked, cardRemoved, /*pickVariant,*/ postSetup, readyToInject, doExploit, broken, doingWork }
+enum HaxStage { pickFolder, folderPicked, folderPickedWithError, cardRemoved, /*pickVariant,*/ postSetup, readyToInject, doExploit, broken, doingWork }
 
 enum HaxConfirmationType { autoSdRootSetup, sdRootSetupIncludeCorruptedUnknownOptional }
 enum HaxAlertType {
@@ -93,47 +93,58 @@ class HaxInstaller {
 
   Variant? get variant => _variant;
 
-  Future<void> checkState({bool silent = false, bool skipSdRoot = false, bool sdFailed = false}) => _exceptionGuard(
-    faultResult: null,
-    isChecking: true,
-    switchStageToDoingWork: true,
-    onlyRecoverStageWhenException: true,
-    pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
-    work: () async {
-      talker.debug("Check: Checking state");
-      //talker.debug("Check: Checking state", "StackTrace", StackTrace.current);
-      if (id0Folder == null) {
-        stageUpdateCallback(_stage = HaxStage.pickFolder);
-        return;
-      }
-      if (await id0Folder?.exists() != true) {
-        talker.debug("Check: ID0 folder missing, switch to cardRemoved");
-        stageUpdateCallback(_stage = HaxStage.cardRemoved);
-        return;
-      }
-      late final DirectoryHaxPair? matching;
-      try {
-        matching = await _findHaxId1();
-      } on MultipleHaxId1Exception catch (e) {
-        matching = null;
-        alertCallback(e.type, additionalInfo: e.count);
-      }
-      if (matching != null) {
-        id1HaxFolder = matching.folder;
-        _variant = matching.hax.dummyVariant;
-        checkInjectState(silent: silent, skipSdRoot: skipSdRoot, sdFailed: sdFailed);
-      } else if ((await _findId1(any: true) != null && await _findBackupId1(any: true) != null) ||
-          (await _findId1(any: true) != null && await _findHaxId1(any: true) != null)) {
-        stageUpdateCallback(_stage = HaxStage.broken);
-      /*
-      } else if (_stage == HaxStage.pickVariant && _variant != null) {
-        setupHaxId1();
-       */
-      } else {
-        stageUpdateCallback(_stage = HaxStage.folderPicked);
-      }
-    },
-  );
+  Future<void> checkState({bool silent = false, bool skipSdRoot = false, bool sdFailed = false}) {
+    final originalStage = _stage;
+    return _exceptionGuard(
+      faultResult: null,
+      isChecking: true,
+      switchStageToDoingWork: true,
+      onlyRecoverStageWhenException: true,
+      pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
+      work: () async {
+        talker.debug("Check: Checking state");
+        //talker.debug("Check: Checking state", "StackTrace", StackTrace.current);
+        if (originalStage == HaxStage.folderPickedWithError) {
+          try {
+            await checkAndAssignFolders(sdRoot!);
+          } on FolderAssignmentException catch (e) {
+            alertCallback(e.type, additionalInfo: e.count);
+            return;
+          }
+        }
+        if (id0Folder == null) {
+          stageUpdateCallback(_stage = HaxStage.pickFolder);
+          return;
+        }
+        if (await id0Folder?.exists() != true) {
+          talker.debug("Check: ID0 folder missing, switch to cardRemoved");
+          stageUpdateCallback(_stage = HaxStage.cardRemoved);
+          return;
+        }
+        late final DirectoryHaxPair? matching;
+        try {
+          matching = await _findHaxId1();
+        } on MultipleHaxId1Exception catch (e) {
+          matching = null;
+          alertCallback(e.type, additionalInfo: e.count);
+        }
+        if (matching != null) {
+          id1HaxFolder = matching.folder;
+          _variant = matching.hax.dummyVariant;
+          checkInjectState(silent: silent, skipSdRoot: skipSdRoot, sdFailed: sdFailed);
+        } else if ((await _findId1(any: true) != null && await _findBackupId1(any: true) != null)
+            || (await _findId1(any: true) != null && await _findHaxId1(any: true) != null)) {
+          stageUpdateCallback(_stage = HaxStage.broken);
+        /*
+        } else if (_stage == HaxStage.pickVariant && _variant != null) {
+          setupHaxId1();
+         */
+        } else {
+          stageUpdateCallback(_stage = HaxStage.folderPicked);
+        }
+      },
+    );
+  }
 
   Future<void> checkInjectState({bool silent = false, bool skipSdRoot = false, bool sdFailed = false}) => _exceptionGuard(
     faultResult: null,
@@ -220,7 +231,7 @@ class HaxInstaller {
       return;
     }
     // if (updates?.isEmpty != false) { // Checker is not happy with this...
-    if (updates == null || updates.isEmpty) {
+    if (updates == null || updates.isEmpty || _stage == HaxStage.folderPickedWithError) {
       _cleanupRemainingNonRootEvents = false;
       try {
         if (await _folderAndDriveUpdateWatchRoot?.exists() == true) {
@@ -306,8 +317,14 @@ class HaxInstaller {
       }
       _watchFolderAndDriveUpdate();
       checkState();
-    } on FolderAssignmentException {
-      sdRoot = root;
+    } on FolderAssignmentException catch (e) {
+      // on desktop, allow root being kept selected and can simply check again later
+      if (canAccessParentOfPicked && !const [HaxAlertType.noN3DS, HaxAlertType.unknownFolderPicked].contains(e.type)) {
+        n3dsFolder = id0Folder = _sdRootMissing = null;
+        stageUpdateCallback(_stage = HaxStage.folderPickedWithError);
+        _watchFolderAndDriveUpdate();
+        rethrow;
+      }
       n3dsFolder = n3ds;
       id0Folder = id0;
       _sdRootMissing = missing;
@@ -316,6 +333,7 @@ class HaxInstaller {
       }
       rethrow;
     } catch (e, st) {
+      talker.handle(e, st);
       sdRoot = root;
       n3dsFolder = n3ds;
       id0Folder = id0;
@@ -323,7 +341,6 @@ class HaxInstaller {
       if (_stage != stage) {
         stageUpdateCallback(_stage = stage);
       }
-      talker.handle(e, st);
     }
   }
 
@@ -632,6 +649,7 @@ class HaxInstaller {
     switch (_stage) {
       case HaxStage.pickFolder:
       //case HaxStage.folderPicked:
+      case HaxStage.folderPickedWithError:
       case HaxStage.cardRemoved:
       case HaxStage.broken:
       case HaxStage.doingWork:

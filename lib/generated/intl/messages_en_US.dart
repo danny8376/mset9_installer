@@ -47,6 +47,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "check_loading": MessageLookupByLibrary.simpleMessage("Checking ..."),
         "installer_button_check":
             MessageLookupByLibrary.simpleMessage("Check MSET9 status"),
+        "installer_button_check_sd":
+            MessageLookupByLibrary.simpleMessage("Check SD card"),
         "installer_button_dummy_checking":
             MessageLookupByLibrary.simpleMessage("Checking..."),
         "installer_button_inject_trigger":

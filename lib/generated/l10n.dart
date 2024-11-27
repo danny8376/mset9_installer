@@ -352,6 +352,17 @@ class S {
     );
   }
 
+  /// `Check SD card`
+  String get installer_button_check_sd {
+    return Intl.message(
+      'Check SD card',
+      name: 'installer_button_check_sd',
+      desc:
+          'Button in main app screen for rechecking picked SD card on desktop only',
+      args: [],
+    );
+  }
+
   /// `Check MSET9 status`
   String get installer_button_check {
     return Intl.message(
