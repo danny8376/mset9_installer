@@ -26,6 +26,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "If you want to contribute to translations (non en/en_US), please go https://crowdin.com/project/mset9_installer"),
         "alert_action_troubleshooting":
             MessageLookupByLibrary.simpleMessage("Troubleshooting"),
+        "alert_confirm_title": MessageLookupByLibrary.simpleMessage("Confirm"),
+        "alert_error_title": MessageLookupByLibrary.simpleMessage("Error"),
         "alert_general_cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "alert_general_confirm":
             MessageLookupByLibrary.simpleMessage("Confirm"),
@@ -34,15 +36,19 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "https://3ds.hacks.guide/troubleshooting-mset9.html"),
         "alert_general_yes": MessageLookupByLibrary.simpleMessage("Yes"),
+        "alert_info_title": MessageLookupByLibrary.simpleMessage("Info"),
         "alert_neutral": MessageLookupByLibrary.simpleMessage("OK"),
         "alert_not_supported": MessageLookupByLibrary.simpleMessage(
             "Your browser is not supported, please use different browser or different version of installer."),
         "alert_not_supported_title":
             MessageLookupByLibrary.simpleMessage("Not Supported"),
+        "alert_warning_title": MessageLookupByLibrary.simpleMessage("Warning"),
         "app_name": MessageLookupByLibrary.simpleMessage("MSET9 Installer"),
         "check_loading": MessageLookupByLibrary.simpleMessage("Checking ..."),
         "installer_button_check":
             MessageLookupByLibrary.simpleMessage("Check MSET9 status"),
+        "installer_button_check_sd":
+            MessageLookupByLibrary.simpleMessage("Check SD card"),
         "installer_button_dummy_checking":
             MessageLookupByLibrary.simpleMessage("Checking..."),
         "installer_button_inject_trigger":
@@ -73,6 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "menu_log": MessageLookupByLibrary.simpleMessage("Logs"),
         "menu_loose_root_check":
             MessageLookupByLibrary.simpleMessage("Loose Root Check"),
+        "pick_alert_stage_name": MessageLookupByLibrary.simpleMessage("Folder"),
         "pick_common_n3ds_info": MessageLookupByLibrary.simpleMessage(
             "Ensure that you put SD card in the console and boot normally first.\nDon\'t try to create Nintendo 3DS folder yourself."),
         "pick_multi_hax_id1": MessageLookupByLibrary.simpleMessage(
@@ -91,6 +98,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Repick"),
         "remove_alert_confirm": MessageLookupByLibrary.simpleMessage(
             "It seems that you haven\'t installed boot9strap yet, are you sure you want to remove MSET9?\n\nIf you picked wrong model/version, you can click Repick to pick again."),
+        "remove_alert_stage_name":
+            MessageLookupByLibrary.simpleMessage("Remove"),
         "remove_loading":
             MessageLookupByLibrary.simpleMessage("Removing MSET9 ..."),
         "sd_setup_loading":
@@ -114,6 +123,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Dummy title database found."),
         "setup_alert_dummy_db_reset": MessageLookupByLibrary.simpleMessage(
             "Put SD card back to your 3ds, power it on, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset."),
+        "setup_alert_dummy_db_subtitle":
+            MessageLookupByLibrary.simpleMessage("Dummy Title Database"),
         "setup_alert_dummy_db_visual_aid":
             MessageLookupByLibrary.simpleMessage("Visual Aid"),
         "setup_alert_dummy_db_visual_aid_url":
@@ -128,10 +139,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("There\'s no Mii Maker Data"),
         "setup_alert_extdata_missing":
             MessageLookupByLibrary.simpleMessage("There\'s no Extra Data"),
+        "setup_alert_extdata_subtitle":
+            MessageLookupByLibrary.simpleMessage("Extra Data"),
         "setup_alert_hax_id1_created":
             MessageLookupByLibrary.simpleMessage("Hax ID1 has been created."),
         "setup_alert_hax_id1_created_title":
-            MessageLookupByLibrary.simpleMessage("Setup - Hax ID1 Created"),
+            MessageLookupByLibrary.simpleMessage("Hax ID1 Created"),
+        "setup_alert_no_hax_available": MessageLookupByLibrary.simpleMessage(
+            "Not supported for your system version"),
+        "setup_alert_no_hax_available_subtitle":
+            MessageLookupByLibrary.simpleMessage("Unsupported Version"),
         "setup_alert_no_or_more_id1": MessageLookupByLibrary.simpleMessage(
             "There\'s no ID1 folder or multiple ID1 folders!"),
         "setup_alert_repick_variant_prompt":
@@ -156,6 +173,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "setup_alert_sd_setup_optional_prompt":
             MessageLookupByLibrary.simpleMessage(
                 "Do you want to automatically download corrupted/unknown/non-critical files? (This will overwrite all related files automatically)"),
+        "setup_alert_stage_name": MessageLookupByLibrary.simpleMessage("Setup"),
         "setup_loading":
             MessageLookupByLibrary.simpleMessage("Setting up MSET9 ..."),
         "title_variant_selector":
