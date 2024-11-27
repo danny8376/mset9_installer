@@ -9,6 +9,7 @@
   - [ ] Desktops - partially
 - [ ] Check if drive is mounted with utf8 option for Linux and prompt for remount automatically
 - [ ] SD read-only check after folder picked
+- [ ] Check if user extracted files in wrong location (like inside Nintendo 3DS)
 - [ ] Eject/umount SD card after setup/inject
 - [ ] root_check.dart
   - [ ] Add github release support
