@@ -103,7 +103,7 @@
   "@menu_alert_language_action": {
     "description": "Neutral action button of language selection prompt"
   },
-  "installer_button_pick_sd": "Select Your SD Card",
+  "installer_button_pick_sd": "Select your SD card",
   "@installer_button_pick_sd": {
     "description": "Button in main app screen for picking SD card"
   },
@@ -147,7 +147,7 @@
   "@pick_no_n3ds": {
     "description": "Message body of prompt when the folder they pick don't have Nintendo 3DS folder, will append pick_common_n3ds_info at the end (with empty line)"
   },
-  "pick_no_id0": "There's no ID0 folder.",
+  "pick_no_id0": "Not valid Nintendo 3DS folder. There's no ID0 folder inside.",
   "@pick_no_id0": {
     "description": "Message body of prompt when the folder they pick have no ID0 folder inside Nintendo 3DS folder, will append pick_common_n3ds_info at the end (with empty line)"
   },
@@ -159,6 +159,14 @@
   "@pick_multiple_id0": {
     "description": "Message body of prompt when the folder they pick have multiple ID0 folders inside Nintendo 3DS folder"
   },
+  "setup_alert_no_id1": "Not valid Nintendo 3DS folder. There's no ID1 folder inside.",
+  "@setup_alert_no_id1": {
+    "description": "Message body of error prompt when there's no or multiple ID1 folder"
+  },
+  "setup_alert_multiple_id1": "There's more than one ID1 folder. Please check.",
+  "@setup_alert_multiple_id1": {
+    "description": "Message body of error prompt when there's no or multiple ID1 folder"
+  },
   "pick_picked_id1": "ID1 picked, please pick ID0 or Nintendo 3DS folder instead.\n(Pick the upper folder, which contains the folder that you just picked, instead.)",
   "@pick_picked_id1": {
     "description": "Message body of prompt when the folder they pick is ID1, with hint of where ID0 is"
@@ -167,9 +175,13 @@
   "@pick_picked_unknown": {
     "description": "Message body of prompt when the folder they pick is unrelated (or subfolders inside ID1 or other location)"
   },
+  "pick_broken_id0_contents": "Something goes very wrong inside your ID0 folder. Please check.",
+  "@pick_broken_id0_contents": {
+    "description": "Message body of prompt when it's very broken (only hax ID1 without ID1 backup or only ID1 backup but no hax ID1)"
+  },
   "pick_multi_hax_id1": "There's more than one hax ID1 ???",
   "@pick_multi_hax_id1": {
-    "description": "Not currently used, likely for message body of prompt when the ID0 folder contains multiple hax ID1 folder"
+    "description": "Message body of prompt when the ID0 folder contains multiple hax ID1 folder"
   },
   "title_variant_selector": "Select Model & Version",
   "@title_variant_selector": {
@@ -267,10 +279,6 @@
   "@setup_alert_sd_setup_action_setup": {
     "description": "Action button for doing auto SD root setup in file missing prompt"
   },
-  "setup_alert_no_or_more_id1": "There's no ID1 folder or multiple ID1 folders!",
-  "@setup_alert_no_or_more_id1": {
-    "description": "Message body of error prompt when there's no or multiple ID1 folder"
-  },
   "setup_alert_extdata_subtitle": "Extra Data",
   "@setup_alert_extdata_subtitle": {
     "description": "Subtitle of prompt for extra data related errors during setup"
@@ -347,5 +355,5 @@
   "@remove_alert_action_repick": {
     "description": "Action button for re-picking variant inside removal confirmation prompt"
   },
-  "@@locale": "ca"
+  "@@locale": "en"
 }

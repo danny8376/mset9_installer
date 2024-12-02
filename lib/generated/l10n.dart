@@ -993,36 +993,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   List<Locale> get supportedLocales {
     return const <Locale>[
-      Locale.fromSubtags(languageCode: 'en', countryCode: 'US'),
-      Locale.fromSubtags(languageCode: 'af', countryCode: 'ZA'),
-      Locale.fromSubtags(languageCode: 'ar', countryCode: 'SA'),
-      Locale.fromSubtags(languageCode: 'ca', countryCode: 'ES'),
-      Locale.fromSubtags(languageCode: 'cs', countryCode: 'CZ'),
-      Locale.fromSubtags(languageCode: 'da', countryCode: 'DK'),
-      Locale.fromSubtags(languageCode: 'de', countryCode: 'DE'),
-      Locale.fromSubtags(languageCode: 'el', countryCode: 'GR'),
-      Locale.fromSubtags(languageCode: 'es', countryCode: 'ES'),
-      Locale.fromSubtags(languageCode: 'fi', countryCode: 'FI'),
-      Locale.fromSubtags(languageCode: 'fr', countryCode: 'FR'),
-      Locale.fromSubtags(languageCode: 'he', countryCode: 'IL'),
-      Locale.fromSubtags(languageCode: 'hu', countryCode: 'HU'),
-      Locale.fromSubtags(languageCode: 'it', countryCode: 'IT'),
-      Locale.fromSubtags(languageCode: 'ja', countryCode: 'JP'),
-      Locale.fromSubtags(languageCode: 'ko', countryCode: 'KR'),
-      Locale.fromSubtags(languageCode: 'nl', countryCode: 'NL'),
-      Locale.fromSubtags(languageCode: 'no', countryCode: 'NO'),
-      Locale.fromSubtags(languageCode: 'pl', countryCode: 'PL'),
-      Locale.fromSubtags(languageCode: 'pt', countryCode: 'BR'),
-      Locale.fromSubtags(languageCode: 'pt', countryCode: 'PT'),
-      Locale.fromSubtags(languageCode: 'ro', countryCode: 'RO'),
-      Locale.fromSubtags(languageCode: 'ru', countryCode: 'RU'),
-      Locale.fromSubtags(languageCode: 'sr', countryCode: 'SP'),
-      Locale.fromSubtags(languageCode: 'sv', countryCode: 'SE'),
-      Locale.fromSubtags(languageCode: 'tr', countryCode: 'TR'),
-      Locale.fromSubtags(languageCode: 'uk', countryCode: 'UA'),
-      Locale.fromSubtags(languageCode: 'vi', countryCode: 'VN'),
-      Locale.fromSubtags(languageCode: 'zh', countryCode: 'CN'),
-      Locale.fromSubtags(languageCode: 'zh', countryCode: 'TW'),
+      Locale.fromSubtags(languageCode: 'en'),
     ];
   }
 
