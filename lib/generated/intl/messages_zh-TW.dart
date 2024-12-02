@@ -142,8 +142,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("不支援所選取的系統版本"),
         "setup_alert_no_hax_available_subtitle":
             MessageLookupByLibrary.simpleMessage("不支援的版本"),
-        "setup_alert_no_or_more_id1":
-            MessageLookupByLibrary.simpleMessage("沒有 ID1 或者有多個 ID1"),
         "setup_alert_repick_variant_prompt":
             MessageLookupByLibrary.simpleMessage("確定要選取不同的型號或系統版本嗎？"),
         "setup_alert_sd_setup_action_setup":

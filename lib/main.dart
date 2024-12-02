@@ -809,19 +809,23 @@ class _InstallerState extends State<Installer> {
     final extdata = _s().setup_alert_extdata_subtitle;
     switch (haxAlertType) {
       case HaxAlertType.noN3DS:
-        _showAlert("${_s().pick_no_n3ds}\n${_s().pick_common_n3ds_info}", type: error, stage: stage, buttonBuilder: troubleshooting);
+        _showAlert("${_s().pick_no_n3ds}\n${_s().pick_common_n3ds_info}", type: error, stage: stage, buttonBuilder: troubleshooting, no: "01");
       case HaxAlertType.noId0:
-        _showAlert("${_s().pick_no_id0}\n${_s().pick_common_n3ds_info}", type: error, stage: stage, buttonBuilder: troubleshooting);
+        _showAlert("${_s().pick_no_id0}\n${_s().pick_common_n3ds_info}", type: error, stage: stage, buttonBuilder: troubleshooting, no: "01");
       case HaxAlertType.multipleId0:
-        _showAlert(_s().pick_multiple_id0, type: error, stage: stage, buttonBuilder: troubleshooting);
+        _showAlert(_s().pick_multiple_id0, type: error, stage: stage, buttonBuilder: troubleshooting, no: "04");
       case HaxAlertType.noId1:
-        _showAlert(_s().setup_alert_no_or_more_id1, type: error, stage: stage, buttonBuilder: troubleshooting);
+        // is this really the appropriate error no?
+        // but other failed midway error shouldn't go here unless everything inside id0 is gone
+        _showAlert(_s().setup_alert_no_id1, type: error, stage: stage, buttonBuilder: troubleshooting, no: "01");
       case HaxAlertType.multipleId1:
-        _showAlert(_s().setup_alert_no_or_more_id1, type: error, stage: stage, buttonBuilder: troubleshooting);
+        _showAlert(_s().setup_alert_multiple_id1, type: error, stage: stage, buttonBuilder: troubleshooting, no: "05");
       case HaxAlertType.id1Picked:
         _showAlert(_s().pick_picked_id1, type: error, stage: stage, buttonBuilder: troubleshooting);
       case HaxAlertType.unknownFolderPicked:
         _showAlert(_s().pick_picked_unknown, type: error, stage: stage);
+      case HaxAlertType.brokenId0Contents:
+        _showAlert(_s().pick_broken_id0_contents, type: error, stage: stage);
       case HaxAlertType.noHaxAvailable:
         _showAlert(_s().setup_alert_no_hax_available, type: error, stage: stage, subtitle: _s().setup_alert_no_hax_available_subtitle);
       case HaxAlertType.multipleHaxId1:

@@ -87,10 +87,14 @@ class Hax {
       return null;
     }
   }
+  static bool checkIfHaxId1(String id1) {
+    if (id1.length != 32) return false;
+    if (!id1.startsWith(kCode) && !id1.startsWith(kLegacyCode)) return false;
+    if (!id1.endsWith(kSdmcB9)) return false;
+    return true;
+  }
   static Hax? findById1(String id1) {
-    if (id1.length != 32) return null;
-    if (!id1.startsWith(kCode) && !id1.startsWith(kLegacyCode)) return null;
-    if (!id1.endsWith(kSdmcB9)) return null;
+    if (!checkIfHaxId1(id1)) return null;
     try {
       final m = id1.substring(20, 24);
       return list.firstWhere((hax) => hax.matchByEncodedAddresses(m));

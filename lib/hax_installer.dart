@@ -25,6 +25,7 @@ enum HaxAlertType {
   multipleId1,
   id1Picked,
   unknownFolderPicked,
+  brokenId0Contents,
   noHaxAvailable,
   multipleHaxId1,
   sdSetupFailed,
@@ -109,8 +110,10 @@ class HaxInstaller {
             await checkAndAssignFolders(sdRoot!);
           } on FolderAssignmentException catch (e) {
             alertCallback(e.type, additionalInfo: e.count);
-            return;
           }
+          // checkAndAssignFolders will also call checkStage again,
+          // so we're done regardless the result
+          return;
         }
         if (id0Folder == null) {
           stageUpdateCallback(_stage = HaxStage.pickFolder);
@@ -121,26 +124,70 @@ class HaxInstaller {
           stageUpdateCallback(_stage = HaxStage.cardRemoved);
           return;
         }
-        late final DirectoryHaxPair? matching;
-        try {
-          matching = await _findHaxId1();
-        } on MultipleHaxId1Exception catch (e) {
-          matching = null;
-          alertCallback(e.type, additionalInfo: e.count);
+        final id1 = await _checkAllId1();
+        if (id1 == null) {
+          talker.debug("Check: ID0 get unset somehow???");
+          stageUpdateCallback(_stage = HaxStage.folderPickedWithError);
+          return;
         }
-        if (matching != null) {
-          id1HaxFolder = matching.folder;
-          _variant = matching.hax.dummyVariant;
-          checkInjectState(silent: silent, skipSdRoot: skipSdRoot, sdFailed: sdFailed);
-        } else if ((await _findId1(any: true) != null && await _findBackupId1(any: true) != null)
-            || (await _findId1(any: true) != null && await _findHaxId1(any: true) != null)) {
-          stageUpdateCallback(_stage = HaxStage.broken);
-        /*
-        } else if (_stage == HaxStage.pickVariant && _variant != null) {
-          setupHaxId1();
-         */
-        } else {
-          stageUpdateCallback(_stage = HaxStage.folderPicked);
+        final countResults = id1.allCountResult;
+        switch (countResults) {
+          case (normal: _, backup: _Count.zero, haxAlike: _Count.zero): // normal clean case
+            var newStage = HaxStage.folderPickedWithError;
+            switch (countResults.normal) {
+              case _Count.one:
+                id1Folder = id1.normal;
+                newStage = HaxStage.folderPicked;
+              case _Count.zero:
+                alertCallback(HaxAlertType.noId1);
+              case _Count.more:
+                alertCallback(HaxAlertType.multipleId1, additionalInfo: id1.normalCount);
+            }
+            stageUpdateCallback(_stage = newStage);
+          case (normal: _Count.zero, backup: _, haxAlike: _Count.one):
+            id1HaxFolder = id1.haxAlike;
+            final hax = Hax.findById1(id1HaxFolder!.name);
+            if (hax == null) {
+              talker.error("Check: Non-existing hax ID1 ???");
+              stageUpdateCallback(_stage = HaxStage.folderPickedWithError);
+              return;
+            }
+            switch (countResults.backup) {
+              case _Count.one:
+                break; // normal, do nothing special
+              case _Count.zero:
+              // TODO: show alert about no backup
+              //alertCallback(HaxAlertType.noBackupId1);
+              case _Count.more:
+              // TODO: show alert about multiple backup
+              //alertCallback(HaxAlertType.multipleBackupId1, additionalInfo: id1.backupCount);
+            }
+            _variant = hax.dummyVariant;
+            checkInjectState(silent: silent, skipSdRoot: skipSdRoot, sdFailed: sdFailed);
+          case (normal: _Count.zero, backup: _Count.one, haxAlike: _Count.zero):
+            talker.error("Check: Missing hax ID1 but have backup ID1");
+            stageUpdateCallback(_stage = HaxStage.broken);
+          case (normal: _, backup: _, haxAlike: _Count.more):
+            talker.error("Check: Multiple hax ID1 ???");
+            alertCallback(HaxAlertType.multipleHaxId1, additionalInfo: id1.haxAlikeCount);
+            stageUpdateCallback(_stage = HaxStage.broken);
+          // !!! remember to move case up if any handles differently !!!
+          case (normal: _, backup: _Count.zero, haxAlike: _):
+            // id1 exist with multiple hax
+          case (normal: _Count.zero, backup: _Count.more, haxAlike: _Count.zero):
+            // multiple backup
+          case (normal: _Count.more, backup: _, haxAlike: _):
+            // multiple id1 with backup and/or hax
+          case (normal: _, backup: _, haxAlike: _Count.zero):
+            // id1 exists with multiple backup
+          case (normal: _Count.one, backup: _Count.one, haxAlike: _Count.one):
+            // id1 exists with one backup and one hax
+          case (normal: _Count.one, backup: _Count.more, haxAlike: _Count.one):
+            // id1 exists with multiple backup and one hax
+
+            // shared broken action
+            alertCallback(HaxAlertType.brokenId0Contents);
+            stageUpdateCallback(_stage = HaxStage.folderPickedWithError);
         }
       },
     );
@@ -404,7 +451,6 @@ class HaxInstaller {
       success: (sub) async {
         //talker.debug("FolderPicking: ID0 Folder Auto Picked - ${sub.path}");
         id0Folder = sub;
-        await _pickId1FromId0();
       },
       fail: (count) {
         talker.error("FolderPicking: 0 or more than 1 ID0 found");
@@ -417,23 +463,6 @@ class HaxInstaller {
     );
   }
 
-  Future<bool> _pickId1FromId0([Directory? folder]) async {
-    folder ??= id0Folder;
-    final tmpId1 = await _findId1(from: folder, error: (count) {
-      talker.error("FolderPicking: 0 or more than 1 ID1 found");
-      if (count == 0) {
-        throw const FolderAssignmentException(HaxAlertType.noId1);
-      } else {
-        throw FolderAssignmentException(HaxAlertType.multipleId1, count);
-      }
-    });
-    if (tmpId1 == null) {
-      return false;
-    }
-    id1Folder = tmpId1;
-    return true;
-  }
-
   Future<bool> _checkIfId0(Directory folder) async {
     if (!kId0Regex.hasMatch(folder.name)) {
       return false;
@@ -441,67 +470,29 @@ class HaxInstaller {
     return await folder.list().asyncAny((sub) => FileSystemUtils.isDirectory(sub));
   }
 
-  Future<bool> _checkIfId1(Directory folder) async {
-    return _getHax(folder) != null || kId1Regex.hasMatch(folder.name);
-  }
-
-  Hax? _getHax(Directory folder) {
-    return Hax.findById1(folder.name);
-  }
-
-  Future<DirectoryHaxPair?> _findHaxId1({Directory? from, bool any = false}) async {
+  Future<_Id1CheckResult?> _checkAllId1({Directory? from}) async {
+    final r = _Id1CheckResult();
     from ??= id0Folder;
-    DirectoryHaxPair? ret;
-    Hax? hax;
-    await (any ? findFirstMatchingFolder : findJustOneFolder)(
-      from,
-      rule: (sub) async {
-        final tmpHax = _getHax(sub);
-        if (tmpHax != null) {
-          hax = tmpHax;
-          return true;
-        }
-        return false;
-      },
-      success: (sub) async { ret = DirectoryHaxPair(sub, hax!); },
-      fail: (count) async {
-        if (count > 1) {
-          // WTF???
-          talker.error("Prepare: Multiple hax ID1 ???");
-          throw MultipleHaxId1Exception(count);
-        }
-      },
-    );
-    return ret;
-  }
-
-  Future<Directory?> _findId1Common(Directory? from, {required bool backupId, bool any = false, Future<void> Function(int)? error}) async {
-    from ??= id0Folder;
-    Directory? ret;
-    await (any ? findFirstMatchingFolder : findJustOneFolder)(
-      from,
-      rule: (sub) async => await _checkIfId1(sub) && sub.name.endsWith(kOldId1Suffix) == backupId,
-      success: (sub) async => ret = sub,
-      fail: error,
-    );
-    return ret;
-  }
-  Future<Directory?> _findBackupId1({Directory? from, bool any = false, Future<void> Function(int)? error}) =>
-      _findId1Common(from, backupId: true, any: any, error: error);
-  Future<Directory?> _findId1({Directory? from, bool any = false, Future<void> Function(int)? error}) =>
-      _findId1Common(from, backupId: false, any: any, error: error);
-
-  Future<Directory?> _findHaxFolder([Directory? folder]) async {
-    folder ??= id0Folder;
-    if (id0Folder == null || _variant == null) {
+    if (from == null) {
       return null;
     }
-    final hax = Hax.find(_variant!);
-    final tmpId1HaxFolder = await id0Folder?.directory(hax?.id1);
-    if (tmpId1HaxFolder != null) {
-      id1HaxFolder = tmpId1HaxFolder;
+    await for (final sub in from.list()) {
+      if (!await FileSystemUtils.isDirectory(sub) || sub is! Directory) {
+        continue;
+      }
+      final Directory(:name) = sub;
+      if (kId1Regex.hasMatch(name)) {
+        (name.endsWith(kOldId1Suffix) ? r.backupFolders : r.normalFolders).add(sub);
+      }
+      if (Hax.checkIfHaxId1(name)) {
+        r.haxAlikeFolders.add(sub);
+      }
     }
-    return id1HaxFolder;
+    return r;
+  }
+
+  Future<bool> _checkIfId1(Directory folder) async {
+    return Hax.checkIfHaxId1(folder.name) || kId1Regex.hasMatch(folder.name);
   }
 
   Future<bool> _checkIfDummyDbs({bool silent = false}) async {
@@ -706,12 +697,9 @@ class HaxInstaller {
       }
 
       if (await id1Folder?.exists() != true) {
-        try {
-          await _pickId1FromId0();
-        } on FolderAssignmentException catch (e) {
-          alertCallback(e.type, additionalInfo: e.count);
-          return false;
-        }
+        // force user to check again
+        stageUpdateCallback(_stage = HaxStage.cardRemoved);
+        return false;
       }
 
       if (!await setupSDRoot()) {
@@ -818,13 +806,24 @@ class HaxInstaller {
     pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
     work: () async {
       talker.debug("Setup: Remove - ${_variant?.model} ${_variant?.version.major}.${_variant?.version.minor}");
-      await (await _findHaxFolder())?.delete(recursive: true);
-      final backupId1 = await _findBackupId1();
-      await backupId1?.renameInplace(backupId1.name.replaceAll(kOldId1Suffix, ''));
-      return true;
+      final id1 = await _checkAllId1();
+      if (id1 == null) {
+        return false;
+      }
+      for (var haxId1 in id1.haxAlikeFolders) {
+        await haxId1.delete(recursive: true);
+      }
+      if (id1.backupCount == 1) {
+        final backupId1 = id1.backup;
+        await backupId1.renameInplace(backupId1.name.replaceAll(kOldId1Suffix, ''));
+        return true;
+      }
+      return false;
     },
     done: (result, errorOut) async {
-      _variant = null;
+      if (result) {
+        _variant = null;
+      }
       _cleanupRemainingNonRootEvents = true;
       checkState(silent: true, skipSdRoot: true);
     },
@@ -847,10 +846,47 @@ class HaxInstaller {
   );
 }
 
-class DirectoryHaxPair {
-  DirectoryHaxPair(this.folder, this.hax);
-  Directory folder;
-  Hax hax;
+enum _Count { zero, one, more }
+typedef _Id1CountResult = ({_Count normal, _Count backup, _Count haxAlike});
+
+class _Id1CheckResult {
+  late final List<Directory> normalFolders;
+  late final List<Directory> backupFolders;
+  late final List<Directory> haxAlikeFolders;
+  _Id1CheckResult({
+    List<Directory>? normalFolders,
+    List<Directory>? backupFolders,
+    List<Directory>? haxAlikeFolders,
+  }) {
+    this.normalFolders = normalFolders ?? [];
+    this.backupFolders = backupFolders ?? [];
+    this.haxAlikeFolders = haxAlikeFolders ?? [];
+  }
+  int get normalCount => normalFolders.length;
+  int get backupCount => backupFolders.length;
+  int get haxAlikeCount => haxAlikeFolders.length;
+  Directory get normal {
+    if (normalCount != 1) throw const MultipleSomeId1Exception();
+    return normalFolders.first;
+  }
+  Directory get backup {
+    if (backupCount != 1) throw const MultipleSomeId1Exception();
+    return backupFolders.first;
+  }
+  Directory get haxAlike {
+    if (haxAlikeCount != 1) throw const MultipleSomeId1Exception();
+    return haxAlikeFolders.first;
+  }
+  static countResult(int count) => switch (count) {
+    0 => _Count.zero,
+    1 => _Count.one,
+    _ => _Count.more, // negative also falls here... but that shouldn't happen
+  };
+  _Id1CountResult get allCountResult => (
+    normal: countResult(normalCount),
+    backup: countResult(backupCount),
+    haxAlike: countResult(haxAlikeCount),
+  );
 }
 
 class FolderAssignmentException implements Exception {
@@ -859,8 +895,6 @@ class FolderAssignmentException implements Exception {
   const FolderAssignmentException(this.type, [this.count = 0]);
 }
 
-class MultipleHaxId1Exception implements Exception {
-  get type => HaxAlertType.multipleHaxId1;
-  final int count;
-  MultipleHaxId1Exception(this.count);
+class MultipleSomeId1Exception implements Exception {
+  const MultipleSomeId1Exception();
 }

@@ -435,10 +435,10 @@ class S {
     );
   }
 
-  /// `There's no ID0 folder.`
+  /// `Not valid Nintendo 3DS folder. There's no ID0 folder inside.`
   String get pick_no_id0 {
     return Intl.message(
-      'There\'s no ID0 folder.',
+      'Not valid Nintendo 3DS folder. There\'s no ID0 folder inside.',
       name: 'pick_no_id0',
       desc:
           'Message body of prompt when the folder they pick have no ID0 folder inside Nintendo 3DS folder, will append pick_common_n3ds_info at the end (with empty line)',
@@ -468,6 +468,28 @@ class S {
     );
   }
 
+  /// `Not valid Nintendo 3DS folder. There's no ID1 folder inside.`
+  String get setup_alert_no_id1 {
+    return Intl.message(
+      'Not valid Nintendo 3DS folder. There\'s no ID1 folder inside.',
+      name: 'setup_alert_no_id1',
+      desc:
+          'Message body of error prompt when there\'s no or multiple ID1 folder',
+      args: [],
+    );
+  }
+
+  /// `There's more than one ID1 folder. Please check.`
+  String get setup_alert_multiple_id1 {
+    return Intl.message(
+      'There\'s more than one ID1 folder. Please check.',
+      name: 'setup_alert_multiple_id1',
+      desc:
+          'Message body of error prompt when there\'s no or multiple ID1 folder',
+      args: [],
+    );
+  }
+
   /// `ID1 picked, please pick ID0 or Nintendo 3DS folder instead.\n(Pick the upper folder, which contains the folder that you just picked, instead.)`
   String get pick_picked_id1 {
     return Intl.message(
@@ -490,13 +512,24 @@ class S {
     );
   }
 
+  /// `Something goes very wrong inside your ID0 folder. Please check.`
+  String get pick_broken_id0_contents {
+    return Intl.message(
+      'Something goes very wrong inside your ID0 folder. Please check.',
+      name: 'pick_broken_id0_contents',
+      desc:
+          'Message body of prompt when it\'s very broken (only hax ID1 without ID1 backup or only ID1 backup but no hax ID1)',
+      args: [],
+    );
+  }
+
   /// `There's more than one hax ID1 ???`
   String get pick_multi_hax_id1 {
     return Intl.message(
       'There\'s more than one hax ID1 ???',
       name: 'pick_multi_hax_id1',
       desc:
-          'Not currently used, likely for message body of prompt when the ID0 folder contains multiple hax ID1 folder',
+          'Message body of prompt when the ID0 folder contains multiple hax ID1 folder',
       args: [],
     );
   }
@@ -747,17 +780,6 @@ class S {
       'Do SD Setup',
       name: 'setup_alert_sd_setup_action_setup',
       desc: 'Action button for doing auto SD root setup in file missing prompt',
-      args: [],
-    );
-  }
-
-  /// `There's no ID1 folder or multiple ID1 folders!`
-  String get setup_alert_no_or_more_id1 {
-    return Intl.message(
-      'There\'s no ID1 folder or multiple ID1 folders!',
-      name: 'setup_alert_no_or_more_id1',
-      desc:
-          'Message body of error prompt when there\'s no or multiple ID1 folder',
       args: [],
     );
   }

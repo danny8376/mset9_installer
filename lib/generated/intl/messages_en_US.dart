@@ -80,14 +80,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "menu_loose_root_check":
             MessageLookupByLibrary.simpleMessage("Loose Root Check"),
         "pick_alert_stage_name": MessageLookupByLibrary.simpleMessage("Folder"),
+        "pick_broken_id0_contents": MessageLookupByLibrary.simpleMessage(
+            "Something goes very wrong inside your ID0 folder. Please check."),
         "pick_common_n3ds_info": MessageLookupByLibrary.simpleMessage(
             "Ensure that you put SD card in the console and boot normally first.\nDon\'t try to create Nintendo 3DS folder yourself."),
         "pick_multi_hax_id1": MessageLookupByLibrary.simpleMessage(
             "There\'s more than one hax ID1 ???"),
         "pick_multiple_id0": MessageLookupByLibrary.simpleMessage(
             "There\'s more than one ID0 folder, please check."),
-        "pick_no_id0":
-            MessageLookupByLibrary.simpleMessage("There\'s no ID0 folder."),
+        "pick_no_id0": MessageLookupByLibrary.simpleMessage(
+            "Not valid Nintendo 3DS folder. There\'s no ID0 folder inside."),
         "pick_no_n3ds": MessageLookupByLibrary.simpleMessage(
             "There\'s no Nintendo 3DS folder."),
         "pick_picked_id1": MessageLookupByLibrary.simpleMessage(
@@ -145,12 +147,14 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Hax ID1 has been created."),
         "setup_alert_hax_id1_created_title":
             MessageLookupByLibrary.simpleMessage("Hax ID1 Created"),
+        "setup_alert_multiple_id1": MessageLookupByLibrary.simpleMessage(
+            "There\'s more than one ID1 folder. Please check."),
         "setup_alert_no_hax_available": MessageLookupByLibrary.simpleMessage(
             "Not supported for your system version"),
         "setup_alert_no_hax_available_subtitle":
             MessageLookupByLibrary.simpleMessage("Unsupported Version"),
-        "setup_alert_no_or_more_id1": MessageLookupByLibrary.simpleMessage(
-            "There\'s no ID1 folder or multiple ID1 folders!"),
+        "setup_alert_no_id1": MessageLookupByLibrary.simpleMessage(
+            "Not valid Nintendo 3DS folder. There\'s no ID1 folder inside."),
         "setup_alert_repick_variant_prompt":
             MessageLookupByLibrary.simpleMessage(
                 "Are you sure you want to pick different model/version?"),

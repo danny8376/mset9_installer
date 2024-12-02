@@ -149,8 +149,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Not supported for your system version"),
         "setup_alert_no_hax_available_subtitle":
             MessageLookupByLibrary.simpleMessage("Unsupported Version"),
-        "setup_alert_no_or_more_id1": MessageLookupByLibrary.simpleMessage(
-            "There\'s no ID1 folder or multiple ID1 folders!"),
         "setup_alert_repick_variant_prompt":
             MessageLookupByLibrary.simpleMessage(
                 "Are you sure you want to pick different model/version?"),
