@@ -4,7 +4,7 @@ api_token_env: CROWDIN_TOKEN
 preserve_hierarchy: true
 
 files:
-  - source: /lib/l10n/intl_en_US.arb
+  - source: /lib/l10n/intl_en.arb
     translation: /lib/l10n/intl_%two_letters_code%.arb
   - source: /assets/credit/en.md
     translation: /assets/credit/%two_letters_code%.md
