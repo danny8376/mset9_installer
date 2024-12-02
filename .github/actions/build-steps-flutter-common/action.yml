@@ -28,3 +28,4 @@ runs:
         flutter pub run intl_utils:generate
         flutter pub run build_runner build --delete-conflicting-outputs
         dart run tools/gen_app_name.dart
+        dart run tools/gen_locale_names.dart

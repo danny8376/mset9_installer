@@ -19,12 +19,10 @@ Future<void> cloneOrPull(String owner, String repo) async {
 }
 
 void main() async {
-  /*
   await Future.wait([
     cloneOrPull("umpirsky", "language-list"),
     cloneOrPull("umpirsky", "country-list"),
   ]);
-   */
   const langList = "$repoCacheDir/language-list";
   const countryList = "$repoCacheDir/country-list";
   final pubspecFile = File("pubspec.yaml");
