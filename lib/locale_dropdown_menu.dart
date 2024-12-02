@@ -3,9 +3,9 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:locale_names/locale_names.dart';
 
 import 'generated/l10n.dart';
+import 'generated/locale_names.dart';
 
 class LocaleDropdownMenu<T> extends DropdownMenu<T> {
   const LocaleDropdownMenu._({
@@ -731,14 +731,18 @@ class _RenderDropdownMenuBody extends RenderBox
         continue;
       }
       final double maxIntrinsicWidth = child.getMaxIntrinsicWidth(height);
+      /*
       // Add the width of leading Icon.
       if (child == lastChild) {
+        talker.debug("FUCK: add leading");
         width += maxIntrinsicWidth;
       }
       // Add the width of trailing Icon.
       if (child == childBefore(lastChild!)) {
+        talker.debug("FUCK: add trailing");
         width += maxIntrinsicWidth;
       }
+       */
       width = math.max(width, maxIntrinsicWidth);
       final _DropdownMenuBodyParentData childParentData = child.parentData! as _DropdownMenuBodyParentData;
       child = childParentData.nextSibling;

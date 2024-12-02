@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:xml/xml.dart'; // ignore: uri_does_not_exist, depend_on_referenced_packages
 import 'package:xml/xpath.dart'; // ignore: uri_does_not_exist, depend_on_referenced_packages
 import 'package:yaml/yaml.dart'; // ignore: uri_does_not_exist, depend_on_referenced_packages
@@ -47,11 +48,11 @@ void main() async {
       valuesPath = androidValuesPath;
     } else {
       final [lang, ...rest] = locale.split(RegExp(r'[_-]'));
-      final region = rest.firstOrNull;
-      if (region == null) {
+      final country = rest.firstOrNull;
+      if (country == null) {
         valuesPath = "$androidValuesPath-$lang";
       } else {
-        valuesPath = "$androidValuesPath-$lang-r$region";
+        valuesPath = "$androidValuesPath-$lang-r$country";
       }
     }
     final stringsXmlFile = File("$valuesPath/$stringsXmlName");

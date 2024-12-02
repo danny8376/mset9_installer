@@ -73,7 +73,7 @@ dependencies:
   #fwfh_url_launcher: ^0.9.1
   markdown_widget: ^2.3.2+6
   package_info_plus: ^5.0.1
-  locale_names: ^1.1.1
+  #locale_names: ^1.1.1
 
 dependency_overrides:
 # this is heavily broken, trash wasm support for now
@@ -103,6 +103,7 @@ dev_dependencies:
   json_serializable: ^6.8.0
   yaml: ^3.1.2
   xml: ^6.5.0
+  code_builder: ^4.10.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

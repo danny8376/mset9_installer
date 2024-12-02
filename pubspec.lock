@@ -146,7 +146,7 @@ packages:
     source: hosted
     version: "1.1.1"
   code_builder:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: code_builder
       sha256: f692079e25e7869c14132d39f223f8eec9830eb76131925143b2129c4bb01b37
@@ -446,14 +446,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
-  locale_names:
-    dependency: "direct main"
-    description:
-      name: locale_names
-      sha256: "7a89ca54072f4f13d0f5df5a9ba69337554bf2fd057d1dd2a238898f3f159374"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.1"
   logging:
     dependency: transitive
     description:

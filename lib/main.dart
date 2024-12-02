@@ -505,17 +505,19 @@ class _InstallerState extends State<Installer> {
       context: context,
       builder: (BuildContext dialogContext) => AlertDialog(
         title: Text(_s().menu_alert_language_title),
-        content: LayoutBuilder(
-          builder: (_, constraints) => LocaleDropdownMenu.fromSupportedLocales(
-            width: constraints.constrainWidth(),
-            initialSelection: settings.locale,
-            onSelected: (Locale? locale) {
-              if (locale == null) {
-                return;
-              }
-              settings.locale = locale;
-            },
-          ),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            LocaleDropdownMenu.fromSupportedLocales(
+              initialSelection: settings.locale,
+              onSelected: (Locale? locale) {
+                if (locale == null) {
+                  return;
+                }
+                settings.locale = locale;
+              },
+            ),
+          ],
         ),
         actions: <Widget>[
           _buildAlertButton(dialogContext, _s().menu_alert_language_action, null),
