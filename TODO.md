@@ -30,3 +30,4 @@
 
 - [x] Auto release with GitHub Actions
 - [x] Proper credits
+- [x] Make version selector more visible after model selected

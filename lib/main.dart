@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -1111,11 +1111,11 @@ class _VariantSelectorState extends State<VariantSelector> {
     );
   }
 
-  double _maxImageButtonSize(BuildContext context) {
+  double _maxImageButtonSize(BuildContext context, double scale) {
     return [
-      MediaQuery.of(context).size.width / 2,
-      (MediaQuery.of(context).size.height - 172) / 3,
-    ].reduce(min).floorToDouble();
+      (MediaQuery.of(context).size.width - 32) / 2,
+      (MediaQuery.of(context).size.height - 128 - 48 * scale) / 3,
+    ].reduce(math.min).floorToDouble();
   }
 
   Widget _genModelText(BuildContext context, String text) {
@@ -1128,8 +1128,8 @@ class _VariantSelectorState extends State<VariantSelector> {
     );
   }
 
-  Widget _genButton(BuildContext context, String assetName, Model model) {
-    final size = _maxImageButtonSize(context);
+  Widget _genButton(BuildContext context, String assetName, Model model, double scale) {
+    final size = _maxImageButtonSize(context, scale);
     return SizedBox(
       width: size,
       height: size,
@@ -1146,10 +1146,11 @@ class _VariantSelectorState extends State<VariantSelector> {
     );
   }
 
-  Widget _genDropdown(BuildContext context, int max, int Function()? value, Function(int?)? action) {
+  Widget _genDropdown(BuildContext context, double scale, int max, int Function()? value, Function(int?)? action) {
     final list = List<int>.generate(max + 2, (i) {
       return i == 0 ? -1 : max - i + 1;
     });
+    final fontSize = 32.0 * scale;
     return DropdownButton<int>(
       value: value?.call() ?? 0,
       //icon: const Icon(Icons.arrow_upward_rounded),
@@ -1157,15 +1158,15 @@ class _VariantSelectorState extends State<VariantSelector> {
         action(val);
         _checkReturn(context);
       }),
-      itemHeight: kMinInteractiveDimension,
+      itemHeight: math.max(fontSize * 1.5, kMinInteractiveDimension),
       menuMaxHeight: isMobile ? 480 : null,
       items: list.map<DropdownMenuItem<int>>((int value) {
         return DropdownMenuItem<int>(
           value: value,
           child: Text(
             value < 0 ? "" : value.toString().padLeft(2, ' '),
-            style: const TextStyle(
-              fontSize: 32,
+            style: TextStyle(
+              fontSize: fontSize,
               //fontWeight: FontWeight.bold,
             ),
           ),
@@ -1175,90 +1176,108 @@ class _VariantSelectorState extends State<VariantSelector> {
 
   @override
   Widget build(BuildContext context) {
+    const Duration duration = Duration(milliseconds: 500);
+    const Curve curve = Curves.easeIn;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(S.of(context).title_variant_selector),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                decoration: _modelBoxDecoration(Model.oldModel),
-                child: Column(
-                  children: [
-                    _genModelText(context, S.of(context).variant_selector_model_old),
-                    _genButton(
-                      context,
-                      "assets/images/old3ds.png",
-                      Model.oldModel,
-                    ),
-                    _genButton(
-                      context,
-                      "assets/images/old3dsxl.png",
-                      Model.oldModel,
-                    ),
-                    _genButton(
-                      context,
-                      "assets/images/old2ds.png",
-                      Model.oldModel,
-                    ),
-                  ],
+      body: TweenAnimationBuilder<double>(
+        duration: duration,
+        curve: curve,
+        tween: Tween<double>(begin: 1.0, end: _model == Model.unknown ? 1.0 : 1.5),
+        builder: (_, scale, __) => Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  decoration: _modelBoxDecoration(Model.oldModel),
+                  child: Column(
+                    children: [
+                      _genModelText(context, S.of(context).variant_selector_model_old),
+                      _genButton(
+                        context,
+                        "assets/images/old3ds.png",
+                        Model.oldModel,
+                        scale,
+                      ),
+                      _genButton(
+                        context,
+                        "assets/images/old3dsxl.png",
+                        Model.oldModel,
+                        scale,
+                      ),
+                      _genButton(
+                        context,
+                        "assets/images/old2ds.png",
+                        Model.oldModel,
+                        scale,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                decoration: _modelBoxDecoration(Model.newModel),
-                child: Column(
-                  children: [
-                    _genModelText(context, S.of(context).variant_selector_model_new),
-                    _genButton(
-                      context,
-                      "assets/images/new3ds.png",
-                      Model.newModel,
-                    ),
-                    _genButton(
-                      context,
-                      "assets/images/new3dsxl.png",
-                      Model.newModel,
-                    ),
-                    _genButton(
-                      context,
-                      "assets/images/new2dsxl.png",
-                      Model.newModel,
-                    ),
-                  ],
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  decoration: _modelBoxDecoration(Model.newModel),
+                  child: Column(
+                    children: [
+                      _genModelText(context, S.of(context).variant_selector_model_new),
+                      _genButton(
+                        context,
+                        "assets/images/new3ds.png",
+                        Model.newModel,
+                        scale,
+                      ),
+                      _genButton(
+                        context,
+                        "assets/images/new3dsxl.png",
+                        Model.newModel,
+                        scale,
+                      ),
+                      _genButton(
+                        context,
+                        "assets/images/new2dsxl.png",
+                        Model.newModel,
+                        scale,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(S.of(context).variant_selector_version),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _genDropdown(context, 11, () => _major, widget.extra ? (val) {
-                setState(() {
-                  _major = val ?? -1;
-                });
-              } : null),
-              const Text("."),
-              _genDropdown(context, 17, () => _minor, (val) {
-                setState(() {
-                  _minor = val ?? -1;
-                });
-              }),
-              const Text("."),
-              _genDropdown(context, 0, null, null),
-            ],
-          ),
-        ],
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  S.of(context).variant_selector_version,
+                  style: TextStyle(fontSize: 12.0 * ((scale - 1.0) / 3 + 1.0)),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                _genDropdown(context, scale, 11, () => _major, widget.extra ? (val) {
+                  setState(() {
+                    _major = val ?? -1;
+                  });
+                } : null),
+                const Text("."),
+                _genDropdown(context, scale, 17, () => _minor, (val) {
+                  setState(() {
+                    _minor = val ?? -1;
+                  });
+                }),
+                const Text("."),
+                _genDropdown(context, scale, 0, null, null),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
