@@ -9,6 +9,8 @@ inputs:
     default: '3.16.9'
   flutter-channel:
     default: 'stable'
+  retention-days:
+    default: 1
 
 runs:
   using: "composite"
@@ -46,3 +48,4 @@ runs:
       uses: actions/upload-pages-artifact@v3
       with:
         path: ./build/web/
+        retention-days: ${{ inputs.retention-days }}

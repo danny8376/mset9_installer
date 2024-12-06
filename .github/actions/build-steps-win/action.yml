@@ -4,6 +4,8 @@ description: Specific steps to build for Windows
 inputs:
   architecture:
     required: true
+  build-mode:
+    default: release
 
 env:
   shell: pwsh
@@ -20,13 +22,14 @@ runs:
 
     - name: Build for Windows
       shell: ${{ env.shell }}
-      run: flutter build windows
+      run: flutter build windows --${{ inputs.build-mode }}
 
     - name: Generate Windows zip
       shell: ${{ env.shell }}
       run: |
+        $outputFolder=("${{ inputs.build-mode }}" -replace '(?:^|_|-)(\p{L})', { $_.Groups[1].Value.ToUpper() })
         cd build
-        mv windows/${{ inputs.architecture }}/runner/Release mset9_installer
+        mv windows/${{ inputs.architecture }}/runner/$outputFolder mset9_installer
         Compress-Archive mset9_installer mset9_installer-windows_${{ inputs.architecture }}.zip
 
     - name: Upload Artifacts

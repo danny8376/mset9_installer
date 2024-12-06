@@ -8,6 +8,8 @@ inputs:
     required: true
   appimage-arch:
     required: true
+  build-mode:
+    default: release
   build-android:
     default: false
 
@@ -32,13 +34,13 @@ runs:
 
     - name: Build for Linux
       shell: ${{ env.shell }}
-      run: flutter build linux
+      run: flutter build linux --${{ inputs.build-mode }}
 
     - name: Generate Linux zip
       shell: ${{ env.shell }}
       run: |
         cd build
-        mv linux/${{ inputs.architecture }}/release/bundle mset9_installer
+        mv linux/${{ inputs.architecture }}/${{ inputs.build-mode }}/bundle mset9_installer
         zip -r mset9_installer-linux_${{ inputs.architecture }}.zip mset9_installer
 
     - name: Read pubspec.yaml

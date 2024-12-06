@@ -1,9 +1,9 @@
-name: CI Build Test
+name: Debug Build
 
 on:
   push:
     branches:
-      - ci_build_test
+      - debug_build
 
 env:
   FLUTTER_VERSION: '3.16.9'
@@ -29,6 +29,7 @@ jobs:
         uses: ./.github/actions/build-steps-win
         with:
           architecture: x64
+          build-mode: debug
 
   build-with-macos:
     name: Build with macOS
@@ -47,6 +48,8 @@ jobs:
 
       - name: Build Steps for macOS
         uses: ./.github/actions/build-steps-macos
+        with:
+          build-mode: debug
 
   build-with-linux:
     name: Build with Linux
@@ -69,6 +72,7 @@ jobs:
           architecture: x64
           apt-arch: amd64
           appimage-arch: x86_64
+          build-mode: debug
 
   build-for-web:
     name: Build for web
@@ -81,4 +85,5 @@ jobs:
       - name: Build Steps for web
         uses: ./.github/actions/build-steps-web
         with:
+          shell: bash
           retention-days: 90

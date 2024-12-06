@@ -1,6 +1,10 @@
 name: Build Steps - macOS
 description: Specific steps to build for macOS
 
+inputs:
+  build-mode:
+    default: release
+
 env:
   shell: bash
 
@@ -13,18 +17,19 @@ runs:
 
     - name: Build for macOS
       shell: ${{ env.shell }}
-      run: flutter build macos
+      run: flutter build macos --${{ inputs.build-mode }}
 
     - name: Generate macOS zip
       shell: ${{ env.shell }}
       run: |
+        outputFolder=$(echo "${{ inputs.build-mode }}" | sed -r 's/(^|-|_)(\w)/\U\2/g')
         cd build
-        mv macos/Build/Products/Release/*.app .
+        mv macos/Build/Products/$outputFolder/*.app .
         zip -r mset9_installer-macos.zip *.app
 
     - name: Build IPA
       shell: ${{ env.shell }}
-      run: flutter build ipa --no-codesign
+      run: flutter build ipa --no-codesign --${{ inputs.build-mode }}
 
     - name: Generate Unsigned IPA
       shell: ${{ env.shell }}
