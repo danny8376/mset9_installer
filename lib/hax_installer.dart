@@ -477,6 +477,7 @@ class HaxInstaller {
       return null;
     }
     await for (final sub in from.list()) {
+      talker.debug("Check ID1: Listing: ${sub.name}");
       if (!await FileSystemUtils.isDirectory(sub) || sub is! Directory) {
         continue;
       }
