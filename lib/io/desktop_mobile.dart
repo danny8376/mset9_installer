@@ -6,7 +6,7 @@ import 'dart:typed_data';
 //import 'package:http/http.dart' show ByteStream, Client;
 import 'package:http/http.dart' show Client;
 import 'package:cronet_http/cronet_http.dart';
-import 'package:cupertino_http/cupertino_http.dart';
+//import 'package:cupertino_http/cupertino_http.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:http/io_client.dart';
 import 'package:path/path.dart' as p;
@@ -119,14 +119,14 @@ Client _httpClient() {
     // */
     return CronetClient.defaultCronetEngine();
   }
-  if (Platform.isIOS || Platform.isMacOS) {
+  //if (Platform.isIOS || Platform.isMacOS) {
     /*
     final config = URLSessionConfiguration.ephemeralSessionConfiguration()
       ..cache = URLCache.withCapacity(diskCapacity: _httpDiskCacheSize * 1024 * 1024);
     return CupertinoClient.fromSessionConfiguration(config);
     // */
-    return CupertinoClient.defaultSessionConfiguration();
-  }
+  //  return CupertinoClient.defaultSessionConfiguration();
+  //}
   return IOClient();
 }
 
