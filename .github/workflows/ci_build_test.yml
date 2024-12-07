@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - ci_build_test
+      - ci_build_test_*
 
 env:
   FLUTTER_VERSION: '3.16.9'
