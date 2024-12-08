@@ -219,5 +219,9 @@ class File extends FileSystemEntity {
 class FileSystemException implements Exception {
   final String message;
   final String path;
-  const FileSystemException(this.message, this.path);
+  const FileSystemException(this.path, [this.message = ""]);
+}
+
+class PathNotFoundException extends FileSystemException {
+  const PathNotFoundException(String path, [String message = ""]) : super(path, message);
 }

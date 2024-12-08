@@ -60,5 +60,9 @@ class FileSystemException implements Exception {
   String get path => throw UnimplementedError('Unsupported');
 }
 
+class PathNotFoundException extends FileSystemException {
+}
+
+
 class Client {
 }
