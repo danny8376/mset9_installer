@@ -78,7 +78,13 @@ class Hax {
       return String.fromCharCodes([((low & 0xFF) << 8) | (low >> 8), ((high & 0xFF) << 8) | (high >> 8)]);
     }
   }
-  static String fixHangul(String str) {
+  static String fixHaxPathName(String name) {
+    if (isDarwin) {
+      name = _fixHangul(name);
+    }
+    return name;
+  }
+  static String _fixHangul(String str) {
     //bool isJamo(int code) => code >= 0x1100 && code <= 0x11FF;
     const choBase = 0x1100;
     bool isCho(int code) => code >= choBase && code <= 0x1112;
@@ -123,8 +129,8 @@ class Hax {
     }
   }
   static bool checkIfHaxId1(String id1, [bool skipFixes = false]) {
-    if (isDarwin && !skipFixes) {
-      id1 = fixHangul(id1);
+    if (!skipFixes) {
+      id1 = fixHaxPathName(id1);
     }
     if (id1.length != 32) return false;
     if (!id1.startsWith(kCode) && !id1.startsWith(kLegacyCode)) return false;
@@ -132,9 +138,7 @@ class Hax {
     return true;
   }
   static Hax? findById1(String id1) {
-    if (isDarwin) {
-      id1 = fixHangul(id1);
-    }
+    id1 = fixHaxPathName(id1);
     if (!checkIfHaxId1(id1, true)) return null;
     try {
       final m = id1.substring(20, 24);
