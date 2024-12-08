@@ -1,6 +1,7 @@
 bool get isDesktop => throw UnimplementedError('Unsupported');
 bool get isMobile => throw UnimplementedError('Unsupported');
 bool get isLinux => throw UnimplementedError('Unsupported');
+bool get isDarwin => throw UnimplementedError('Unsupported');
 bool get isSupported => throw UnimplementedError('Unsupported');
 bool get isLegacyCodeCompatible => throw UnimplementedError('Unsupported');
 bool get canAccessParentOfPicked => throw UnimplementedError('Unsupported');

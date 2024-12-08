@@ -78,6 +78,44 @@ class Hax {
       return String.fromCharCodes([((low & 0xFF) << 8) | (low >> 8), ((high & 0xFF) << 8) | (high >> 8)]);
     }
   }
+  static String fixHangul(String str) {
+    //bool isJamo(int code) => code >= 0x1100 && code <= 0x11FF;
+    const choBase = 0x1100;
+    bool isCho(int code) => code >= choBase && code <= 0x1112;
+    const jungBase = 0x1161;
+    bool isJung(int code) => code >= jungBase && code <= 0x1175;
+    const jongBase = 0x11A8;
+    bool isJong(int code) => code >= jongBase && code <= 0x11C2;
+    final newStr = StringBuffer();
+    var syllableCode = 0;
+    void appendSyllable() {
+      newStr.write(String.fromCharCode(syllableCode + 44032));
+      syllableCode = 0;
+    }
+    for(int i = 0; i < str.length; i++) {
+      final code = str.codeUnitAt(i);
+      if (isCho(code)) {
+        print("cho@$i");
+        if (syllableCode != 0) {
+          appendSyllable();
+        }
+        syllableCode += (code - choBase) * 588;
+      } else if (isJung(code)) {
+        print("jung@$i");
+        syllableCode += (code - jungBase) * 28;
+      } else if (isJong(code)) {
+        print("jong@$i");
+        syllableCode += code - jongBase;
+        appendSyllable();
+      } else {
+        if (syllableCode != 0) {
+          appendSyllable();
+        }
+        newStr.write(str[i]);
+      }
+    }
+    return newStr.toString();
+  }
   static Hax? find(Variant variant) => findByMV(variant.model, variant.version);
   static Hax? findByMV(Model model, Version version, [bool extra = false]) {
     if (!extra && extraVersions.allows(version)) return null;
@@ -88,6 +126,9 @@ class Hax {
     }
   }
   static bool checkIfHaxId1(String id1) {
+    if (isDarwin) {
+      id1 = fixHangul(id1);
+    }
     if (id1.length != 32) return false;
     if (!id1.startsWith(kCode) && !id1.startsWith(kLegacyCode)) return false;
     if (!id1.endsWith(kSdmcB9)) return false;
