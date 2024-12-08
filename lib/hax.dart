@@ -84,7 +84,7 @@ class Hax {
     bool isCho(int code) => code >= choBase && code <= 0x1112;
     const jungBase = 0x1161;
     bool isJung(int code) => code >= jungBase && code <= 0x1175;
-    const jongBase = 0x11A8;
+    const jongBase = 0x11A8; // this one start with 1
     bool isJong(int code) => code >= jongBase && code <= 0x11C2;
     final newStr = StringBuffer();
     var syllableCode = 0;
@@ -95,17 +95,14 @@ class Hax {
     for(int i = 0; i < str.length; i++) {
       final code = str.codeUnitAt(i);
       if (isCho(code)) {
-        print("cho@$i");
         if (syllableCode != 0) {
           appendSyllable();
         }
         syllableCode += (code - choBase) * 588;
       } else if (isJung(code)) {
-        print("jung@$i");
         syllableCode += (code - jungBase) * 28;
       } else if (isJong(code)) {
-        print("jong@$i");
-        syllableCode += code - jongBase;
+        syllableCode += code - jongBase + 1; // this one start with 1
         appendSyllable();
       } else {
         if (syllableCode != 0) {
