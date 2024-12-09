@@ -814,10 +814,8 @@ class HaxInstaller {
         try {
           await haxId1.delete(recursive: true);
         } on PathNotFoundException {
-          try {
-            final fixed = await haxId1.parent.directory(Hax.fixHaxPathName(haxId1.name));
-            await fixed?.delete(recursive: true);
-          } on PathNotFoundException { // ignore
+          if (isDarwin) {
+            await Process.run('rm', ['-rf', haxId1.path]);
           }
         }
       }
