@@ -12,8 +12,11 @@ import '../talker.dart';
 
 final _safUtil = SafUtil();
 final _safStream = SafStream();
+const _checker = MethodChannel('moe.saru.homebrew.console3ds.mset9_installer/checker');
 const _watcher = MethodChannel('moe.saru.homebrew.console3ds.mset9_installer/watcher');
 bool _watcherInitialized = false;
+
+Future<bool?> androidCheckIfArc() => _checker.invokeMethod<bool>("checkIfArc");
 
 Future<Directory?> pickFolderAndroid() async {
   final picked = await _safUtil.openDirectory(writePermission: true);

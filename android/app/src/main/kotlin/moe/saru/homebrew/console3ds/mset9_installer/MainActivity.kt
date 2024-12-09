@@ -1,9 +1,12 @@
 package moe.saru.homebrew.console3ds.mset9_installer
 
+import android.content.pm.PackageManager
 import android.database.ContentObserver
 import android.net.Uri
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import androidx.annotation.RequiresApi
 import androidx.documentfile.provider.DocumentFile
 import io.flutter.Log
 import io.flutter.embedding.android.FlutterActivity
@@ -11,17 +14,36 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.io.File
 
+
 class MainActivity: FlutterActivity() {
     companion object {
-        private const val CHANNEL = "moe.saru.homebrew.console3ds.mset9_installer/watcher"
+        private const val CHECKER_CHANNEL = "moe.saru.homebrew.console3ds.mset9_installer/checker"
+        private const val WATCHER_CHANNEL = "moe.saru.homebrew.console3ds.mset9_installer/watcher"
     }
 
     private val watchers = mutableMapOf<String, ContentObserver>()
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        val channel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, Companion.CHANNEL)
-        channel.setMethodCallHandler { call, result ->
+        val checkerChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, Companion.CHECKER_CHANNEL)
+        checkerChannel.setMethodCallHandler { call, result ->
+            try {
+                when (call.method) {
+                    "checkIfArc" -> {
+                        val pm = context.packageManager
+                        val isArc = pm.hasSystemFeature("org.chromium.arc") || pm.hasSystemFeature("org.chromium.arc.device_management")
+                        result.success(isArc)
+                    }
+                    else -> result.notImplemented()
+                }
+            } catch (e: Exception) {
+                Log.d("Watcher", "Exception: $e")
+                val name = e.javaClass.getCanonicalName() ?: "Unknown"
+                result.error(name, e.message, e.stackTraceToString())
+            }
+        }
+        val watcherChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, Companion.WATCHER_CHANNEL)
+        watcherChannel.setMethodCallHandler { call, result ->
             try {
                 when (call.method) {
                     "watch" -> {
@@ -34,7 +56,7 @@ class MainActivity: FlutterActivity() {
                             override fun onChange(selfChange: Boolean, uri: Uri?) {
                                 super.onChange(selfChange, uri)
                                 fun invokeMethod(method: String, args: Any?) {
-                                    channel.invokeMethod(method, args)
+                                    watcherChannel.invokeMethod(method, args)
                                 }
                                 Log.d("Watcher", "event on: ${uri.toString()}");
                                 val monitoringDoc =

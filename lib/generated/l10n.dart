@@ -986,6 +986,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Failed to remove hax ID1 automatically due to bug in ChromeOS Android implementation.\nYou can try removing it again.\nIf it keep failing, you'll need to remove it manually.`
+  String get remove_arc_hax_id1_removal_failure {
+    return Intl.message(
+      'Failed to remove hax ID1 automatically due to bug in ChromeOS Android implementation.\nYou can try removing it again.\nIf it keep failing, you\'ll need to remove it manually.',
+      name: 'remove_arc_hax_id1_removal_failure',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

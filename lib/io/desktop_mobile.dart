@@ -25,6 +25,7 @@ export 'package:archive/archive_io.dart' show ZipDecoder;
 bool get isDesktop => Platform.isWindows || Platform.isMacOS || Platform.isLinux;
 bool get isMobile => Platform.isAndroid || Platform.isIOS;
 bool get isLinux => Platform.isLinux;
+Future<bool> get isArc async => Platform.isAndroid && await androidCheckIfArc() == true;
 const bool isSupported = true;
 bool get isLegacyCodeCompatible => !Platform.isMacOS && !Platform.isIOS;
 bool get canAccessParentOfPicked => isDesktop;

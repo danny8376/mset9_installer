@@ -14,6 +14,7 @@ int _chunkSize = 1 * 1024 * 1024;
 const bool isDesktop = false;
 const bool isMobile = false;
 const bool isLinux = false;
+Future<bool> get isArc async => false;
 bool get isSupported => FileSystemAccess.supported;
 const bool isLegacyCodeCompatible = false;
 const bool canAccessParentOfPicked = false;

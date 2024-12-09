@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
 
 import 'console.dart';
@@ -34,6 +35,7 @@ enum HaxAlertType {
   extdataFolderMissing,
   homeMenuExtdataMissing,
   miiMakerExtdataMissing,
+  arcHaxId1RemovalFailure,
 }
 //enum HaxExceptionType {  }
 
@@ -107,7 +109,8 @@ class HaxInstaller {
         //talker.debug("Check: Checking state", "StackTrace", StackTrace.current);
         if (originalStage == HaxStage.folderPickedWithError) {
           try {
-            await checkAndAssignFolders(sdRoot!);
+            final folder = sdRoot ?? n3dsFolder ?? id0Folder;
+            await checkAndAssignFolders(folder!);
           } on FolderAssignmentException catch (e) {
             alertCallback(e.type, additionalInfo: e.count);
           }
@@ -166,14 +169,25 @@ class HaxInstaller {
             checkInjectState(silent: silent, skipSdRoot: skipSdRoot, sdFailed: sdFailed);
           case (normal: _Count.zero, backup: _Count.one, haxAlike: _Count.zero):
             talker.error("Check: Missing hax ID1 but have backup ID1");
+            // TODO: show alert about only have backup ID1, can safely fix it
+            //alertCallback(HaxAlertType.);
             stageUpdateCallback(_stage = HaxStage.broken);
           case (normal: _, backup: _, haxAlike: _Count.more):
             talker.error("Check: Multiple hax ID1 ???");
             alertCallback(HaxAlertType.multipleHaxId1, additionalInfo: id1.haxAlikeCount);
             stageUpdateCallback(_stage = HaxStage.broken);
+          case (normal: _, backup: _Count.zero, haxAlike: _Count.one):
+            // id1 exist with one hax
+            if (await isArc) {
+              // Thanks Google for your shittiest product, ChromeOS
+              // due to possibility of unable to remove hax ID1, we need special care here
+              alertCallback(HaxAlertType.arcHaxId1RemovalFailure);
+            } else {
+              // TODO: show alert about hax ID1 exists, can safely fix it
+              //alertCallback(HaxAlertType.);
+            }
+            stageUpdateCallback(_stage = HaxStage.broken);
           // !!! remember to move case up if any handles differently !!!
-          case (normal: _, backup: _Count.zero, haxAlike: _):
-            // id1 exist with multiple hax
           case (normal: _Count.zero, backup: _Count.more, haxAlike: _Count.zero):
             // multiple backup
           case (normal: _Count.more, backup: _, haxAlike: _):
@@ -800,34 +814,68 @@ class HaxInstaller {
     },
   );
 
-  Future<bool> removeHaxId1() => _exceptionGuard(
-    faultResult: false,
+  Future<bool> removeHaxId1() async => await _exceptionGuard<HaxId1RemovalResult>(
+    faultResult: HaxId1RemovalResult.failed,
     switchStageToDoingWork: true,
     pauseFolderAndDriveUpdateWatcherWhenDoingWork: true,
     work: () async {
       talker.debug("Setup: Remove - ${_variant?.model} ${_variant?.version.major}.${_variant?.version.minor}");
       final id1 = await _checkAllId1();
       if (id1 == null) {
+        return HaxId1RemovalResult.failed;
+      }
+      Future<bool> subTaskRestoreId1() async {
+        if (id1.backupCount == 1) {
+          final backupId1 = id1.backup;
+          await backupId1.renameInplace(backupId1.name.replaceAll(kOldId1Suffix, ''));
+          return true;
+        }
         return false;
       }
-      for (var haxId1 in id1.haxAlikeFolders) {
-        await haxId1.delete(recursive: true);
+      Future<void> subTaskRemoveHaxId1() async {
+        for (var haxId1 in id1.haxAlikeFolders) {
+          await haxId1.delete(recursive: true);
+        }
       }
-      if (id1.backupCount == 1) {
-        final backupId1 = id1.backup;
-        await backupId1.renameInplace(backupId1.name.replaceAll(kOldId1Suffix, ''));
-        return true;
+      if (kIsWeb) {
+        // remove hax id1 first as folder rename is painfully slow
+        // also, web doesn't have real folder rename, so the fat entry order will change
+        // thus, even if we restore id1 first, it still won't be picked by 3DS when hax ID1 still exist
+        await subTaskRemoveHaxId1();
+        await subTaskRestoreId1();
+        return HaxId1RemovalResult.succeed;
+      } else {
+        // otherwise, restore id1 first,
+        // so original ID1 will likely be picked by 3DS even when hax ID1 still exist
+        await subTaskRestoreId1();
+        await subTaskRemoveHaxId1();
+        if (await isArc) {
+          // Thanks Google for your shittiest product, ChromeOS
+          // why such simply api can failed, and even silently so we don't know?
+          // so check if hax ID1 is removed, if not, guide them to remove manually
+          // or hopefully, user ID1 is renamed back so finalizing script can remove hax ID1
+          for (var haxId1 in id1.haxAlikeFolders) {
+            if (await haxId1.exists()) {
+              return HaxId1RemovalResult.arcFailed;
+            }
+          }
+        }
+        return HaxId1RemovalResult.succeed;
       }
-      return false;
     },
     done: (result, errorOut) async {
-      if (result) {
+      if (result == HaxId1RemovalResult.succeed) {
         _variant = null;
       }
       _cleanupRemainingNonRootEvents = true;
-      checkState(silent: true, skipSdRoot: true);
+      if (result == HaxId1RemovalResult.arcFailed) {
+        alertCallback(HaxAlertType.arcHaxId1RemovalFailure);
+        stageUpdateCallback(_stage = HaxStage.broken);
+      } else {
+        checkState(silent: true, skipSdRoot: true);
+      }
     },
-  );
+  ) == HaxId1RemovalResult.succeed;
 
   Future<bool> checkIfCfwInstalled() => _exceptionGuard(
     faultResult: false,
@@ -898,3 +946,5 @@ class FolderAssignmentException implements Exception {
 class MultipleSomeId1Exception implements Exception {
   const MultipleSomeId1Exception();
 }
+
+enum HaxId1RemovalResult { succeed, arcFailed, failed }
