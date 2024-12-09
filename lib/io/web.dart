@@ -225,3 +225,7 @@ class FileSystemException implements Exception {
 class PathNotFoundException extends FileSystemException {
   const PathNotFoundException(String path, [String message = ""]) : super(path, message);
 }
+
+class Process {
+  static void run (String program, List<String> args) => throw UnimplementedError('Not supported');
+}
