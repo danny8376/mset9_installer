@@ -45,3 +45,9 @@ app.*.map.json
 
 # FVM Version Cache
 .fvm/
+
+# Kotlin multiple platform stuff
+.gradle/
+.kotlin/
+composeApp/
+local.properties
