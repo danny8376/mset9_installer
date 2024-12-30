@@ -3,7 +3,6 @@
 ### Todo
 
 - [ ] Check for wrongly placed root files (b9 in Nintendo 3DS)
-- [ ] Fix crash when there's file in Nintendo 3DS
 - [ ] Actually check Windows 7 support
 - [ ] Copy valid title database back to normal id1 after removed if there's no existing one
 - [ ] Show current status clearly in app
@@ -34,3 +33,4 @@
 - [x] Auto release with GitHub Actions
 - [x] Proper credits
 - [x] Make version selector more visible after model selected
+- [x] Fix crash when there's file in Nintendo 3DS
