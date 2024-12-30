@@ -269,10 +269,10 @@ class _File extends _FileSystemEntity implements File, ExtendedFile {
   }
 
   @override
-  Future<bool> get isDirectoryImpl async => true;
+  Future<bool> get isDirectoryImpl async => false;
 
   @override
-  Future<bool> get isFileImpl async => false;
+  Future<bool> get isFileImpl async => true;
 
   @override
   Future<File> copy(String newPath) => throw UnimplementedError();
