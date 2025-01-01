@@ -76,6 +76,11 @@ dependencies:
   #locale_names: ^1.1.1
 
 dependency_overrides:
+  # fix for windows 7 build
+  #share_plus:
+  #  git:
+  #    url: https://github.com/danny8376/flutter_plus_plugins
+  #    ref: share_plus-v7.2.1-no-win-native-flatten
 # this is heavily broken, trash wasm support for now
 # maybe we should upgrade whole project to 3.22.3 and downgrade for win7 build only?
 #  # hack... for making web compatible with flutter 3.22.3 & talker_flutter

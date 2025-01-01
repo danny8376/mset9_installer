@@ -16,6 +16,10 @@ runs:
     - name: Install NASM
       uses: ilammy/setup-nasm@v1
 
+    - name: Fix Git for Windows Long Path
+      shell: ${{ env.shell }}
+      run: git config --system core.longpaths true
+
     - name: Enable Windows Build
       shell: ${{ env.shell }}
       run: flutter config --enable-windows-desktop
@@ -31,6 +35,31 @@ runs:
         cd build
         mv windows/${{ inputs.architecture }}/runner/$outputFolder mset9_installer
         Compress-Archive mset9_installer mset9_installer-windows_${{ inputs.architecture }}.zip
+        rm -Recurse mset9_installer
+
+    - name: Dependency Override for Windows (pre-10)
+      uses: fjogeleit/yaml-update-action@main
+      with:
+        valueFile: 'pubspec.yaml'
+        changes: >-
+          {
+            "dependency_overrides.share_plus.git.url":"https://github.com/danny8376/flutter_plus_plugins",
+            "dependency_overrides.share_plus.git.ref":"share_plus-v7.2.1-no-win-native-flatten"
+          }
+        commitChange: false
+
+    - name: Build for Windows (pre-10)
+      shell: ${{ env.shell }}
+      run: flutter build windows --${{ inputs.build-mode }}
+
+    - name: Generate Windows (pre-10) zip
+      shell: ${{ env.shell }}
+      run: |
+        $outputFolder=("${{ inputs.build-mode }}" -replace '(?:^|_|-)(\p{L})', { $_.Groups[1].Value.ToUpper() })
+        cd build
+        mv windows/${{ inputs.architecture }}/runner/$outputFolder mset9_installer
+        Compress-Archive mset9_installer mset9_installer-windows-pre-10_${{ inputs.architecture }}.zip
+        rm -Recurse mset9_installer
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
@@ -38,3 +67,4 @@ runs:
         name: Releases-with-Windows-${{ inputs.architecture }}
         path: |
           build/mset9_installer-windows_${{ inputs.architecture }}.zip
+          build/mset9_installer-windows-pre-10_${{ inputs.architecture }}.zip

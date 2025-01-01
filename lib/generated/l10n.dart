@@ -518,7 +518,7 @@ class S {
       'Something goes very wrong inside your ID0 folder. Please check.',
       name: 'pick_broken_id0_contents',
       desc:
-          'Message body of prompt when it\'s very broken (only hax ID1 without ID1 backup or only ID1 backup but no hax ID1)',
+          'Message body of prompt when it\'s very broken (multiple cases that ID1 doesn\'t match normal expectation)',
       args: [],
     );
   }
