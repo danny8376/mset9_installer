@@ -177,7 +177,7 @@
   },
   "pick_broken_id0_contents": "ID0 有問題，請確認",
   "@pick_broken_id0_contents": {
-    "description": "Message body of prompt when it's very broken (only hax ID1 without ID1 backup or only ID1 backup but no hax ID1)"
+    "description": "Message body of prompt when it's very broken (multiple cases that ID1 doesn't match normal expectation)"
   },
   "pick_multi_hax_id1": "有多個漏洞 ID1 !?",
   "@pick_multi_hax_id1": {
