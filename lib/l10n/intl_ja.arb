@@ -177,7 +177,7 @@
   },
   "pick_broken_id0_contents": "Something goes very wrong inside your ID0 folder. Please check.",
   "@pick_broken_id0_contents": {
-    "description": "Message body of prompt when it's very broken (only hax ID1 without ID1 backup or only ID1 backup but no hax ID1)"
+    "description": "Message body of prompt when it's very broken (multiple cases that ID1 doesn't match normal expectation)"
   },
   "pick_multi_hax_id1": "1つ以上のハックスID1がありますか?",
   "@pick_multi_hax_id1": {
