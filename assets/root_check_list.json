@@ -103,6 +103,7 @@
     "boot.firm#2,0": {
       "type": "essential",
       "hash": [
+        "ad0d98d31df87e67e8a02410f7e05602a36b1a4e1865d17073f8ff796ad84001",
         "d380eff72c437e1de1bbc0398a8d55fedb36a39927c1e2fb6305b8962d48a872"
       ],
       "src": [ "archive://Luma3DS.zip#boot.firm" ]
