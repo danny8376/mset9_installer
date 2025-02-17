@@ -98,6 +98,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "remove_alert_confirm": MessageLookupByLibrary.simpleMessage(
             "看起來你還沒成功安裝 boot9strap，確定要移除 MSET9 嗎？\n\n如果你選擇了錯誤的型號或系統版本，可以點選\"重新選擇\"再次選取"),
         "remove_alert_stage_name": MessageLookupByLibrary.simpleMessage("移除"),
+        "remove_arc_hax_id1_removal_failure": MessageLookupByLibrary.simpleMessage(
+            "Failed to remove hax ID1 automatically due to bug in ChromeOS Android implementation.\nYou can try removing it again.\nIf it keep failing, you\'ll need to remove it manually."),
         "remove_loading": MessageLookupByLibrary.simpleMessage("移除 MSET9 ..."),
         "sd_setup_loading": MessageLookupByLibrary.simpleMessage("正在設置 SD ..."),
         "setup_alert_disclaimer": MessageLookupByLibrary.simpleMessage(
