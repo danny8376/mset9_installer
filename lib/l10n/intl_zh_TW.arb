@@ -355,7 +355,7 @@
   "@remove_alert_action_repick": {
     "description": "Action button for re-picking variant inside removal confirmation prompt"
   },
-  "remove_arc_hax_id1_removal_failure": "Failed to remove hax ID1 automatically due to bug in ChromeOS Android implementation.\nYou can try removing it again.\nIf it keep failing, you'll need to remove it manually.",
+  "remove_arc_hax_id1_removal_failure": "因為ChromeOS的Android實作中的錯誤導致無法移除漏洞ID1，你可以再度嘗試移除。如果重試後問題仍持續，請改為手動移除。",
   "@remove_arc_hax_id1_removal_failure": {
     "description": ""
   },
