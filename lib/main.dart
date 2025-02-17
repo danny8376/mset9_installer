@@ -845,7 +845,7 @@ class _InstallerState extends State<Installer> {
       case HaxAlertType.miiMakerExtdataMissing:
         _showAlert(_s().setup_alert_extdata_mii_maker, type: error, stage: stage, subtitle: extdata, buttonBuilder: troubleshooting);
       case HaxAlertType.arcHaxId1RemovalFailure:
-        _showAlert(_s().remove_arc_hax_id1_removal_failure, type: error, stage: AlertStage.remove, buttonBuilder: troubleshooting); // TODO: special troubleshooting
+        _showAlert(_s().remove_arc_hax_id1_removal_failure, type: error, stage: AlertStage.remove, buttonBuilder: troubleshooting); // TODO: special troubleshooting, maybe remove hax id1 with web version instead
     }
   }
 

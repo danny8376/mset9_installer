@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:mset9_installer/io/desktop_mobile.dart';
 import 'package:saf_util/saf_util.dart';
 import 'package:saf_util/saf_util_platform_interface.dart' show SafDocumentFile;
 import 'package:saf_stream/saf_stream.dart';
@@ -238,7 +239,20 @@ class _Directory extends _FileSystemEntity implements Directory, ExtendedDirecto
   }
 
   @override
-  Future<Directory> renameInplace(String newName) async => _Directory(await _safUtil.rename(path, true, newName));
+  Future<Directory> renameInplace(String newName) async {
+    try {
+      return _Directory(await _safUtil.rename(path, true, newName));
+    } on PlatformException {
+      // special handle thanks to ChromeOS shitty android implementation
+      if (await androidCheckIfArc() == true) {
+        final child = await _safUtil.child(parent.path, [newName]);
+        if (child != null) {
+          return _Directory(child);
+        }
+      }
+      rethrow;
+    }
+  }
 
   @override
   Future<Directory> renameAddSuffix(String suffix) => renameInplace("$name$suffix");
