@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:mset9_installer/io/desktop_mobile.dart';
 import 'package:saf_util/saf_util.dart';
 import 'package:saf_util/saf_util_platform_interface.dart' show SafDocumentFile;
 import 'package:saf_stream/saf_stream.dart';
@@ -12,8 +13,11 @@ import '../talker.dart';
 
 final _safUtil = SafUtil();
 final _safStream = SafStream();
+const _checker = MethodChannel('moe.saru.homebrew.console3ds.mset9_installer/checker');
 const _watcher = MethodChannel('moe.saru.homebrew.console3ds.mset9_installer/watcher');
 bool _watcherInitialized = false;
+
+Future<bool?> androidCheckIfArc() => _checker.invokeMethod<bool>("checkIfArc");
 
 Future<Directory?> pickFolderAndroid() async {
   final picked = await _safUtil.openDirectory(writePermission: true);
@@ -235,7 +239,20 @@ class _Directory extends _FileSystemEntity implements Directory, ExtendedDirecto
   }
 
   @override
-  Future<Directory> renameInplace(String newName) async => _Directory(await _safUtil.rename(path, true, newName));
+  Future<Directory> renameInplace(String newName) async {
+    try {
+      return _Directory(await _safUtil.rename(path, true, newName));
+    } on PlatformException {
+      // special handle thanks to ChromeOS shitty android implementation
+      if (await androidCheckIfArc() == true) {
+        final child = await _safUtil.child(parent.path, [newName]);
+        if (child != null) {
+          return _Directory(child);
+        }
+      }
+      rethrow;
+    }
+  }
 
   @override
   Future<Directory> renameAddSuffix(String suffix) => renameInplace("$name$suffix");
