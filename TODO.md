@@ -26,11 +26,10 @@
 
 ### In Progress
 
-- [ ] Replace and phasing out MSET9Installer4Android on Play Store
-
 ### Done ✓
 
 - [x] Auto release with GitHub Actions
 - [x] Proper credits
 - [x] Make version selector more visible after model selected
 - [x] Fix crash when there's file in Nintendo 3DS
+- [x] Replace and phasing out MSET9Installer4Android on Play Store
