@@ -29,8 +29,8 @@ enum AlertType { error, warning, info, confirm }
 enum AlertStage { folder, setup, remove }
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   if (isDesktop) {
-    WidgetsFlutterBinding.ensureInitialized();
     await windowManager.ensureInitialized();
   }
   runApp(
