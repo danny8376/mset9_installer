@@ -95,7 +95,7 @@
   "@menu_log": {
     "description": "Button in app menu for showing app logs"
   },
-  "menu_alert_language_title": "Select Language",
+  "menu_alert_language_title": "言語を選択",
   "@menu_alert_language_title": {
     "description": "Title of language selection prompt"
   },
@@ -215,7 +215,7 @@
   "@setup_alert_stage_name": {
     "description": "Stage name next to title for prompts related to MSET9 setup, if this combined with all general (error/warning/info/confirm) will be too long for title, set this to @ to force stage name to use icons instead"
   },
-  "setup_alert_disclaimer_title": "Disclaimer",
+  "setup_alert_disclaimer_title": "免責事項",
   "@setup_alert_disclaimer_title": {
     "description": "Title of disclaimer prompt about their console data (on SD card)"
   },
@@ -231,7 +231,7 @@
   "@setup_alert_disclaimer_web_addition": {
     "description": "Additional message of disclaimer prompt about web version"
   },
-  "setup_alert_disclaimer_confirm_to_continue": "Press confirm to continue.",
+  "setup_alert_disclaimer_confirm_to_continue": "続けるには、「確認」を押してください。",
   "@setup_alert_disclaimer_confirm_to_continue": {
     "description": "Additional message at the end of disclaimer prompt tell them to confirm"
   },
