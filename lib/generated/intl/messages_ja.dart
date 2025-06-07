@@ -23,7 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "about_translation_contribution": MessageLookupByLibrary.simpleMessage(
-            "If you want to contribute to translations (non en/en_US), please go https://crowdin.com/project/mset9_installer"),
+            "翻訳(英語以外)に貢献したい場合は、 https://crowdin.com/project/mset9_installer をご覧ください。"),
         "alert_action_troubleshooting":
             MessageLookupByLibrary.simpleMessage("トラブルシューティング"),
         "alert_confirm_title": MessageLookupByLibrary.simpleMessage("確認"),
@@ -38,16 +38,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "alert_info_title": MessageLookupByLibrary.simpleMessage("お知らせ"),
         "alert_neutral": MessageLookupByLibrary.simpleMessage("確定"),
         "alert_not_supported": MessageLookupByLibrary.simpleMessage(
-            "Your browser is not supported, please use different browser or different version of installer."),
+            "お使いのブラウザはサポートされていません。別のブラウザまたは別のバージョンのインストーラをご利用ください。"),
         "alert_not_supported_title":
             MessageLookupByLibrary.simpleMessage("サポートされていません"),
         "alert_warning_title": MessageLookupByLibrary.simpleMessage("ご注意"),
         "app_name": MessageLookupByLibrary.simpleMessage("MSET9 インストーラー"),
         "check_loading": MessageLookupByLibrary.simpleMessage("確認中…"),
         "installer_button_check":
-            MessageLookupByLibrary.simpleMessage("Check MSET9 status"),
+            MessageLookupByLibrary.simpleMessage("MSET9の状態確認"),
         "installer_button_check_sd":
-            MessageLookupByLibrary.simpleMessage("Check SD card"),
+            MessageLookupByLibrary.simpleMessage("SDカードをチェック"),
         "installer_button_dummy_checking":
             MessageLookupByLibrary.simpleMessage("確認中…"),
         "installer_button_inject_trigger":
@@ -62,61 +62,62 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("トリガーファイルを削除する"),
         "installer_button_setup":
             MessageLookupByLibrary.simpleMessage("MEST9をセットアップする"),
-        "menu_advance": MessageLookupByLibrary.simpleMessage("Advance Options"),
+        "menu_advance": MessageLookupByLibrary.simpleMessage("高度な設定"),
         "menu_alert_language_action":
-            MessageLookupByLibrary.simpleMessage("Done"),
+            MessageLookupByLibrary.simpleMessage("完了"),
         "menu_alert_language_title":
-            MessageLookupByLibrary.simpleMessage("Select Language"),
+            MessageLookupByLibrary.simpleMessage("言語を選択"),
         "menu_credit": MessageLookupByLibrary.simpleMessage("クレジット"),
-        "menu_extra": MessageLookupByLibrary.simpleMessage("Extra Versions"),
+        "menu_extra": MessageLookupByLibrary.simpleMessage("追加のバージョンサポートを有効"),
         "menu_force_dark_mode": MessageLookupByLibrary.simpleMessage("ダークモード"),
         "menu_force_light_mode": MessageLookupByLibrary.simpleMessage("ライトモード"),
-        "menu_language": MessageLookupByLibrary.simpleMessage("Language"),
-        "menu_legacy": MessageLookupByLibrary.simpleMessage("Legacy Hax ID1"),
+        "menu_language": MessageLookupByLibrary.simpleMessage("言語"),
+        "menu_legacy": MessageLookupByLibrary.simpleMessage("レガシーhax ID1を使用"),
         "menu_log": MessageLookupByLibrary.simpleMessage("ログ"),
         "menu_loose_root_check":
-            MessageLookupByLibrary.simpleMessage("Loose Root Check"),
+            MessageLookupByLibrary.simpleMessage("ルートディレクトリチェックを緩和"),
         "pick_alert_stage_name": MessageLookupByLibrary.simpleMessage("フォルダー"),
         "pick_broken_id0_contents": MessageLookupByLibrary.simpleMessage(
-            "Something goes very wrong inside your ID0 folder. Please check."),
+            "ID0フォルダに重大な問題があります。確認してください。"),
         "pick_common_n3ds_info": MessageLookupByLibrary.simpleMessage(
-            "Ensure that you put SD card in the console and boot normally first.\nDon\'t try to create Nintendo 3DS folder yourself."),
+            "まず、SDカードをゲーム機に挿入して通常通り起動してください。\n自分でNintendo 3DSフォルダを作ろうとしないでください。"),
         "pick_multi_hax_id1":
             MessageLookupByLibrary.simpleMessage("1つ以上のハックスID1がありますか?"),
         "pick_multiple_id0":
             MessageLookupByLibrary.simpleMessage("複数のID0フォルダがあります。確認してください。"),
         "pick_no_id0": MessageLookupByLibrary.simpleMessage(
-            "Not valid Nintendo 3DS folder. There\'s no ID0 folder inside."),
-        "pick_no_n3ds": MessageLookupByLibrary.simpleMessage(
-            "There\'s no Nintendo 3DS folder."),
+            "このNintendo 3DSフォルダは使えません。ID0フォルダが入っていません。"),
+        "pick_no_n3ds":
+            MessageLookupByLibrary.simpleMessage("Nintendo 3DSフォルダではありません。"),
         "pick_picked_id1": MessageLookupByLibrary.simpleMessage(
-            "ID1 picked, please pick ID0 or Nintendo 3DS folder instead.\n(Pick the upper folder, which contains the folder that you just picked, instead.)"),
+            "ID0を選んでください。選択されたフォルダはID1です。\n(一つ上の階層のフォルダを選んでください。)"),
         "pick_picked_unknown": MessageLookupByLibrary.simpleMessage(
             "不明なフォルダが選択されました。正しいフォルダを選択してください."),
         "remove_alert_action_repick":
-            MessageLookupByLibrary.simpleMessage("Repick"),
+            MessageLookupByLibrary.simpleMessage("再選択"),
         "remove_alert_confirm": MessageLookupByLibrary.simpleMessage(
-            "It seems that you haven\'t installed boot9strap yet, are you sure you want to remove MSET9?\n\nIf you picked wrong model/version, you can click Repick to pick again."),
+            "boot9strap がまだインストールされていません。MSET9 を削除してもよろしいですか?\n\n機種やバージョンをまちがえた場合は、「再選択」をクリックしてください。"),
         "remove_alert_stage_name": MessageLookupByLibrary.simpleMessage("削除"),
         "remove_arc_hax_id1_removal_failure": MessageLookupByLibrary.simpleMessage(
-            "Failed to remove hax ID1 automatically due to bug in ChromeOS Android implementation.\nYou can try removing it again.\nIf it keep failing, you\'ll need to remove it manually."),
+            "ChromeOS Android 実装のバグにより、改造用のID1 を自動的に削除できませんでした。\nもう一度お試しください。\nそれでも削除できない場合は、手動で削除する必要があります。"),
         "remove_loading":
             MessageLookupByLibrary.simpleMessage("MEST9を削除する ..."),
         "sd_setup_loading":
-            MessageLookupByLibrary.simpleMessage("Setting up SD ..."),
+            MessageLookupByLibrary.simpleMessage("SDカードを設定しています..."),
         "setup_alert_disclaimer": MessageLookupByLibrary.simpleMessage(
-            "This process will temporarily reset most of your 3DS data.\nMost of your applications and themes will disappear.\nThis is perfectly normal, and if everything goes right, it will re-appear at the end of the process.\n\nIn any case, it is highly recommended to make a backup of your SD card\'s contents to a folder on your PC/Device.\n(Especially the \'Nintendo 3DS\' folder.)"),
+            "3DSのデータを一時的にリセットします。\nゲームやテーマが表示されなくなりますが、完了すると元にもどります。\n\nSDカードの内容をPCなどにバックアップすることをおすすめします。\n(特にNintendo 3DSフォルダ)"),
         "setup_alert_disclaimer_confirm_to_continue":
-            MessageLookupByLibrary.simpleMessage("Press confirm to continue."),
+            MessageLookupByLibrary.simpleMessage("続けるには、「確認」を押してください。"),
         "setup_alert_disclaimer_linux_addition":
             MessageLookupByLibrary.simpleMessage(
-                "(On Linux, things like to not go right - please ensure that your SD card is mounted with the \'utf8\' option.)"),
+                "(Linux では、うまくいかないことがあります。SD カードを \'utf8\' オプションでマウントしてみてください。)"),
         "setup_alert_disclaimer_title":
-            MessageLookupByLibrary.simpleMessage("Disclaimer"),
-        "setup_alert_disclaimer_web_addition": MessageLookupByLibrary.simpleMessage(
-            "(Due to web api limitation, this implementation have slightly higher risk of data corruption, thus backup is even more recommended.)"),
-        "setup_alert_dummy_db_corrupted": MessageLookupByLibrary.simpleMessage(
-            "Title database is likely corrupted."),
+            MessageLookupByLibrary.simpleMessage("免責事項"),
+        "setup_alert_disclaimer_web_addition":
+            MessageLookupByLibrary.simpleMessage(
+                "(Web APIの制限があるため、データが壊れるリスクが少しだけ高くなります。バックアップを取ることを特におすすめします。)"),
+        "setup_alert_dummy_db_corrupted":
+            MessageLookupByLibrary.simpleMessage("タイトルデータベースが壊れている可能性があります。"),
         "setup_alert_dummy_db_failed":
             MessageLookupByLibrary.simpleMessage("ダミータイトルデータベースの作成に失敗しました"),
         "setup_alert_dummy_db_found":
@@ -132,7 +133,7 @@ class MessageLookup extends MessageLookupByLibrary {
                 "https://3ds.hacks.guide/images/screenshots/database-reset.jpg"),
         "setup_alert_dummy_mii_maker_and_db_reset":
             MessageLookupByLibrary.simpleMessage(
-                "Put SD card back to your 3ds, power it on, then open Mii Maker.\nAfter Mii Maker loaded, press HOME, then navigate to System Settings -> Data Management -> Nintendo 3DS -> Software -> Reset."),
+                "SDカードを3DSに入れて、電源をONにしてください。\nMiiスタジオを開いてからHOMEボタンを押し、次に本体設定を開いてください。\nデータ管理→Nintendo 3DS→ソフトウェア→リセット の順に進んでください。"),
         "setup_alert_extdata_home_menu":
             MessageLookupByLibrary.simpleMessage("ホームメニューのデータがありません"),
         "setup_alert_extdata_mii_maker":
@@ -142,45 +143,44 @@ class MessageLookup extends MessageLookupByLibrary {
         "setup_alert_extdata_subtitle":
             MessageLookupByLibrary.simpleMessage("追加データ"),
         "setup_alert_hax_id1_created":
-            MessageLookupByLibrary.simpleMessage("Hax ID1 has been created."),
+            MessageLookupByLibrary.simpleMessage("改造用のID1を作成できました。"),
         "setup_alert_hax_id1_created_title":
-            MessageLookupByLibrary.simpleMessage("Hax ID1 Created"),
+            MessageLookupByLibrary.simpleMessage("ID1作成完了"),
         "setup_alert_multiple_id1":
             MessageLookupByLibrary.simpleMessage("複数のID1フォルダがあります。確認してください。"),
-        "setup_alert_no_hax_available": MessageLookupByLibrary.simpleMessage(
-            "Not supported for your system version"),
+        "setup_alert_no_hax_available":
+            MessageLookupByLibrary.simpleMessage("あなたの本体のバージョンには対応していません"),
         "setup_alert_no_hax_available_subtitle":
-            MessageLookupByLibrary.simpleMessage("Unsupported Version"),
+            MessageLookupByLibrary.simpleMessage("非対応バージョン"),
         "setup_alert_no_id1": MessageLookupByLibrary.simpleMessage(
-            "Not valid Nintendo 3DS folder. There\'s no ID1 folder inside."),
+            "このNintendo 3DSフォルダは使えません。ID1フォルダが入っていません。"),
         "setup_alert_repick_variant_prompt":
-            MessageLookupByLibrary.simpleMessage(
-                "Are you sure you want to pick different model/version?"),
+            MessageLookupByLibrary.simpleMessage("別の機種/バージョンを選択します。"),
         "setup_alert_sd_setup_action_setup":
-            MessageLookupByLibrary.simpleMessage("Do SD Setup"),
-        "setup_alert_sd_setup_failed": MessageLookupByLibrary.simpleMessage(
-            "Failed to setup SD root automatically!"),
-        "setup_alert_sd_setup_file_missing": MessageLookupByLibrary.simpleMessage(
-            "The following files on your SD root are missing/corrupted/unknown:"),
+            MessageLookupByLibrary.simpleMessage("セットアップ実行"),
+        "setup_alert_sd_setup_failed":
+            MessageLookupByLibrary.simpleMessage("SDルートを自動設定できませんでした!"),
+        "setup_alert_sd_setup_file_missing":
+            MessageLookupByLibrary.simpleMessage("SDカードのルートにこのファイルがありません:"),
         "setup_alert_sd_setup_file_state_missing":
-            MessageLookupByLibrary.simpleMessage("Missing"),
+            MessageLookupByLibrary.simpleMessage("不足"),
         "setup_alert_sd_setup_file_state_optional":
-            MessageLookupByLibrary.simpleMessage("Optional"),
+            MessageLookupByLibrary.simpleMessage("オプション"),
         "setup_alert_sd_setup_file_state_outdated":
-            MessageLookupByLibrary.simpleMessage("Outdated"),
+            MessageLookupByLibrary.simpleMessage("古い"),
         "setup_alert_sd_setup_file_state_required":
-            MessageLookupByLibrary.simpleMessage("Required"),
+            MessageLookupByLibrary.simpleMessage("必須"),
         "setup_alert_sd_setup_file_state_unknown_corrupted":
-            MessageLookupByLibrary.simpleMessage("Corrupted/Unknown"),
+            MessageLookupByLibrary.simpleMessage("破損/不明"),
         "setup_alert_sd_setup_optional_prompt":
             MessageLookupByLibrary.simpleMessage(
-                "Do you want to automatically download corrupted/unknown/non-critical files? (This will overwrite all related files automatically)"),
+                "壊れているファイル、不明なファイル、重要ではないファイルを自動で再ダウンロードしますか?\n(続けると、関連するすべてのファイルが自動で上書きされます。)"),
         "setup_alert_stage_name":
             MessageLookupByLibrary.simpleMessage("セットアップ"),
         "setup_loading":
             MessageLookupByLibrary.simpleMessage("MEST9をセットアップする ..."),
         "title_variant_selector":
-            MessageLookupByLibrary.simpleMessage("Select Model & Version"),
+            MessageLookupByLibrary.simpleMessage("機種とバージョンの選択"),
         "variant_selector_model_new":
             MessageLookupByLibrary.simpleMessage("New 3DS/2DS"),
         "variant_selector_model_old":
