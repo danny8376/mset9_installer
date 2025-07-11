@@ -10,3 +10,4 @@
 
 - 日文
   - [megurine_nimu](https://crowdin.com/profile/megurine_nimu)
+  - [Low_Plankton_3329](https://crowdin.com/profile/Low_Plankton_3329)
