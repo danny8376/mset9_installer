@@ -89,20 +89,21 @@
       "type": "archive",
       "hash": [],
       "info": {
-        "size": 548945,
-        "sha256": "9f377cf65c2554b3af32edfe372d131352f89be1ef3066133cafeef6b5796005",
-        "md5": "b7f2daf207ab38721e770c6c1d3738a7",
-        "update": "Mon, 10 Mar 2025 21:16:41 GMT"
+        "size": 551822,
+        "sha256": "3204fd8f6c04f6ffdb57b77b8b441bfd6fe4c87a919bd1efd639f76912e33557",
+        "md5": "e9b640743377b6d68e73cf79ab890b35",
+        "update": "Tue, 15 Jul 2025 18:56:59 GMT"
       },
       "src": [
         "github://latest-releases/LumaTeam/Luma3DS/Luma3DSv.+\\.zip",
-        "https://github.com/LumaTeam/Luma3DS/releases/download/v13.3.2/Luma3DSv13.3.2.zip",
-        "https://mset9-installer-files.pages.dev/Luma3DSv13.3.2.zip"
+        "https://github.com/LumaTeam/Luma3DS/releases/download/v13.3.3/Luma3DSv13.3.3.zip",
+        "https://mset9-installer-files.pages.dev/Luma3DSv13.3.3.zip"
       ]
     },
     "boot.firm#2,0": {
       "type": "essential",
       "hash": [
+        "07dcad61ce3bce3ac30af01ddb282b87b802241455bb30d760c67361f529106d",
         "caff48c3c681852fd434fe9a8a5e5aa2055a08110908df07aa28bcce18ce3999",
         "36cf686293e65d71eedd2d37dab85470cfa30fbdbb0adc058acb7581f7061a73",
         "ad0d98d31df87e67e8a02410f7e05602a36b1a4e1865d17073f8ff796ad84001",
