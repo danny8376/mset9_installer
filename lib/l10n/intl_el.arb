@@ -175,6 +175,10 @@
   "@pick_picked_unknown": {
     "description": "Message body of prompt when the folder they pick is unrelated (or subfolders inside ID1 or other location)"
   },
+  "pick_mset9_files_in_n3ds": "You wrongly put MSET9 files inside Nintendo 3DS folder! Please move them out to the root!",
+  "@pick_mset9_files_in_n3ds": {
+    "description": "Message body of prompt when found MSET9 files inside Nintendo 3DS folder with statement of moving them out"
+  },
   "pick_broken_id0_contents": "Something goes very wrong inside your ID0 folder. Please check.",
   "@pick_broken_id0_contents": {
     "description": "Message body of prompt when it's very broken (multiple cases that ID1 doesn't match normal expectation)"

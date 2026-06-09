@@ -1,5 +1,5 @@
 {
-  "about_translation_contribution": "翻訳(英語以外)に貢献したい場合は、 https://crowdin.com/project/mset9_installer をご覧ください。",
+  "about_translation_contribution": "翻訳(英語以外)に貢献したい場合は、 https://crowdin.com/project/mset9_installer をご覧ください",
   "@about_translation_contribution": {
     "description": "Not used in app, this is information for people who want to contribute to translations"
   },
@@ -23,11 +23,11 @@
   "@alert_general_confirm": {
     "description": "Positive action button for confirm-cancel prompts"
   },
-  "alert_general_cancel": "キャンセル",
+  "alert_general_cancel": "辞める",
   "@alert_general_cancel": {
     "description": "Negative action button for confirm-cancel prompts"
   },
-  "alert_error_title": "エラー",
+  "alert_error_title": "問題",
   "@alert_error_title": {
     "description": "Title for error prompts, if this combined with any *_stage_name will be too long for title, add ascii symbol $ at the end to force stage name to use icons instead"
   },
@@ -43,7 +43,7 @@
   "@alert_confirm_title": {
     "description": "Title for confirmation prompts, if this combined with any *_stage_name will be too long for title, add ascii symbol $ at the end to force stage name to use icons instead"
   },
-  "alert_action_troubleshooting": "トラブルシューティング",
+  "alert_action_troubleshooting": "問題の対処法",
   "@alert_action_troubleshooting": {
     "description": "Button for opening troubleshooting page in error prompts"
   },
@@ -51,7 +51,7 @@
   "@alert_general_troubleshooting_url": {
     "description": "Link to troubleshooting page of mset9 on 3ds.hacks.guide, should link to translated page when available"
   },
-  "alert_not_supported_title": "サポートされていません",
+  "alert_not_supported_title": "対応していません",
   "@alert_not_supported_title": {
     "description": "Title of not supported prompt used for web version"
   },
@@ -67,11 +67,11 @@
   "@menu_language": {
     "description": "Button in app menu for selecting language"
   },
-  "menu_force_light_mode": "ライトモード",
+  "menu_force_light_mode": "白色モード",
   "@menu_force_light_mode": {
     "description": "Button in app menu for forcing use of light mode theme"
   },
-  "menu_force_dark_mode": "ダークモード",
+  "menu_force_dark_mode": "黒色モード",
   "@menu_force_dark_mode": {
     "description": "Button in app menu for forcing use of dark mode theme"
   },
@@ -83,15 +83,15 @@
   "@menu_extra": {
     "description": "Button in advance only menu for enabling support of system version that covered by shoundhax"
   },
-  "menu_loose_root_check": "ルートディレクトリチェックを緩和",
+  "menu_loose_root_check": "直下フォルダーの確認を緩和",
   "@menu_loose_root_check": {
     "description": "Button in advance only menu for allowing missing/unknown SD root files that's not critical for mset9 itself"
   },
-  "menu_legacy": "レガシーhax ID1を使用",
+  "menu_legacy": "古い hax ID1",
   "@menu_legacy": {
     "description": "Button in advance only menu for using original mset9 hax ID1 instead of the new ID1"
   },
-  "menu_log": "ログ",
+  "menu_log": "記録",
   "@menu_log": {
     "description": "Button in app menu for showing app logs"
   },
@@ -175,11 +175,15 @@
   "@pick_picked_unknown": {
     "description": "Message body of prompt when the folder they pick is unrelated (or subfolders inside ID1 or other location)"
   },
+  "pick_mset9_files_in_n3ds": "You wrongly put MSET9 files inside Nintendo 3DS folder! Please move them out to the root!",
+  "@pick_mset9_files_in_n3ds": {
+    "description": "Message body of prompt when found MSET9 files inside Nintendo 3DS folder with statement of moving them out"
+  },
   "pick_broken_id0_contents": "ID0フォルダに重大な問題があります。確認してください。",
   "@pick_broken_id0_contents": {
     "description": "Message body of prompt when it's very broken (multiple cases that ID1 doesn't match normal expectation)"
   },
-  "pick_multi_hax_id1": "1つ以上のハックスID1がありますか?",
+  "pick_multi_hax_id1": "Hax ID1は複数ありますか？？？",
   "@pick_multi_hax_id1": {
     "description": "Message body of prompt when the ID0 folder contains multiple hax ID1 folder"
   },
