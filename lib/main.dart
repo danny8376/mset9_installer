@@ -826,6 +826,8 @@ class _InstallerState extends State<Installer> {
         _showAlert(_s().pick_picked_id1, type: error, stage: stage, buttonBuilder: troubleshooting);
       case HaxAlertType.unknownFolderPicked:
         _showAlert(_s().pick_picked_unknown, type: error, stage: stage);
+      case HaxAlertType.mset9FilesInN3DS:
+        _showAlert(_s().pick_mset9_files_in_n3ds, type: error, stage: stage);
       case HaxAlertType.brokenId0Contents:
         _showAlert(_s().pick_broken_id0_contents, type: error, stage: stage);
       case HaxAlertType.noHaxAvailable:

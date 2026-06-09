@@ -2,7 +2,6 @@
 
 ### Todo
 
-- [ ] Check for wrongly placed root files (b9 in Nintendo 3DS)
 - [ ] Actually check Windows 7 support
 - [ ] Copy valid title database back to normal id1 after removed if there's no existing one
 - [ ] Show current status clearly in app
@@ -33,3 +32,4 @@
 - [x] Make version selector more visible after model selected
 - [x] Fix crash when there's file in Nintendo 3DS
 - [x] Replace and phasing out MSET9Installer4Android on Play Store
+- [x] Check for wrongly placed root files (b9 in Nintendo 3DS)

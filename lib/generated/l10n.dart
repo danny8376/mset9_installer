@@ -512,6 +512,17 @@ class S {
     );
   }
 
+  /// `You wrongly put MSET9 files inside Nintendo 3DS folder! Please move them out to the root!`
+  String get pick_mset9_files_in_n3ds {
+    return Intl.message(
+      'You wrongly put MSET9 files inside Nintendo 3DS folder! Please move them out to the root!',
+      name: 'pick_mset9_files_in_n3ds',
+      desc:
+          'Message body of prompt when found MSET9 files inside Nintendo 3DS folder with statement of moving them out',
+      args: [],
+    );
+  }
+
   /// `Something goes very wrong inside your ID0 folder. Please check.`
   String get pick_broken_id0_contents {
     return Intl.message(

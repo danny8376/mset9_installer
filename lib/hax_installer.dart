@@ -26,6 +26,7 @@ enum HaxAlertType {
   multipleId1,
   id1Picked,
   unknownFolderPicked,
+  mset9FilesInN3DS,
   brokenId0Contents,
   noHaxAvailable,
   multipleHaxId1,
@@ -376,6 +377,10 @@ class HaxInstaller {
         talker.error("FolderPicking: Check: Unknown Folder Picked");
         throw const FolderAssignmentException(HaxAlertType.unknownFolderPicked);
       }
+      if (!await _checkIfMSET9FilesInN3DS(fix: sdRoot != null)) {
+        talker.error("FolderPicking: Check: Found MSET9 Files Placed inside Nintendo 3DS Folder");
+        throw const FolderAssignmentException(HaxAlertType.mset9FilesInN3DS);
+      }
       _watchFolderAndDriveUpdate();
       checkState();
     } on FolderAssignmentException catch (e) {
@@ -507,6 +512,18 @@ class HaxInstaller {
 
   Future<bool> _checkIfId1(Directory folder) async {
     return Hax.checkIfHaxId1(folder.name) || kId1Regex.hasMatch(folder.name);
+  }
+
+  Future<bool> _checkIfMSET9FilesInN3DS({bool fix = false}) async {
+    if (await n3dsFolder?.file("b9", caseInsensitive: true) == null) {
+      return true;
+    }
+    if (fix) {
+      // TODO: move MSET9 files out of Nintendo 3DS folder...?
+      talker.debug("FolderPicking: Check: IfMSET9FilesInN3DS: Not Implemented yet for fixing MSET9 files inside Nintendo 3DS folder");
+      return false;
+    }
+    return false;
   }
 
   Future<bool> _checkIfDummyDbs({bool silent = false}) async {
