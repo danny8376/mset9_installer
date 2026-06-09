@@ -32,7 +32,7 @@ jobs:
 
   build-with-macos:
     name: Build with macOS
-    runs-on: macos-latest
+    runs-on: macos-14
 
     steps:
       - name: Checkout Repository
