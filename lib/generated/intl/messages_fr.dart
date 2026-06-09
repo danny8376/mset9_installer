@@ -84,6 +84,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Something goes very wrong inside your ID0 folder. Please check."),
         "pick_common_n3ds_info": MessageLookupByLibrary.simpleMessage(
             "Ensure that you put SD card in the console and boot normally first.\nDon\'t try to create Nintendo 3DS folder yourself."),
+        "pick_mset9_files_in_n3ds": MessageLookupByLibrary.simpleMessage(
+            "You wrongly put MSET9 files inside Nintendo 3DS folder! Please move them out to the root!"),
         "pick_multi_hax_id1": MessageLookupByLibrary.simpleMessage(
             "There\'s more than one hax ID1 ???"),
         "pick_multiple_id0": MessageLookupByLibrary.simpleMessage(

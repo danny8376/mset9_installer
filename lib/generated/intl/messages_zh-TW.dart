@@ -81,6 +81,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("ID0 有問題，請確認"),
         "pick_common_n3ds_info": MessageLookupByLibrary.simpleMessage(
             "請把 SD 卡放回你的主機並正常開機\n請勿自行建立 Nintendo 3DS 資料夾"),
+        "pick_mset9_files_in_n3ds": MessageLookupByLibrary.simpleMessage(
+            "You wrongly put MSET9 files inside Nintendo 3DS folder! Please move them out to the root!"),
         "pick_multi_hax_id1":
             MessageLookupByLibrary.simpleMessage("有多個漏洞 ID1 !?"),
         "pick_multiple_id0":

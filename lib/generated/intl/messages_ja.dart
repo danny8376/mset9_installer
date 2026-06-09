@@ -23,12 +23,12 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "about_translation_contribution": MessageLookupByLibrary.simpleMessage(
-            "翻訳(英語以外)に貢献したい場合は、 https://crowdin.com/project/mset9_installer をご覧ください。"),
+            "翻訳(英語以外)に貢献したい場合は、 https://crowdin.com/project/mset9_installer をご覧ください"),
         "alert_action_troubleshooting":
-            MessageLookupByLibrary.simpleMessage("トラブルシューティング"),
+            MessageLookupByLibrary.simpleMessage("問題の対処法"),
         "alert_confirm_title": MessageLookupByLibrary.simpleMessage("確認"),
-        "alert_error_title": MessageLookupByLibrary.simpleMessage("エラー"),
-        "alert_general_cancel": MessageLookupByLibrary.simpleMessage("キャンセル"),
+        "alert_error_title": MessageLookupByLibrary.simpleMessage("問題"),
+        "alert_general_cancel": MessageLookupByLibrary.simpleMessage("辞める"),
         "alert_general_confirm": MessageLookupByLibrary.simpleMessage("確認"),
         "alert_general_no": MessageLookupByLibrary.simpleMessage("いいえ"),
         "alert_general_troubleshooting_url":
@@ -40,7 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "alert_not_supported": MessageLookupByLibrary.simpleMessage(
             "お使いのブラウザはサポートされていません。別のブラウザまたは別のバージョンのインストーラをご利用ください。"),
         "alert_not_supported_title":
-            MessageLookupByLibrary.simpleMessage("サポートされていません"),
+            MessageLookupByLibrary.simpleMessage("対応していません"),
         "alert_warning_title": MessageLookupByLibrary.simpleMessage("ご注意"),
         "app_name": MessageLookupByLibrary.simpleMessage("MSET9 インストーラー"),
         "check_loading": MessageLookupByLibrary.simpleMessage("確認中…"),
@@ -69,20 +69,22 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("言語を選択"),
         "menu_credit": MessageLookupByLibrary.simpleMessage("クレジット"),
         "menu_extra": MessageLookupByLibrary.simpleMessage("追加のバージョンサポートを有効"),
-        "menu_force_dark_mode": MessageLookupByLibrary.simpleMessage("ダークモード"),
-        "menu_force_light_mode": MessageLookupByLibrary.simpleMessage("ライトモード"),
+        "menu_force_dark_mode": MessageLookupByLibrary.simpleMessage("黒色モード"),
+        "menu_force_light_mode": MessageLookupByLibrary.simpleMessage("白色モード"),
         "menu_language": MessageLookupByLibrary.simpleMessage("言語"),
-        "menu_legacy": MessageLookupByLibrary.simpleMessage("レガシーhax ID1を使用"),
-        "menu_log": MessageLookupByLibrary.simpleMessage("ログ"),
+        "menu_legacy": MessageLookupByLibrary.simpleMessage("古い hax ID1"),
+        "menu_log": MessageLookupByLibrary.simpleMessage("記録"),
         "menu_loose_root_check":
-            MessageLookupByLibrary.simpleMessage("ルートディレクトリチェックを緩和"),
+            MessageLookupByLibrary.simpleMessage("直下フォルダーの確認を緩和"),
         "pick_alert_stage_name": MessageLookupByLibrary.simpleMessage("フォルダー"),
         "pick_broken_id0_contents": MessageLookupByLibrary.simpleMessage(
             "ID0フォルダに重大な問題があります。確認してください。"),
         "pick_common_n3ds_info": MessageLookupByLibrary.simpleMessage(
             "まず、SDカードをゲーム機に挿入して通常通り起動してください。\n自分でNintendo 3DSフォルダを作ろうとしないでください。"),
+        "pick_mset9_files_in_n3ds": MessageLookupByLibrary.simpleMessage(
+            "You wrongly put MSET9 files inside Nintendo 3DS folder! Please move them out to the root!"),
         "pick_multi_hax_id1":
-            MessageLookupByLibrary.simpleMessage("1つ以上のハックスID1がありますか?"),
+            MessageLookupByLibrary.simpleMessage("Hax ID1は複数ありますか？？？"),
         "pick_multiple_id0":
             MessageLookupByLibrary.simpleMessage("複数のID0フォルダがあります。確認してください。"),
         "pick_no_id0": MessageLookupByLibrary.simpleMessage(
