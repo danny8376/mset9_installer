@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 3.0.2+24
+version: 3.0.3+25
 
 environment:
   sdk: '>=3.1.3 <4.0.0'
@@ -62,7 +62,11 @@ dependencies:
   fetch_client: ^1.0.2
   json_annotation: ^4.9.0
   archive: ^3.6.1
-  webcrypto: ^0.5.5
+  #webcrypto: ^0.5.5
+  webcrypto:
+    git:
+      url: https://github.com/danny8376/webcrypto.dart
+      ref: 0.5.5-ndk-r28
   convert: ^3.1.1
   http_parser: ^4.0.2
   window_manager: ^0.4.2
@@ -76,6 +80,8 @@ dependencies:
   #locale_names: ^1.1.1
 
 dependency_overrides:
+  jni:
+    path: packages/jni
   # fix for windows 7 build
   #share_plus:
   #  git:
@@ -85,7 +91,7 @@ dependency_overrides:
 # maybe we should upgrade whole project to 3.22.3 and downgrade for win7 build only?
 #  # hack... for making web compatible with flutter 3.22.3 & talker_flutter
 #  # do this break anything? we'll know eventually...
-  js: ^0.7.0
+  js: 0.7.1
 #  # well, the following break 3.16.9 dev, so apply in github action only...
 #  # have feel that we'll have much more fun someday...
 #  web: ^0.5.0
