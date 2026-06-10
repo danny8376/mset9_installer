@@ -975,7 +975,7 @@ packages:
     description:
       path: "."
       ref: "0.5.5-ndk-r28"
-      resolved-ref: "4cc4d91a9972439c638da57e4523d82287f9bc3b"
+      resolved-ref: c666249eb11fe645a2727c9e9727fdd027150133
       url: "https://github.com/danny8376/webcrypto.dart"
     source: git
     version: "0.5.5"
