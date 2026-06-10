@@ -13,7 +13,7 @@ env:
 jobs:
   build-with-windows:
     name: Build with Window
-    runs-on: windows-latest
+    runs-on: windows-2022
 
     steps:
       - name: Checkout Repository
