@@ -11,7 +11,6 @@
   - [ ] Desktops - partially
 - [ ] Check if drive is mounted with utf8 option for Linux and prompt for remount automatically
 - [ ] SD read-only check after folder picked
-- [ ] Check if user extracted files in wrong location (like inside Nintendo 3DS)
 - [ ] Eject/umount SD card after setup/inject
 - [ ] root_check.dart
   - [ ] Add github release support
@@ -32,4 +31,4 @@
 - [x] Make version selector more visible after model selected
 - [x] Fix crash when there's file in Nintendo 3DS
 - [x] Replace and phasing out MSET9Installer4Android on Play Store
-- [x] Check for wrongly placed root files (b9 in Nintendo 3DS)
+- [x] Check for wrongly placed MSET9 files (b9 in Nintendo 3DS)
