@@ -41,8 +41,9 @@ def defaultAppName = "MSET9 Installer"
 android {
     namespace "moe.saru.homebrew.console3ds.mset9_installer"
     //compileSdkVersion flutter.compileSdkVersion
+    //ndkVersion flutter.ndkVersion
     compileSdkVersion 34
-    ndkVersion flutter.ndkVersion
+    ndkVersion "28.2.13676358"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
